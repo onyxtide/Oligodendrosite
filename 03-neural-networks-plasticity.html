@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neural Networks & Brain Plasticity - Interactive Neuroscience Learning | Oligodendrosite</title>
+    <meta name="description" content="Explore neural networks, brain plasticity, LTP, LTD, and synaptic learning through interactive simulations. Understand how your brain adapts and forms memories.">
+    <meta name="keywords" content="neural networks, brain plasticity, LTP, LTD, synaptic plasticity, neuroplasticity, learning, memory, neural pathways, neuroscience">
+    
+    <!-- Brain emoji favicon -->
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧠</text></svg>">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+    <!-- External CSS loaded after Tailwind to ensure proper override -->
+    <link rel="stylesheet" href="css/main.css">
+    
+</head>
+
+<body class="bg-gray-100 font-sans dark:bg-gray-900 text-gray-800 dark:text-gray-200 transition-colors duration-300">
+    <!-- Header Placeholder -->
+    <div id="header-placeholder"></div>
+
+    <!-- Consistent colored header -->
+    <header class="bg-purple-700 text-white p-6 shadow-md mb-8">
+        <div class="container mx-auto">
+            <h1 class="text-3xl md:text-4xl font-bold mb-2">Chapter 3: Neural Networks & Brain Plasticity</h1>
+            <p class="text-lg opacity-90">Discover how neurons connect and adapt through experience</p>
+        </div>
+    </header>
+
+    <main class="container mx-auto p-4 md:p-6">
+        <!-- Introduction Section -->
+        <section class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-8">
+            <h2 class="text-2xl font-bold mb-4 text-purple-700 dark:text-purple-300">How does your brain create networks
+                and adapt?</h2>
+            <p class="mb-4">Your brain contains approximately 86 billion neurons forming trillions of connections. These
+                neural networks process information, store memories, and remarkably, can reorganize themselves
+                throughout your lifetime — a phenomenon called neuroplasticity. While Hebbian plasticity ("cells that fire together, wire together") is foundational, modern research reveals <strong>multiple coexisting learning rules</strong> operating at different scales.</p>
+            <p class="mb-2 font-semibold">In this exploration, you'll discover:</p>
+            <ul class="list-disc pl-6 mb-4">
+                <li>How neurons form complex networks for information processing</li>
+                <li>The mechanisms of synaptic plasticity and learning</li>
+                <li>Major neural pathways that control behavior and cognition</li>
+                <li>How memories are formed, stored, and retrieved</li>
+            </ul>
+            <p class="text-purple-700 dark:text-purple-300 font-semibold">Start by selecting a tab below to begin your
+                exploration!</p>
+        </section>
+
+        <!-- Navigation Tabs -->
+        <nav class="mb-6 tab-navigation" role="tablist" aria-label="Chapter sections"
+            style="--tab-active-color:#7e22ce; --tab-active-color-dark:#c4b5fd; --tab-hover-color:#7e22ce; --tab-hover-color-dark:#c4b5fd; --tab-active-bg:#f3e8ff; --tab-active-bg-dark:rgba(168,85,247,0.18); --tab-hover-bg:#faf5ff; --tab-hover-bg-dark:rgba(168,85,247,0.12);">
+            <button id="tab-networks" role="tab" aria-selected="true" aria-controls="content-networks"
+                class="tab-button relative px-4 py-2 text-purple-700 font-medium rounded-lg transition-all duration-300">
+                <span class="hidden sm:inline">Neural Networks</span>
+                <span class="sm:hidden">Networks</span>
+            </button>
+            <button id="tab-plasticity" role="tab" aria-selected="false" aria-controls="content-plasticity"
+                class="tab-button relative px-4 py-2 text-gray-500 font-medium rounded-lg transition-all duration-300 hover:text-purple-600 hover:bg-purple-50 dark:hover:bg-purple-900/20">
+                <span class="hidden sm:inline">Brain Plasticity</span>
+                <span class="sm:hidden">Plasticity</span>
+            </button>
+            <button id="tab-pathways" role="tab" aria-selected="false" aria-controls="content-pathways"
+                class="tab-button relative px-4 py-2 text-gray-500 font-medium rounded-lg transition-all duration-300 hover:text-purple-600 hover:bg-purple-50 dark:hover:bg-purple-900/20">
+                <span class="hidden sm:inline">Neural Pathways</span>
+                <span class="sm:hidden">Pathways</span>
+            </button>
+            <button id="tab-memory" role="tab" aria-selected="false" aria-controls="content-memory"
+                class="tab-button relative px-4 py-2 text-gray-500 font-medium rounded-lg transition-all duration-300 hover:text-purple-600 hover:bg-purple-50 dark:hover:bg-purple-900/20">
+                <span class="hidden sm:inline">Learning & Memory</span>
+                <span class="sm:hidden">Memory</span>
+            </button>
+            <button id="tab-modern" role="tab" aria-selected="false" aria-controls="content-modern"
+                class="tab-button relative px-4 py-2 text-gray-500 font-medium rounded-lg transition-all duration-300 hover:text-purple-600 hover:bg-purple-50 dark:hover:bg-purple-900/20">
+                <span class="hidden sm:inline">🔬 Modern Plasticity</span>
+                <span class="sm:hidden">Modern</span>
+            </button>
+        </nav>
+
+        <!-- Neural Networks Tab -->
+        <section id="content-networks" class="tab-content active" role="tabpanel" aria-labelledby="tab-networks">
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-8">
+                <h2 class="text-2xl font-bold mb-4 text-purple-700 dark:text-purple-300">Neural Networks: The Brain's
+                    Computing Architecture</h2>
+
+                <div class="lg:flex gap-6">
+                    <div class="lg:w-1/2 mb-6 lg:mb-0">
+                        <div class="relative h-[400px] border border-gray-200 dark:border-gray-600 rounded-lg overflow-hidden bg-gray-50 dark:bg-gray-700 flex items-center justify-center"
+                            role="img" aria-label="Interactive neural network diagram">
+                            <svg id="network-svg" viewBox="0 0 600 400" class="w-full h-full" style="max-width: 100%; max-height: 100%;">
+                                <!-- Network visualization will be rendered here -->
+                            </svg>
+                        </div>
+                        <p class="text-sm text-center mt-2 text-gray-600 dark:text-gray-400">
+                            💡 Click on neurons to activate them and see signal propagation
+                        </p>
+
+                        <div class="mt-4 flex gap-2">
+                            <button id="run-network"
+                                class="bg-purple-600 hover:bg-purple-700 text-white font-medium py-2 px-4 rounded transition">
+                                Start Network
+                            </button>
+                            <button id="reset-network"
+                                class="bg-gray-600 hover:bg-gray-700 text-white font-medium py-2 px-4 rounded transition">
+                                Reset
+                            </button>
+                        </div>
+
+                        <div class="mt-4">
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Network
+                                Type:</label>
+                            <select id="network-type"
+                                class="w-full p-2 border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-700">
+                                <option value="feedforward">Feedforward Network</option>
+                                <option value="recurrent">Recurrent Network</option>
+                                <option value="small-world">Small-World Network</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="lg:w-1/2">
+                        <h3 class="text-xl font-semibold mb-3">Network Architecture Types</h3>
+                        <p class="mb-4">Different neural network architectures serve specific computational functions in
+                            the brain:</p>
+
+                        <div class="space-y-4">
+                            <div class="p-4 border-l-4 border-purple-500 bg-purple-50 dark:bg-purple-900/20 rounded">
+                                <h4 class="font-semibold text-purple-700 dark:text-purple-300">Feedforward Networks</h4>
+                                <p class="text-sm text-gray-700 dark:text-gray-300 mt-1">Information flows in one
+                                    direction from input to output. Found in sensory processing pathways like the visual
+                                    cortex hierarchy (V1 → V2 → V4 → IT).</p>
+                            </div>
+
+                            <div class="p-4 border-l-4 border-blue-500 bg-blue-50 dark:bg-blue-900/20 rounded">
+                                <h4 class="font-semibold text-blue-700 dark:text-blue-300">Recurrent Networks</h4>
+                                <p class="text-sm text-gray-700 dark:text-gray-300 mt-1">Contain feedback loops enabling
+                                    working memory and temporal processing. Essential for the prefrontal cortex and
+                                    hippocampal circuits.</p>
+                            </div>
+
+                            <div class="p-4 border-l-4 border-green-500 bg-green-50 dark:bg-green-900/20 rounded">
+                                <h4 class="font-semibold text-green-700 dark:text-green-300">Small-World Networks</h4>
+                                <p class="text-sm text-gray-700 dark:text-gray-300 mt-1">High clustering with short path
+                                    lengths. Optimizes efficiency vs. cost trade-off. Characteristic of cortical
+                                    connectivity patterns.</p>
+                            </div>
+                        </div>
+
+                        <div
+                            class="mt-6 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-700">
+                            <h4 class="font-semibold text-blue-700 dark:text-blue-300 mb-2">Clinical Relevance</h4>
+                            <p class="text-sm text-gray-700 dark:text-gray-300">
+                                Network disruptions underlie many neurological and psychiatric disorders. Alzheimer's
+                                disease affects hub nodes, autism involves connectivity alterations, and schizophrenia
+                                shows reduced small-world properties.
+                            </p>
+                        </div>
+
+                        <div id="network-stats" class="mt-4 text-sm text-gray-600 dark:text-gray-400">
+                            <p>Network Statistics:</p>
+                            <ul class="list-disc list-inside mt-1">
+                                <li>Nodes: <span id="node-count">0</span></li>
+                                <li>Connections: <span id="connection-count">0</span></li>
+                                <li>Active Nodes: <span id="active-nodes">0</span></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Brain Plasticity Tab -->
+        <section id="content-plasticity" class="tab-content" role="tabpanel" aria-labelledby="tab-plasticity">
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-8">
+                <h2 class="text-2xl font-bold mb-4 text-purple-700 dark:text-purple-300">Brain Plasticity: How Your
+                    Brain Adapts</h2>
+
+                <div class="lg:flex gap-6">
+                    <div class="lg:w-1/2 mb-6 lg:mb-0">
+                        <h3 class="text-xl font-semibold mb-3">Synaptic Plasticity Simulation</h3>
+                        <p class="mb-4">Long-Term Potentiation (LTP) and Long-Term Depression (LTD) are the cellular
+                            basis of learning and memory:</p>
+
+                        <div class="chart-container mb-4" style="height: 300px;">
+                            <canvas id="plasticity-chart"></canvas>
+                        </div>
+
+                        <div class="space-y-3">
+                            <div>
+                                <label
+                                    class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Stimulation
+                                    Frequency (Hz):</label>
+                                <input type="range" id="frequency-slider" min="1" max="100" value="10" class="w-full">
+                                <div class="flex justify-between text-xs text-gray-500">
+                                    <span>1 Hz (LTD)</span>
+                                    <span id="frequency-display">10 Hz</span>
+                                    <span>100 Hz (LTP)</span>
+                                </div>
+                            </div>
+
+                            <button id="stimulate-synapses"
+                                class="w-full bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded transition">
+                                Apply Stimulation
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="lg:w-1/2">
+                        <h3 class="text-xl font-semibold mb-3">Plasticity Mechanisms</h3>
+
+                        <div class="space-y-4">
+                            <div
+                                class="p-4 border border-green-200 dark:border-green-700 rounded-lg bg-green-50 dark:bg-green-900/20">
+                                <h4 class="font-semibold text-green-700 dark:text-green-300 mb-2">Long-Term Potentiation
+                                    (LTP)</h4>
+                                <ul class="text-sm text-gray-700 dark:text-gray-300 space-y-1">
+                                    <li>• High-frequency stimulation (>50 Hz)</li>
+                                    <li>• Ca²⁺ influx through NMDA receptors</li>
+                                    <li>• AMPA receptor insertion</li>
+                                    <li>• Strengthens synaptic connections</li>
+                                </ul>
+                            </div>
+
+                            <div
+                                class="p-4 border border-red-200 dark:border-red-700 rounded-lg bg-red-50 dark:bg-red-900/20">
+                                <h4 class="font-semibold text-red-700 dark:text-red-300 mb-2">Long-Term Depression (LTD)
+                                </h4>
+                                <ul class="text-sm text-gray-700 dark:text-gray-300 space-y-1">
+                                    <li>• Low-frequency stimulation (1-5 Hz)</li>
+                                    <li>• Moderate Ca²⁺ elevation</li>
+                                    <li>• AMPA receptor endocytosis</li>
+                                    <li>• Weakens synaptic connections</li>
+                                </ul>
+                            </div>
+
+                            <div
+                                class="p-4 border border-blue-200 dark:border-blue-700 rounded-lg bg-blue-50 dark:bg-blue-900/20">
+                                <h4 class="font-semibold text-blue-700 dark:text-blue-300 mb-2">Homeostatic Plasticity
+                                </h4>
+                                <ul class="text-sm text-gray-700 dark:text-gray-300 space-y-1">
+                                    <li>• Synaptic scaling</li>
+                                    <li>• Intrinsic excitability changes</li>
+                                    <li>• Maintains network stability</li>
+                                    <li>• Prevents runaway excitation</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div
+                            class="mt-6 p-4 bg-purple-50 dark:bg-purple-900/20 rounded-lg border border-purple-200 dark:border-purple-700">
+                            <h4 class="font-semibold text-purple-700 dark:text-purple-300 mb-2">Clinical Applications
+                            </h4>
+                            <p class="text-sm text-gray-700 dark:text-gray-300">
+                                Understanding plasticity enables therapies for stroke recovery, depression treatment
+                                (rTMS), and cognitive enhancement. Critical periods in development guide intervention
+                                timing.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Neural Pathways Tab -->
+        <section id="content-pathways" class="tab-content" role="tabpanel" aria-labelledby="tab-pathways">
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-8">
+                <h2 class="text-2xl font-bold mb-4 text-purple-700 dark:text-purple-300">Neural Pathways: Information
+                    Highways</h2>
+
+                <div class="mb-6">
+                    <p class="mb-4">Neural pathways are anatomically distinct circuits that form the brain's information highways. These pathways connect specific brain regions to process sensory input, control motor output, and integrate cognitive functions. Understanding these circuits is essential for diagnosing and treating neurological conditions.</p>
+                    
+                    <div class="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg mb-4">
+                        <h4 class="font-semibold text-blue-600 dark:text-blue-400 mb-2">🧠 Pathway Organization Principles</h4>
+                        <ul class="text-sm text-gray-700 dark:text-gray-300 space-y-1">
+                            <li>• <strong>Hierarchical Processing:</strong> Information flows from primary to secondary to association areas</li>
+                            <li>• <strong>Parallel Processing:</strong> Multiple pathways process different aspects simultaneously</li>
+                            <li>• <strong>Cross-Modal Integration:</strong> Higher areas combine information from multiple senses</li>
+                            <li>• <strong>Redundancy:</strong> Critical functions have backup pathways for resilience</li>
+                        </ul>
+                    </div>
+
+                    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        <!-- Visual Pathway -->
+                        <div class="pathway-card p-4 border border-blue-200 dark:border-blue-700 rounded-lg bg-blue-50 dark:bg-blue-900/20 hover:shadow-md transition cursor-pointer"
+                            data-pathway="visual">
+                            <div class="flex items-center mb-3">
+                                <div class="p-2 bg-blue-100 dark:bg-blue-800 rounded-lg mr-3">
+                                    <svg class="w-6 h-6 text-blue-600 dark:text-blue-300" fill="none"
+                                        stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z">
+                                        </path>
+                                    </svg>
+                                </div>
+                                <h4 class="font-semibold text-blue-700 dark:text-blue-300">Visual Pathway</h4>
+                            </div>
+                            <p class="text-sm text-gray-700 dark:text-gray-300 mb-2">Retina → LGN → V1 → V2 → V4/V5</p>
+                            <p class="text-xs text-gray-600 dark:text-gray-400">Dorsal stream: motion & spatial processing<br>Ventral stream: object recognition & form</p>
+                            <div class="mt-2 flex gap-1">
+                                <span class="px-2 py-1 bg-blue-100 dark:bg-blue-800 text-xs rounded">Magnocellular</span>
+                                <span class="px-2 py-1 bg-blue-100 dark:bg-blue-800 text-xs rounded">Parvocellular</span>
+                            </div>
+                        </div>
+
+                        <!-- Motor Pathway -->
+                        <div class="pathway-card p-4 border border-red-200 dark:border-red-700 rounded-lg bg-red-50 dark:bg-red-900/20 hover:shadow-md transition cursor-pointer"
+                            data-pathway="motor">
+                            <div class="flex items-center mb-3">
+                                <div class="p-2 bg-red-100 dark:bg-red-800 rounded-lg mr-3">
+                                    <svg class="w-6 h-6 text-red-600 dark:text-red-300" fill="none"
+                                        stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                                    </svg>
+                                </div>
+                                <h4 class="font-semibold text-red-700 dark:text-red-300">Motor Pathway</h4>
+                            </div>
+                            <p class="text-sm text-gray-700 dark:text-gray-300 mb-2">M1 → Pyramidal Decussation → Spinal Cord</p>
+                            <p class="text-xs text-gray-600 dark:text-gray-400">85% of fibers cross at medulla<br>Upper motor neurons → Lower motor neurons</p>
+                            <div class="mt-2 flex gap-1">
+                                <span class="px-2 py-1 bg-red-100 dark:bg-red-800 text-xs rounded">Lateral CST</span>
+                                <span class="px-2 py-1 bg-red-100 dark:bg-red-800 text-xs rounded">Ventral CST</span>
+                            </div>
+                        </div>
+
+                        <!-- Auditory Pathway -->
+                        <div class="pathway-card p-4 border border-green-200 dark:border-green-700 rounded-lg bg-green-50 dark:bg-green-900/20 hover:shadow-md transition cursor-pointer"
+                            data-pathway="auditory">
+                            <div class="flex items-center mb-3">
+                                <div class="p-2 bg-green-100 dark:bg-green-800 rounded-lg mr-3">
+                                    <svg class="w-6 h-6 text-green-600 dark:text-green-300" fill="none"
+                                        stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728"></path>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M6.343 6.343a8 8 0 000 11.314m5.657-2.828a4 4 0 000-5.656"></path>
+                                    </svg>
+                                </div>
+                                <h4 class="font-semibold text-green-700 dark:text-green-300">Auditory Pathway</h4>
+                            </div>
+                            <p class="text-sm text-gray-700 dark:text-gray-300 mb-2">Cochlea → CN VIII → SOC → IC → MGN → A1</p>
+                            <p class="text-xs text-gray-600 dark:text-gray-400">Tonotopic organization preserved<br>Binaural processing for sound localization</p>
+                            <div class="mt-2 flex gap-1">
+                                <span class="px-2 py-1 bg-green-100 dark:bg-green-800 text-xs rounded">Frequency</span>
+                                <span class="px-2 py-1 bg-green-100 dark:bg-green-800 text-xs rounded">Location</span>
+                            </div>
+                        </div>
+
+                        <!-- Pain Pathway -->
+                        <div class="pathway-card p-4 border border-orange-200 dark:border-orange-700 rounded-lg bg-orange-50 dark:bg-orange-900/20 hover:shadow-md transition cursor-pointer"
+                            data-pathway="pain">
+                            <div class="flex items-center mb-3">
+                                <div class="p-2 bg-orange-100 dark:bg-orange-800 rounded-lg mr-3">
+                                    <svg class="w-6 h-6 text-orange-600 dark:text-orange-300" fill="none"
+                                        stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg>
+                                </div>
+                                <h4 class="font-semibold text-orange-700 dark:text-orange-300">Pain Pathway</h4>
+                            </div>
+                            <p class="text-sm text-gray-700 dark:text-gray-300 mb-2">Nociceptors → Spinal Cord →
+                                Thalamus → S1/S2</p>
+                            <p class="text-xs text-gray-600 dark:text-gray-400">Fast (Aδ) and slow (C fiber) pain
+                                transmission and modulation</p>
+                        </div>
+
+                        <!-- Memory Pathway -->
+                        <div class="pathway-card p-4 border border-purple-200 dark:border-purple-700 rounded-lg bg-purple-50 dark:bg-purple-900/20 hover:shadow-md transition cursor-pointer"
+                            data-pathway="memory">
+                            <div class="flex items-center mb-3">
+                                <div class="p-2 bg-purple-100 dark:bg-purple-800 rounded-lg mr-3">
+                                    <svg class="w-6 h-6 text-purple-600 dark:text-purple-300" fill="none"
+                                        stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z">
+                                        </path>
+                                    </svg>
+                                </div>
+                                <h4 class="font-semibold text-purple-700 dark:text-purple-300">Memory Circuit</h4>
+                            </div>
+                            <p class="text-sm text-gray-700 dark:text-gray-300 mb-2">Hippocampus ↔ Cortex ↔ PFC</p>
+                            <p class="text-xs text-gray-600 dark:text-gray-400">Encodes, consolidates, and retrieves
+                                episodic and semantic memories</p>
+                        </div>
+
+                        <!-- Reward Pathway -->
+                        <div class="pathway-card p-4 border border-yellow-200 dark:border-yellow-700 rounded-lg bg-yellow-50 dark:bg-yellow-900/20 hover:shadow-md transition cursor-pointer"
+                            data-pathway="reward">
+                            <div class="flex items-center mb-3">
+                                <div class="p-2 bg-yellow-100 dark:bg-yellow-800 rounded-lg mr-3">
+                                    <svg class="w-6 h-6 text-yellow-600 dark:text-yellow-300" fill="none"
+                                        stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z">
+                                        </path>
+                                    </svg>
+                                </div>
+                                <h4 class="font-semibold text-yellow-700 dark:text-yellow-300">Reward Pathway</h4>
+                            </div>
+                            <p class="text-sm text-gray-700 dark:text-gray-300 mb-2">VTA → NAc → PFC</p>
+                            <p class="text-xs text-gray-600 dark:text-gray-400">Dopaminergic system for motivation,
+                                addiction, and learning</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="pathway-details"
+                    class="mt-6 p-4 bg-gray-50 dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600">
+                    <h4 class="font-semibold text-gray-800 dark:text-gray-200 mb-2">Select a pathway above to see
+                        detailed information</h4>
+                    <p class="text-sm text-gray-600 dark:text-gray-400">Click on any pathway card to explore its
+                        anatomy, function, and clinical significance in detail.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Learning & Memory Tab -->
+        <section id="content-memory" class="tab-content" role="tabpanel" aria-labelledby="tab-memory">
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-8">
+                <h2 class="text-2xl font-bold mb-4 text-purple-700 dark:text-purple-300">Learning & Memory: How
+                    Experience Changes Your Brain</h2>
+
+                <div class="lg:flex gap-6">
+                    <div class="lg:w-1/2 mb-6 lg:mb-0">
+                        <h3 class="text-xl font-semibold mb-3">Memory Formation Process</h3>
+                        <p class="mb-4">Memory formation involves three key stages: encoding, consolidation, and
+                            retrieval. Each stage activates different brain regions:</p>
+
+                        <div class="chart-container mb-4" style="height: 300px;">
+                            <canvas id="memory-chart"></canvas>
+                        </div>
+
+                        <div class="flex gap-2 mb-4">
+                            <button id="encode-memory"
+                                class="bg-blue-600 hover:bg-blue-700 text-white text-sm px-3 py-2 rounded transition">
+                                Encode
+                            </button>
+                            <button id="consolidate-memory"
+                                class="bg-green-600 hover:bg-green-700 text-white text-sm px-3 py-2 rounded transition">
+                                Consolidate
+                            </button>
+                            <button id="retrieve-memory"
+                                class="bg-purple-600 hover:bg-purple-700 text-white text-sm px-3 py-2 rounded transition">
+                                Retrieve
+                            </button>
+                            <button id="reset-memory"
+                                class="bg-gray-600 hover:bg-gray-700 text-white text-sm px-3 py-2 rounded transition">
+                                Reset
+                            </button>
+                        </div>
+
+                        <div id="memory-info" class="text-sm text-gray-600 dark:text-gray-400">
+                            <p><strong>Current Stage:</strong> <span id="current-stage">Ready</span></p>
+                            <p><strong>Active Regions:</strong> <span id="active-regions">None</span></p>
+                        </div>
+                    </div>
+
+                    <div class="lg:w-1/2">
+                        <h3 class="text-xl font-semibold mb-3">Memory Systems</h3>
+
+                        <div class="space-y-4">
+                            <div
+                                class="p-4 border border-blue-200 dark:border-blue-700 rounded-lg bg-blue-50 dark:bg-blue-900/20">
+                                <h4 class="font-semibold text-blue-700 dark:text-blue-300 mb-2">Working Memory</h4>
+                                <p class="text-sm text-gray-700 dark:text-gray-300 mb-2">Temporary storage and
+                                    manipulation of information</p>
+                                <ul class="text-xs text-gray-600 dark:text-gray-400 space-y-1">
+                                    <li>• Prefrontal cortex networks</li>
+                                    <li>• 7±2 item capacity limit</li>
+                                    <li>• Essential for reasoning and problem-solving</li>
+                                </ul>
+                            </div>
+
+                            <div
+                                class="p-4 border border-green-200 dark:border-green-700 rounded-lg bg-green-50 dark:bg-green-900/20">
+                                <h4 class="font-semibold text-green-700 dark:text-green-300 mb-2">Long-Term Memory</h4>
+                                <p class="text-sm text-gray-700 dark:text-gray-300 mb-2">Permanent storage of
+                                    information and experiences</p>
+                                <div class="grid grid-cols-2 gap-2 text-xs text-gray-600 dark:text-gray-400">
+                                    <div>
+                                        <p class="font-medium">Declarative:</p>
+                                        <ul class="space-y-1">
+                                            <li>• Episodic (events)</li>
+                                            <li>• Semantic (facts)</li>
+                                        </ul>
+                                    </div>
+                                    <div>
+                                        <p class="font-medium">Non-declarative:</p>
+                                        <ul class="space-y-1">
+                                            <li>• Procedural (skills)</li>
+                                            <li>• Priming</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div
+                                class="p-4 border border-purple-200 dark:border-purple-700 rounded-lg bg-purple-50 dark:bg-purple-900/20">
+                                <h4 class="font-semibold text-purple-700 dark:text-purple-300 mb-2">Key Brain Regions
+                                </h4>
+                                <div class="text-sm text-gray-700 dark:text-gray-300 space-y-2">
+                                    <p><strong>Hippocampus:</strong> Encoding and consolidation of episodic memories</p>
+                                    <p><strong>Prefrontal Cortex:</strong> Working memory and executive control</p>
+                                    <p><strong>Amygdala:</strong> Emotional memory enhancement</p>
+                                    <p><strong>Cerebellum:</strong> Motor learning and procedural memory</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div
+                            class="mt-6 p-4 bg-orange-50 dark:bg-orange-900/20 rounded-lg border border-orange-200 dark:border-orange-700">
+                            <h4 class="font-semibold text-orange-700 dark:text-orange-300 mb-2">Memory Disorders</h4>
+                            <p class="text-sm text-gray-700 dark:text-gray-300">
+                                Alzheimer's disease primarily affects hippocampal-dependent memory, while Huntington's
+                                disease impairs procedural learning. Understanding these systems guides therapeutic
+                                interventions.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Summary Section -->
+        <section class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+            <h3 class="text-xl font-bold mb-4 text-purple-700 dark:text-purple-300">Key Concepts Summary</h3>
+            <div class="grid md:grid-cols-2 gap-6">
+                <div>
+                    <h4 class="font-semibold mb-2 text-gray-800 dark:text-gray-200">Neural Networks</h4>
+                    <ul class="text-sm text-gray-700 dark:text-gray-300 space-y-1">
+                        <li>• 86 billion neurons, trillions of connections</li>
+                        <li>• Different architectures serve specific functions</li>
+                        <li>• Small-world properties optimize efficiency</li>
+                        <li>• Network disruptions cause disease</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-2 text-gray-800 dark:text-gray-200">Brain Plasticity</h4>
+                    <ul class="text-sm text-gray-700 dark:text-gray-300 space-y-1">
+                        <li>• LTP strengthens, LTD weakens synapses</li>
+                        <li>• Activity-dependent mechanisms</li>
+                        <li>• Critical periods and lifelong adaptation</li>
+                        <li>• Foundation of learning and recovery</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Modern Plasticity Tab -->
+        <section id="content-modern" class="tab-content" role="tabpanel" aria-labelledby="tab-modern">
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-8">
+                <h2 class="text-2xl font-bold mb-4 text-purple-700 dark:text-purple-300">🔬 Modern Plasticity: Beyond "Cells That Fire Together Wire Together"</h2>
+                <p class="mb-6 text-gray-700 dark:text-gray-300">Hebbian plasticity — "neurons that fire together, wire together" — is a foundational principle, and it remains correct. But the last decade has revealed that <strong>plasticity is far richer, more local, and more structurally dynamic</strong> than classical models suggested.</p>
+
+                <!-- Dendritic Plasticity -->
+                <div class="mb-8 p-6 bg-gradient-to-r from-fuchsia-50 to-pink-50 dark:from-fuchsia-900/20 dark:to-pink-900/20 rounded-xl border border-fuchsia-200 dark:border-fuchsia-700">
+                    <div class="flex items-center mb-4">
+                        <div class="text-3xl mr-4">🌳</div>
+                        <div>
+                            <h3 class="text-xl font-bold text-fuchsia-700 dark:text-fuchsia-300">Dendritic Compartment Plasticity</h3>
+                            <p class="text-sm text-fuchsia-600 dark:text-fuchsia-400">Different branches of a single neuron can learn independently</p>
+                        </div>
+                    </div>
+                    <p class="text-sm text-gray-700 dark:text-gray-300 mb-4">A landmark 2025 <em>Science</em> study showed that different dendritic branches on the <em>same neuron</em> can undergo <strong>different plasticity rules simultaneously</strong> during learning. This means a single cell isn't just one computational unit — it behaves like a <strong>collection of local learners</strong>, each branch adapting independently.</p>
+                    <div class="grid md:grid-cols-2 gap-4 mb-4">
+                        <div class="bg-white dark:bg-gray-800 rounded-lg p-4 border-l-4 border-fuchsia-500">
+                            <h4 class="font-semibold text-fuchsia-700 dark:text-fuchsia-300 mb-2">Classical Model</h4>
+                            <ul class="text-sm text-gray-700 dark:text-gray-300 list-disc pl-5 space-y-1">
+                                <li>Plasticity happens at the <strong>cell level</strong> — the whole neuron strengthens or weakens</li>
+                                <li>Hebbian rule: correlated firing → stronger synapse</li>
+                                <li>Single neuron = single computational unit</li>
+                            </ul>
+                        </div>
+                        <div class="bg-white dark:bg-gray-800 rounded-lg p-4 border-l-4 border-pink-500">
+                            <h4 class="font-semibold text-pink-700 dark:text-pink-300 mb-2">Modern Understanding</h4>
+                            <ul class="text-sm text-gray-700 dark:text-gray-300 list-disc pl-5 space-y-1">
+                                <li>Plasticity happens at the <strong>dendritic branch level</strong> — each branch can learn different rules</li>
+                                <li>Branch-specific STDP, behavioral timescale plasticity (BTSP), and homeostatic scaling coexist</li>
+                                <li>Single neuron = <strong>cluster of semi-independent processors</strong></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="bg-white dark:bg-gray-800 rounded-lg p-4 border border-gray-200 dark:border-gray-600">
+                        <h5 class="font-semibold text-purple-700 dark:text-purple-300 text-sm mb-1">Behavioral Timescale Plasticity (BTSP)</h5>
+                        <p class="text-xs text-gray-700 dark:text-gray-300">A 2024 <em>Nature</em> study described BTSP — a non-Hebbian mechanism where dendritic branches learn behavioral sequences directly from experience, without requiring pre- and post-synaptic co-firing. This is a fundamentally different learning rule from anything Hebb proposed.</p>
+                    </div>
+                </div>
+
+                <!-- Memory Engrams -->
+                <div class="mb-8 p-6 bg-gradient-to-r from-rose-50 to-red-50 dark:from-rose-900/20 dark:to-red-900/20 rounded-xl border border-rose-200 dark:border-rose-700">
+                    <div class="flex items-center mb-4">
+                        <div class="text-3xl mr-4">🧬</div>
+                        <div>
+                            <h3 class="text-xl font-bold text-rose-700 dark:text-rose-300">Memory Engrams: The Physical Architecture of Memory</h3>
+                            <p class="text-sm text-rose-600 dark:text-rose-400">Memories aren't vague patterns — they live in specific cells with measurable structure</p>
+                        </div>
+                    </div>
+                    <p class="text-sm text-gray-700 dark:text-gray-300 mb-4">An <strong>engram</strong> is the physical trace of a memory in the brain — the specific ensemble of neurons that are activated during learning and whose reactivation produces recall. Recent breakthroughs have made engrams visible and manipulable for the first time.</p>
+                    <div class="grid md:grid-cols-3 gap-4 mb-4">
+                        <div class="bg-white dark:bg-gray-800 rounded-lg p-4 border-l-4 border-rose-500">
+                            <h5 class="font-semibold text-rose-700 dark:text-rose-300 text-sm mb-1">Engram Architecture</h5>
+                            <p class="text-xs text-gray-700 dark:text-gray-300">A 2025 <em>Science</em> study visualized the <strong>synaptic architecture of a memory engram</strong> in mouse hippocampus at unprecedented resolution — showing that engendered cells have larger, more numerous dendritic spines specifically at synapses within the engram network.</p>
+                        </div>
+                        <div class="bg-white dark:bg-gray-800 rounded-lg p-4 border-l-4 border-red-500">
+                            <h5 class="font-semibold text-red-700 dark:text-red-300 text-sm mb-1">Engram Precision</h5>
+                            <p class="text-xs text-gray-700 dark:text-gray-300">Neocortical engram neurons show <strong>intrinsic excitability plasticity</strong> — they become transiently more excitable immediately after learning, defining which cells are "chosen" to store the memory (Nature Communications, 2025).</p>
+                        </div>
+                        <div class="bg-white dark:bg-gray-800 rounded-lg p-4 border-l-4 border-pink-500">
+                            <h5 class="font-semibold text-pink-700 dark:text-pink-300 text-sm mb-1">Clinical Implications</h5>
+                            <p class="text-xs text-gray-700 dark:text-gray-300">Understanding that memory has a physical substrate means: neurodegenerative diseases may disrupt engram stability, and stimulating engram circuits could become a therapeutic strategy for memory disorders.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Myelin as Plasticity -->
+                <div class="mb-8 p-6 bg-gradient-to-r from-amber-50 to-yellow-50 dark:from-amber-900/20 dark:to-yellow-900/20 rounded-xl border border-amber-200 dark:border-amber-700">
+                    <div class="flex items-center mb-4">
+                        <div class="text-3xl mr-4">⚡</div>
+                        <div>
+                            <h3 class="text-xl font-bold text-amber-700 dark:text-amber-300">Myelin Plasticity: A Second Mode of Learning</h3>
+                            <p class="text-sm text-amber-600 dark:text-amber-400">Experience-dependent myelination is a plasticity mechanism alongside synaptic change</p>
+                        </div>
+                    </div>
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div class="bg-white dark:bg-gray-800 rounded-lg p-4 border-l-4 border-amber-500">
+                            <h4 class="font-semibold text-amber-700 dark:text-amber-300 mb-2">What Changes</h4>
+                            <ul class="text-sm text-gray-700 dark:text-gray-300 list-disc pl-5 space-y-1">
+                                <li><strong>Myelin thickness</strong> increases on actively used circuits</li>
+                                <li><strong>New myelin segments</strong> form on previously unmyelinated axons during learning</li>
+                                <li><strong>Internode length</strong> adjusts, tuning signal conduction speed</li>
+                                <li>OPCs (oligodendrocyte precursor cells) remain proliferative throughout life, responding to neuronal activity</li>
+                            </ul>
+                        </div>
+                        <div class="bg-white dark:bg-gray-800 rounded-lg p-4 border-l-4 border-yellow-500">
+                            <h4 class="font-semibold text-yellow-700 dark:text-yellow-300 mb-2">Why It Matters for Plasticity</h4>
+                            <ul class="text-sm text-gray-700 dark:text-gray-300 list-disc pl-5 space-y-1">
+                                <li>Myelin plasticity <strong>synchronizes signals</strong> across neural circuits — timing is everything</li>
+                                <li>Blocking new myelination impairs motor learning (McKenzie et al., 2014, <em>Science</em>)</li>
+                                <li>2024 <em>Nature</em> study: oligodendrocytes and myelin <strong>limit neuronal plasticity</strong> — removing them increases circuit adaptability</li>
+                                <li>Myelin is both a <strong>learning enabler</strong> and a <strong>stability enforcer</strong></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Revisiting -->
+                <div class="mb-4 p-4 bg-purple-50 dark:bg-purple-900/20 rounded-lg border border-purple-200 dark:border-purple-700">
+                    <h4 class="font-semibold text-purple-700 dark:text-purple-300 mb-2">📋 Revisiting What You Learned</h4>
+                    <p class="text-sm text-gray-700 dark:text-gray-300 mb-2">The Hebbian and synaptic plasticity mechanisms in the earlier tabs — LTP, LTD, STDP — remain <strong>correct and fundamental</strong>. Modern neuroscience adds important layers:</p>
+                    <ul class="text-sm text-gray-700 dark:text-gray-300 list-disc pl-5 space-y-1">
+                        <li>Plasticity is <strong>not just synaptic</strong> — dendritic branches learn independently</li>
+                        <li>Memory has a <strong>physical substrate</strong> (engrams) we can now visualize and manipulate</li>
+                        <li>Myelin is a <strong>parallel plasticity system</strong> alongside synaptic change</li>
+                        <li>The brain uses <strong>multiple coexisting learning rules</strong>, not just one</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer Placeholder -->
+    <div id="footer-placeholder"></div>
+
+    <script src="js/firebase-init.js"></script>
+    <script src="js/components.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/03-neural-networks-plasticity.js"></script>
+</body>
+
+</html>

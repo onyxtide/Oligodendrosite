@@ -1,0 +1,2130 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brain Systems & Neural Pathways - Interactive Neuroscience Learning | Oligodendrosite</title>
+    <meta name="description" content="Explore brain anatomy, neural pathways, cortical organization, blood supply, and brain development through interactive 3D models and simulations.">
+    <meta name="keywords" content="brain anatomy, neural pathways, neuroanatomy, brain systems, cortical organization, blood supply, brain development, imaging, neuroscience">
+    
+
+    <!-- Brain emoji favicon -->
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧠</text></svg>">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/three@0.152.2/build/three.min.js"></script>
+    <script>
+        // Load OrbitControls directly from reliable source
+        (function () {
+            const script = document.createElement('script');
+            script.src = 'https://cdn.jsdelivr.net/npm/three@0.152.2/examples/js/controls/OrbitControls.js';
+            script.onload = function () {
+                console.log('✅ OrbitControls loaded successfully');
+                if (typeof THREE !== 'undefined' && typeof THREE.OrbitControls !== 'undefined') {
+                    window.orbitControlsReady = true;
+                }
+            };
+            script.onerror = function () {
+                console.warn('⚠️ Failed to load OrbitControls, will use fallback controls');
+                window.orbitControlsReady = false;
+            };
+            document.head.appendChild(script);
+        })();
+    </script>
+    <link rel="stylesheet" href="css/main.css">
+    <script>
+        // Enhanced library loading check with retry mechanism
+        let retryCount = 0;
+        const maxRetries = 5;
+
+        function checkLibraries() {
+            retryCount++;
+            console.log(`🔍 Library check attempt ${retryCount}/${maxRetries + 1}`);
+
+            const status = {
+                THREE: typeof THREE,
+                'THREE.Scene': typeof THREE?.Scene,
+                'THREE.OrbitControls': typeof THREE?.OrbitControls,
+                EnhancedBrainModel: typeof EnhancedBrainModel
+            };
+
+            console.log('Library status:', status);
+
+            if (typeof THREE === 'undefined' && retryCount <= maxRetries) {
+                console.log(`Retrying THREE.js load attempt ${retryCount}/${maxRetries}`);
+                setTimeout(checkLibraries, 1000);
+                return;
+            }
+
+            if (typeof THREE === 'undefined') {
+                console.warn('THREE.js failed to load after multiple attempts. Using fallback mode.');
+            } else {
+                console.log('✅ THREE.js loaded successfully');
+                if (typeof THREE.OrbitControls === 'undefined') {
+                    console.warn('OrbitControls not available, but basic 3D should work');
+                } else {
+                    console.log('✅ OrbitControls loaded successfully');
+                }
+            }
+
+            // Check for EnhancedBrainModel separately
+            setTimeout(() => {
+                if (typeof EnhancedBrainModel !== 'undefined') {
+                    console.log('✅ EnhancedBrainModel loaded successfully');
+                } else {
+                    console.warn('⚠️ EnhancedBrainModel not available, will use fallback');
+                }
+            }, 500);
+        }
+
+        window.addEventListener('load', function () {
+            console.log('🔄 Window loaded, checking libraries...');
+            setTimeout(checkLibraries, 500);
+        });
+    </script>
+
+    <style>
+        /* Simplified Tab System */
+        .tab-content {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+            opacity: 1;
+        }
+
+        .tab-button {
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-radius: 0.5rem;
+            padding: 0.75rem 1.5rem;
+        }
+
+        .tab-button.active {
+            background: linear-gradient(135deg, #dc2626, #b91c1c);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
+        }
+
+        .tab-button:not(.active):hover {
+            background: rgba(220, 38, 38, 0.1);
+            color: #dc2626;
+        }
+
+        /* Stroke simulation styles */
+        .stroke-highlighted {
+            stroke: #ef4444 !important;
+            stroke-width: 4px !important;
+            opacity: 0.8;
+            filter: drop-shadow(0 0 8px rgba(239, 68, 68, 0.6));
+            animation: strokePulse 2s infinite;
+        }
+
+        @keyframes strokePulse {
+
+            0%,
+            100% {
+                stroke-width: 4px;
+                opacity: 0.8;
+            }
+
+            50% {
+                stroke-width: 6px;
+                opacity: 1;
+            }
+        }
+
+        .stroke-vessel-btn.bg-red-200 {
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+        }
+
+        .vessel-path.stroke-affected {
+            stroke: #dc2626 !important;
+            opacity: 0.4 !important;
+            animation: pulse 2s infinite;
+        }
+
+        /* Enhanced Simulator Styles */
+        .simulator-card {
+            background: linear-gradient(135deg, #ffffff, #f8fafc);
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .simulator-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+            border-color: #dc2626;
+        }
+
+        .dark .simulator-card {
+            background: linear-gradient(135deg, #1f2937, #111827);
+        }
+
+        /* Interactive Elements */
+        .interactive-element {
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .interactive-element:hover {
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .interactive-element:active {
+            transform: translateY(-2px) scale(1.01);
+        }
+
+        .interactive-element::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .interactive-element:hover::before {
+            left: 100%;
+        }
+
+        /* Blood Vessel Styles */
+        .vessel-path {
+            transition: all 0.3s ease !important;
+            cursor: pointer !important;
+            filter: drop-shadow(0 0 2px rgba(0, 0, 0, 0.2)) !important;
+        }
+
+        .vessel-path.vessel-hover {
+            filter: drop-shadow(0 0 8px rgba(239, 68, 68, 0.6)) !important;
+            transform: scale(1.02);
+        }
+
+        .vessel-path.vessel-selected {
+            filter: drop-shadow(0 0 12px rgba(59, 130, 246, 0.8)) !important;
+            stroke: #3b82f6 !important;
+            stroke-width: 16px !important;
+            opacity: 1 !important;
+            animation: pulse-glow 2s infinite;
+        }
+
+        /* When a vessel is both selected and stroke-highlighted, prioritize stroke */
+        .vessel-path.vessel-selected.stroke-highlighted {
+            stroke: #ef4444 !important;
+            stroke-width: 18px !important;
+            filter: drop-shadow(0 0 12px rgba(239, 68, 68, 0.8)) !important;
+            animation: strokePulse 2s infinite;
+        }
+
+        @keyframes pulse-glow {
+
+            0%,
+            100% {
+                filter: drop-shadow(0 0 8px rgba(239, 68, 68, 0.8));
+            }
+
+            50% {
+                filter: drop-shadow(0 0 16px rgba(239, 68, 68, 1));
+            }
+        }
+
+        /* Cortical System Navigation */
+        .cortex-system-btn {
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cortex-system-btn:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .cortex-system-btn:hover:before {
+            left: 100%;
+        }
+
+        .cortex-system-btn.active {
+            transform: scale(1.05);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .cortex-system-btn:not(.active) {
+            opacity: 0.8;
+        }
+
+        .cortex-system-btn:not(.active):hover {
+            opacity: 1;
+            transform: scale(1.02);
+        }
+
+        /* Cortical System Content */
+        .cortex-system-content {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .cortex-system-content.active {
+            display: block;
+            opacity: 1;
+        }
+
+        /* Enhanced card styling */
+        .cortex-system-content .bg-white {
+            transition: all 0.3s ease;
+        }
+
+        .cortex-system-content .bg-white:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Mobile Responsive and Touch Optimization */
+        @media (max-width: 768px) {
+            .cortex-system-btn {
+                min-height: 60px;
+                padding: 0.75rem 0.5rem;
+                font-size: 0.875rem;
+                /* Improved touch targets for mobile */
+            }
+
+            .cortex-system-btn .text-3xl {
+                font-size: 1.5rem;
+                margin-bottom: 0.25rem;
+            }
+
+            .cortex-system-btn .font-semibold {
+                font-size: 0.75rem;
+                line-height: 1.2;
+            }
+
+            .cortex-system-btn .text-xs {
+                font-size: 0.625rem;
+                margin-top: 0.125rem;
+            }
+
+            /* Disable hover effects on touch devices */
+            .cortex-system-btn:hover:before {
+                left: -100%;
+            }
+
+            .cortex-system-content {
+                padding: 1rem;
+                font-size: 0.9rem;
+                line-height: 1.6;
+            }
+
+            .cortex-system-content h3 {
+                font-size: 1.25rem;
+            }
+
+            .cortex-system-content h4 {
+                font-size: 1rem;
+                margin-bottom: 0.5rem;
+            }
+
+            /* Better spacing for mobile content */
+            .cortex-system-content .grid.md\\:grid-cols-2 {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+        }
+
+        @media (max-width: 640px) {
+
+            /* Extra small screens optimization */
+            .cortex-system-btn {
+                min-height: 56px;
+                padding: 0.5rem 0.25rem;
+            }
+
+            .cortex-system-content {
+                font-size: 0.85rem;
+                padding: 0.75rem;
+            }
+        }
+
+        /* Improved focus states for accessibility */
+        .cortex-system-btn:focus {
+            outline: 2px solid #3b82f6;
+            outline-offset: 2px;
+        }
+
+        .cortex-system-btn:focus:not(:focus-visible) {
+            outline: none;
+        }
+
+        /* Enhanced visual hierarchy */
+        .cortex-system-content .border-l-4 {
+            border-left-width: 6px;
+        }
+
+        /* Clinical info highlighting */
+        .clinical-highlight {
+            background: rgba(239, 68, 68, 0.05);
+            border-left: 4px solid rgba(239, 68, 68, 0.3);
+        }
+
+        .plasticity-highlight {
+            background: rgba(34, 197, 94, 0.05);
+            border-left: 4px solid rgba(34, 197, 94, 0.3);
+        }
+
+        @media (max-width: 768px) {
+            .tab-button {
+                padding: 0.5rem 1rem;
+                font-size: 0.875rem;
+            }
+
+            .simulator-card {
+                margin-bottom: 1rem;
+            }
+
+            .interactive-cortex-area:hover {
+                transform: scale(1.02);
+            }
+
+            .cortex-area-selected {
+                transform: scale(1.05);
+            }
+        }
+    </style>
+    
+</head>
+
+<body class="bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-200 transition-colors duration-300">
+
+    <!-- Header -->
+    <div id="header-placeholder"></div>
+
+    <!-- Consistent colored header -->
+    <header class="bg-red-700 text-white p-6 shadow-md mb-8">
+        <div class="container mx-auto">
+            <h1 class="text-3xl md:text-4xl font-bold mb-2">Chapter 4: Brain Systems & Neural Pathways</h1>
+            <p class="text-lg opacity-90">Explore the complex architecture of the brain through interactive 3D models
+            </p>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-8 max-w-7xl">
+        <!-- Introduction Section -->
+        <section class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-8">
+            <h2 class="text-2xl font-bold mb-4 text-red-700 dark:text-red-300">How do brain systems organize and
+                develop?</h2>
+            <p class="mb-4">The human brain is a marvel of biological engineering, containing specialized systems that
+                work in harmony to enable perception, movement, cognition, and consciousness. From the Circle of Willis
+                that ensures blood supply to every neuron, to the precise developmental timeline that builds this
+                complexity from a single cell, understanding brain systems reveals the elegant architecture underlying
+                all human experience.</p>
+            <p class="mb-2 font-semibold">In this exploration, you'll discover:</p>
+            <ul class="list-disc pl-6 mb-4">
+                <li>How the brain's vascular system provides critical blood supply and nutrients</li>
+                <li>The intricate anatomy of major brain regions and their specialized functions</li>
+                <li>The remarkable journey of brain development from conception to adulthood</li>
+                <li>How medical imaging reveals brain structure and pathology</li>
+                <li>The clinical significance of vascular territories and developmental disorders</li>
+            </ul>
+            <p class="text-red-700 dark:text-red-300 font-semibold">Start by selecting a tab below to begin your
+                exploration!</p>
+        </section>
+
+        <!-- Tab Navigation -->
+        <nav class="flex flex-wrap gap-2 mb-8 bg-white dark:bg-gray-800 p-2 rounded-xl shadow-lg tab-navigation"
+            style="--tab-active-color:#dc2626; --tab-active-color-dark:#fca5a5; --tab-hover-color:#dc2626; --tab-hover-color-dark:#fca5a5; --tab-active-bg:#fee2e2; --tab-active-bg-dark:rgba(220,38,38,0.18); --tab-hover-bg:#fef2f2; --tab-hover-bg-dark:rgba(220,38,38,0.12);">
+            <button id="tab-anatomy" class="tab-button active text-red-700" aria-controls="content-anatomy" aria-selected="true">
+                <span class="text-lg mr-2">🧠</span>Brain Anatomy
+            </button>
+            <button id="tab-cortex" class="tab-button text-gray-500" aria-controls="content-cortex" aria-selected="false">
+                <span class="text-lg mr-2">🧩</span>Cortical Areas
+            </button>
+            <button id="tab-blood" class="tab-button text-gray-500" aria-controls="content-blood" aria-selected="false">
+                <span class="text-lg mr-2">💓</span>Blood Supply
+            </button>
+            <button id="tab-development" class="tab-button text-gray-500" aria-controls="content-development" aria-selected="false">
+                <span class="text-lg mr-2">👶</span>Development
+            </button>
+            <button id="tab-imaging" class="tab-button text-gray-500" aria-controls="content-imaging" aria-selected="false">
+                <span class="text-lg mr-2">📷</span>Brain Imaging
+            </button>
+            <button id="tab-modern" class="tab-button text-gray-500" aria-controls="content-modern" aria-selected="false">
+                <span class="text-lg mr-2">🔬</span>Frontiers
+            </button>
+        </nav>
+
+        <!-- Brain Anatomy Tab -->
+        <section id="content-anatomy" class="tab-content active">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Interactive Brain Model -->
+                <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+                    <h3 class="text-xl font-bold mb-4 text-red-600 dark:text-red-400">Interactive 3D Brain Model</h3>
+                    <div class="relative bg-gray-100 dark:bg-gray-700 rounded-lg h-96 mb-4 overflow-hidden">
+                        <div id="brain-3d-container"
+                            class="w-full h-full flex items-center justify-center overflow-hidden">
+                            <div class="flex items-center justify-center w-full h-full p-4">
+                                <div class="text-center max-w-sm">
+                                    <div class="text-4xl mb-3">🧠</div>
+                                    <div
+                                        class="animate-spin w-8 h-8 border-2 border-red-600 border-t-transparent rounded-full mx-auto mb-3">
+                                    </div>
+                                    <p class="text-base font-medium text-gray-600 dark:text-gray-400 mb-2">Loading 3D
+                                        Brain Model</p>
+                                    <p class="text-xs text-gray-500 dark:text-gray-500">Initializing advanced medical
+                                        visualization...</p>
+                                    <div class="mt-4 bg-gray-200 dark:bg-gray-600 rounded-full h-1 overflow-hidden">
+                                        <div class="bg-red-600 h-1 rounded-full animate-pulse" style="width: 70%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex gap-3 justify-center">
+                        <button id="reset-brain-view"
+                            class="bg-red-600 hover:bg-red-700 text-white py-2 px-6 rounded-lg transition-all duration-200 flex items-center gap-2">
+                            <span>🔄</span>
+                            <span>Reset View</span>
+                        </button>
+                        <button id="toggle-rotation"
+                            class="bg-purple-600 hover:bg-purple-700 text-white py-2 px-6 rounded-lg transition-all duration-200 flex items-center gap-2">
+                            <span>⚡</span>
+                            <span>Auto Rotate</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Brain Regions -->
+                <div class="space-y-4">
+                    <h3 class="text-xl font-bold text-red-600 dark:text-red-400">Major Brain Regions</h3>
+                    <div id="region-details" class="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg">
+                        <div class="text-center py-4">
+                            <div class="text-3xl mb-2">🧠</div>
+                            <h4 class="font-bold text-gray-700 dark:text-gray-300">Brain Region Explorer</h4>
+                            <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                                Click on any region below to explore detailed information
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div class="brain-region-card interactive-element bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md hover:shadow-lg"
+                            data-region="frontal" role="button" tabindex="0"
+                            aria-label="Frontal Lobe: Executive functions and planning. Click to highlight in 3D model."
+                            aria-describedby="frontal-desc">
+                            <div class="flex items-center gap-3">
+                                <span class="text-3xl" aria-hidden="true">🎯</span>
+                                <div>
+                                    <h4 class="font-bold text-blue-600">Frontal Lobe</h4>
+                                    <p id="frontal-desc" class="text-sm text-gray-600 dark:text-gray-400">Executive
+                                        functions, planning
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="brain-region-card interactive-element bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md hover:shadow-lg"
+                            data-region="parietal" role="button" tabindex="0"
+                            aria-label="Parietal Lobe: Sensory processing and spatial awareness. Click to highlight in 3D model."
+                            aria-describedby="parietal-desc">
+                            <div class="flex items-center gap-3">
+                                <span class="text-3xl" aria-hidden="true">🤲</span>
+                                <div>
+                                    <h4 class="font-bold text-green-600">Parietal Lobe</h4>
+                                    <p id="parietal-desc" class="text-sm text-gray-600 dark:text-gray-400">Sensory
+                                        processing, space</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="brain-region-card interactive-element bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md hover:shadow-lg"
+                            data-region="temporal" role="button" tabindex="0"
+                            aria-label="Temporal Lobe: Memory formation, hearing, and language processing. Click to highlight in 3D model."
+                            aria-describedby="temporal-desc">
+                            <div class="flex items-center gap-3">
+                                <span class="text-3xl" aria-hidden="true">👂</span>
+                                <div>
+                                    <h4 class="font-bold text-purple-600">Temporal Lobe</h4>
+                                    <p id="temporal-desc" class="text-sm text-gray-600 dark:text-gray-400">Memory,
+                                        hearing, language</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="brain-region-card interactive-element bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md hover:shadow-lg"
+                            data-region="occipital" role="button" tabindex="0"
+                            aria-label="Occipital Lobe: Primary visual processing and visual cortex. Click to highlight in 3D model."
+                            aria-describedby="occipital-desc">
+                            <div class="flex items-center gap-3">
+                                <span class="text-3xl" aria-hidden="true">👁️</span>
+                                <div>
+                                    <h4 class="font-bold text-yellow-600">Occipital Lobe</h4>
+                                    <p id="occipital-desc" class="text-sm text-gray-600 dark:text-gray-400">Visual
+                                        processing</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="brain-region-card interactive-element bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md hover:shadow-lg"
+                            data-region="cerebellum" role="button" tabindex="0"
+                            aria-label="Cerebellum: Motor coordination, balance, and fine motor control. Click to highlight in 3D model."
+                            aria-describedby="cerebellum-desc">
+                            <div class="flex items-center gap-3">
+                                <span class="text-3xl" aria-hidden="true">⚖️</span>
+                                <div>
+                                    <h4 class="font-bold text-red-600">Cerebellum</h4>
+                                    <p id="cerebellum-desc" class="text-sm text-gray-600 dark:text-gray-400">Balance,
+                                        coordination</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="brain-region-card interactive-element bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md hover:shadow-lg"
+                            data-region="brainstem" role="button" tabindex="0"
+                            aria-label="Brainstem: Vital life functions, consciousness, and autonomic control. Click to highlight in 3D model."
+                            aria-describedby="brainstem-desc">
+                            <div class="flex items-center gap-3">
+                                <span class="text-3xl" aria-hidden="true">🔌</span>
+                                <div>
+                                    <h4 class="font-bold text-indigo-600">Brainstem</h4>
+                                    <p id="brainstem-desc" class="text-sm text-gray-600 dark:text-gray-400">Vital
+                                        functions, consciousness
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="brain-region-card interactive-element bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md hover:shadow-lg"
+                            data-region="thalamus" role="button" tabindex="0"
+                            aria-label="Thalamus: Central relay station for sensory information processing. Click to highlight in 3D model."
+                            aria-describedby="thalamus-desc">
+                            <div class="flex items-center gap-3">
+                                <span class="text-3xl" aria-hidden="true">🔄</span>
+                                <div>
+                                    <h4 class="font-bold text-cyan-600">Thalamus</h4>
+                                    <p id="thalamus-desc" class="text-sm text-gray-600 dark:text-gray-400">Sensory relay
+                                        station</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="brain-region-card interactive-element bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md hover:shadow-lg"
+                            data-region="corpus-callosum" role="button" tabindex="0"
+                            aria-label="Corpus Callosum: Bridge connecting left and right brain hemispheres for inter-hemispheric communication. Click to highlight in 3D model."
+                            aria-describedby="corpus-callosum-desc">
+                            <div class="flex items-center gap-3">
+                                <span class="text-3xl" aria-hidden="true">🌉</span>
+                                <div>
+                                    <h4 class="font-bold text-orange-600">Corpus Callosum</h4>
+                                    <p id="corpus-callosum-desc" class="text-sm text-gray-600 dark:text-gray-400">
+                                        Inter-hemispheric bridge</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Cortical Areas Tab -->
+        <section id="content-cortex" class="tab-content">
+            <!-- Cortical System Navigation -->
+            <div class="mb-8">
+                <!-- Breadcrumb Navigation -->
+                <nav class="text-sm text-gray-500 dark:text-gray-400 mb-4" aria-label="Cortical system navigation">
+                    <span>Brain Systems</span>
+                    <span aria-hidden="true"> > </span>
+                    <span>Cortical Areas</span>
+                    <span aria-hidden="true"> > </span>
+                    <span id="current-cortical-system" class="text-gray-700 dark:text-gray-300 font-medium">Motor
+                        System</span>
+                </nav>
+                <h3 class="text-2xl font-bold text-red-600 dark:text-red-400 mb-4">Explore Cortical Systems</h3>
+                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4">
+                    <!-- Motor System -->
+                    <button id="cortex-motor"
+                        class="cortex-system-btn active bg-gradient-to-br from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white rounded-xl p-4 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+                        data-system="motor" aria-controls="cortex-motor-content">
+                        <div class="text-3xl mb-2">🏃‍♂️</div>
+                        <div class="font-semibold text-sm">Motor System</div>
+                        <div class="text-xs opacity-90 mt-1">Movement & Control</div>
+                    </button>
+
+                    <!-- Sensory System -->
+                    <button id="cortex-sensory"
+                        class="cortex-system-btn bg-gradient-to-br from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white rounded-xl p-4 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+                        data-system="sensory" aria-controls="cortex-sensory-content">
+                        <div class="text-3xl mb-2">👋</div>
+                        <div class="font-semibold text-sm">Sensory System</div>
+                        <div class="text-xs opacity-90 mt-1">Touch & Feel</div>
+                    </button>
+
+                    <!-- Visual System -->
+                    <button id="cortex-visual"
+                        class="cortex-system-btn bg-gradient-to-br from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white rounded-xl p-4 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+                        data-system="visual" aria-controls="cortex-visual-content">
+                        <div class="text-3xl mb-2">👁️</div>
+                        <div class="font-semibold text-sm">Visual System</div>
+                        <div class="text-xs opacity-90 mt-1">Sight & Vision</div>
+                    </button>
+
+                    <!-- Auditory System -->
+                    <button id="cortex-auditory"
+                        class="cortex-system-btn bg-gradient-to-br from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white rounded-xl p-4 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+                        data-system="auditory" aria-controls="cortex-auditory-content">
+                        <div class="text-3xl mb-2">👂</div>
+                        <div class="font-semibold text-sm">Auditory System</div>
+                        <div class="text-xs opacity-90 mt-1">Hearing & Sound</div>
+                    </button>
+
+                    <!-- Language System -->
+                    <button id="cortex-language"
+                        class="cortex-system-btn bg-gradient-to-br from-cyan-500 to-teal-500 hover:from-cyan-600 hover:to-teal-600 text-white rounded-xl p-4 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+                        data-system="language" aria-controls="cortex-language-content">
+                        <div class="text-3xl mb-2">💬</div>
+                        <div class="font-semibold text-sm">Language System</div>
+                        <div class="text-xs opacity-90 mt-1">Speech & Words</div>
+                    </button>
+
+                    <!-- Executive System -->
+                    <button id="cortex-executive"
+                        class="cortex-system-btn bg-gradient-to-br from-red-500 to-pink-500 hover:from-red-600 hover:to-pink-600 text-white rounded-xl p-4 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+                        data-system="executive" aria-controls="cortex-executive-content">
+                        <div class="text-3xl mb-2">🧠</div>
+                        <div class="font-semibold text-sm">Executive System</div>
+                        <div class="text-xs opacity-90 mt-1">Planning & Control</div>
+                    </button>
+
+                    <!-- Association Areas -->
+                    <button id="cortex-association"
+                        class="cortex-system-btn bg-gradient-to-br from-indigo-500 to-violet-500 hover:from-indigo-600 hover:to-violet-600 text-white rounded-xl p-4 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+                        data-system="association" aria-controls="cortex-association-content">
+                        <div class="text-3xl mb-2">🔗</div>
+                        <div class="font-semibold text-sm">Association Areas</div>
+                        <div class="text-xs opacity-90 mt-1">Integration</div>
+                    </button>
+
+                    <!-- Memory System -->
+                    <button id="cortex-memory"
+                        class="cortex-system-btn bg-gradient-to-br from-emerald-500 to-green-600 hover:from-emerald-600 hover:to-green-700 text-white rounded-xl p-4 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+                        data-system="memory" aria-controls="cortex-memory-content">
+                        <div class="text-3xl mb-2">🧩</div>
+                        <div class="font-semibold text-sm">Memory System</div>
+                        <div class="text-xs opacity-90 mt-1">Learning & Recall</div>
+                    </button>
+
+                    <!-- Emotional System -->
+                    <button id="cortex-emotional"
+                        class="cortex-system-btn bg-gradient-to-br from-rose-500 to-red-500 hover:from-rose-600 hover:to-red-600 text-white rounded-xl p-4 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+                        data-system="emotional" aria-controls="cortex-emotional-content">
+                        <div class="text-3xl mb-2">❤️</div>
+                        <div class="font-semibold text-sm">Emotional System</div>
+                        <div class="text-xs opacity-90 mt-1">Feelings & Mood</div>
+                    </button>
+
+                    <!-- Attention System -->
+                    <button id="cortex-attention"
+                        class="cortex-system-btn bg-gradient-to-br from-amber-500 to-yellow-500 hover:from-amber-600 hover:to-yellow-600 text-white rounded-xl p-4 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+                        data-system="attention" aria-controls="cortex-attention-content">
+                        <div class="text-3xl mb-2">🎯</div>
+                        <div class="font-semibold text-sm">Attention System</div>
+                        <div class="text-xs opacity-90 mt-1">Focus & Awareness</div>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Motor System Content -->
+            <div id="cortex-motor-content" class="cortex-system-content active">
+                <div
+                    class="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-xl shadow-lg p-6 border border-blue-200 dark:border-blue-700">
+                    <div class="flex items-center mb-4">
+                        <div class="text-4xl mr-4">🏃‍♂️</div>
+                        <div>
+                            <h3 class="text-2xl font-bold text-blue-700 dark:text-blue-300">Motor System</h3>
+                            <p class="text-blue-600 dark:text-blue-400">Voluntary movement and motor control</p>
+                        </div>
+                    </div>
+
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div class="space-y-4">
+                            <div class="bg-white dark:bg-gray-800 rounded-lg p-4 border-l-4 border-blue-500">
+                                <h4 class="font-semibold text-blue-700 dark:text-blue-300 mb-2">🎯 Primary Motor Cortex
+                                    (M1)</h4>
+                                <p class="text-sm text-gray-600 dark:text-gray-400 mb-2"><strong>Location:</strong>
+                                    Precentral gyrus (BA 4)</p>
+                                <p class="text-sm">Controls voluntary muscle movements with precise somatotopic
+                                    organization (motor homunculus). Direct corticospinal projections to spinal motor
+                                    neurons.</p>
+                            </div>
+
+                            <div class="bg-white dark:bg-gray-800 rounded-lg p-4 border-l-4 border-sky-500">
+                                <h4 class="font-semibold text-sky-700 dark:text-sky-300 mb-2">🔧 Premotor Cortex (PM)
+                                </h4>
+                                <p class="text-sm text-gray-600 dark:text-gray-400 mb-2"><strong>Location:</strong> BA 6
+                                </p>
+                                <p class="text-sm">Plans and prepares movements. Includes supplementary motor area (SMA)
+                                    for complex movement sequences.</p>
+                            </div>
+                        </div>
+
+                        <div class="space-y-4">
+                            <div class="bg-red-50 dark:bg-red-900/20 rounded-lg p-4">
+                                <h4 class="font-semibold text-red-700 dark:text-red-300 mb-2">⚕️ Clinical Disorders</h4>
+                                <ul class="text-sm space-y-1">
+                                    <li>• <strong>Hemiplegia:</strong> M1 stroke → contralateral paralysis</li>
+                                    <li>• <strong>Apraxia:</strong> Premotor damage → movement planning deficits</li>
+                                    <li>• <strong>Spasticity:</strong> Upper motor neuron lesions</li>
+                                </ul>
+                            </div>
+
+                            <div class="bg-green-50 dark:bg-green-900/20 rounded-lg p-4">
+                                <h4 class="font-semibold text-green-700 dark:text-green-300 mb-2">🧪 Motor Plasticity
+                                </h4>
+                                <p class="text-sm">Motor cortex can reorganize after injury through activity-dependent
+                                    plasticity, enabling recovery of function.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sensory System Content -->
+            <div id="cortex-sensory-content" class="cortex-system-content">
+                <div
+                    class="bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 rounded-xl shadow-lg p-6 border border-green-200 dark:border-green-700">
+                    <div class="flex items-center mb-4">
+                        <div class="text-4xl mr-4">👋</div>
+                        <div>
+                            <h3 class="text-2xl font-bold text-green-700 dark:text-green-300">Somatosensory System</h3>
+                            <p class="text-green-600 dark:text-green-400">Touch, pressure, temperature, and
+                                proprioception</p>
+                        </div>
+                    </div>
+
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div class="space-y-4">
+                            <div class="bg-white dark:bg-gray-800 rounded-lg p-4 border-l-4 border-green-500">
+                                <h4 class="font-semibold text-green-700 dark:text-green-300 mb-2">🖐️ Primary
+                                    Somatosensory (S1)</h4>
+                                <p class="text-sm text-gray-600 dark:text-gray-400 mb-2"><strong>Location:</strong>
+                                    Postcentral gyrus (BA 1, 2, 3)</p>
+                                <p class="text-sm">Processes tactile information with somatotopic organization (sensory
+                                    homunculus). BA 3a/3b process touch, BA 1 texture, BA 2 proprioception.</p>
+                            </div>
+
+                            <div class="bg-white dark:bg-gray-800 rounded-lg p-4 border-l-4 border-teal-500">
+                                <h4 class="font-semibold text-teal-700 dark:text-teal-300 mb-2">🧠 Secondary
+                                    Somatosensory (S2)</h4>
+                                <p class="text-sm text-gray-600 dark:text-gray-400 mb-2"><strong>Location:</strong>
+                                    Parietal operculum</p>
+                                <p class="text-sm">Integrates bilateral sensory information and processes complex
+                                    tactile patterns and textures.</p>
+                            </div>
+                        </div>
+
+                        <div class="space-y-4">
+                            <div class="bg-red-50 dark:bg-red-900/20 rounded-lg p-4">
+                                <h4 class="font-semibold text-red-700 dark:text-red-300 mb-2">⚕️ Clinical Disorders</h4>
+                                <ul class="text-sm space-y-1">
+                                    <li>• <strong>Tactile agnosia:</strong> Cannot recognize objects by touch</li>
+                                    <li>• <strong>Neglect syndrome:</strong> Ignore contralateral space</li>
+                                    <li>• <strong>Phantom limb:</strong> Sensations in amputated limbs</li>
+                                </ul>
+                            </div>
+
+                            <div class="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-4">
+                                <h4 class="font-semibold text-blue-700 dark:text-blue-300 mb-2">📊 Sensory Pathways</h4>
+                                <p class="text-sm">Dorsal column-medial lemniscal (fine touch) and spinothalamic
+                                    (pain/temperature) pathways converge in S1.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Visual System Content -->
+            <div id="cortex-visual-content" class="cortex-system-content">
+                <div
+                    class="bg-gradient-to-br from-yellow-50 to-orange-50 dark:from-yellow-900/20 dark:to-orange-900/20 rounded-xl shadow-lg p-6 border border-yellow-200 dark:border-yellow-700">
+                    <div class="flex items-center mb-4">
+                        <div class="text-4xl mr-4">👁️</div>
+                        <div>
+                            <h3 class="text-2xl font-bold text-yellow-700 dark:text-yellow-300">Visual System</h3>
+                            <p class="text-yellow-600 dark:text-yellow-400">Vision processing and visual perception</p>
+                        </div>
+                    </div>
+
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div class="space-y-4">
+                            <div class="bg-white dark:bg-gray-800 rounded-lg p-4 border-l-4 border-yellow-500">
+                                <h4 class="font-semibold text-yellow-700 dark:text-yellow-300 mb-2">👁️ Primary Visual
+                                    Cortex (V1)</h4>
+                                <p class="text-sm text-gray-600 dark:text-gray-400 mb-2"><strong>Location:</strong>
+                                    Calcarine cortex (BA 17)</p>
+                                <p class="text-sm">Processes basic visual features: orientation, spatial frequency,
+                                    disparity. Retinotopic organization with ocular dominance columns.</p>
+                            </div>
+
+                            <div class="bg-white dark:bg-gray-800 rounded-lg p-4 border-l-4 border-orange-500">
+                                <h4 class="font-semibold text-orange-700 dark:text-orange-300 mb-2">🔍 Visual
+                                    Association Areas</h4>
+                                <p class="text-sm text-gray-600 dark:text-gray-400 mb-2"><strong>Location:</strong> V2,
+                                    V3, V4, V5/MT</p>
+                                <p class="text-sm">Process complex visual features: color (V4), motion (V5/MT), form and
+                                    depth (V2/V3).</p>
+                            </div>
+                        </div>
+
+                        <div class="space-y-4">
+                            <div class="bg-red-50 dark:bg-red-900/20 rounded-lg p-4">
+                                <h4 class="font-semibold text-red-700 dark:text-red-300 mb-2">⚕️ Clinical Disorders</h4>
+                                <ul class="text-sm space-y-1">
+                                    <li>• <strong>Cortical blindness:</strong> V1 lesions → blindness with intact pupils
+                                    </li>
+                                    <li>• <strong>Achromatopsia:</strong> V4 lesion → color blindness</li>
+                                    <li>• <strong>Akinetopsia:</strong> V5/MT lesion → motion blindness</li>
+                                </ul>
+                            </div>
+
+                            <div class="bg-purple-50 dark:bg-purple-900/20 rounded-lg p-4">
+                                <h4 class="font-semibold text-purple-700 dark:text-purple-300 mb-2">🛤️ Visual Streams
+                                </h4>
+                                <p class="text-sm"><strong>Dorsal:</strong> "Where/How" pathway to parietal
+                                    cortex<br><strong>Ventral:</strong> "What" pathway to temporal cortex</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Auditory System Content -->
+            <div id="cortex-auditory-content" class="cortex-system-content">
+                <div
+                    class="bg-gradient-to-br from-purple-50 to-violet-50 dark:from-purple-900/20 dark:to-violet-900/20 rounded-xl shadow-lg p-6 border border-purple-200 dark:border-purple-700">
+                    <div class="flex items-center mb-4">
+                        <div class="text-4xl mr-4">👂</div>
+                        <div>
+                            <h3 class="text-2xl font-bold text-purple-700 dark:text-purple-300">Auditory System</h3>
+                            <p class="text-purple-600 dark:text-purple-400">Hearing and sound processing</p>
+                        </div>
+                    </div>
+
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div class="space-y-4">
+                            <div class="bg-white dark:bg-gray-800 rounded-lg p-4 border-l-4 border-purple-500">
+                                <h4 class="font-semibold text-purple-700 dark:text-purple-300 mb-2">👂 Primary Auditory
+                                    Cortex (A1)</h4>
+                                <p class="text-sm text-gray-600 dark:text-gray-400 mb-2"><strong>Location:</strong>
+                                    Heschl's gyrus (BA 41, 42)</p>
+                                <p class="text-sm">Tonotopic organization processing frequency, intensity, and binaural
+                                    information for sound localization.</p>
+                            </div>
+
+                            <div class="bg-white dark:bg-gray-800 rounded-lg p-4 border-l-4 border-indigo-500">
+                                <h4 class="font-semibold text-indigo-700 dark:text-indigo-300 mb-2">🎵 Secondary
+                                    Auditory Areas</h4>
+                                <p class="text-sm text-gray-600 dark:text-gray-400 mb-2"><strong>Location:</strong>
+                                    Superior temporal gyrus</p>
+                                <p class="text-sm">Process complex sounds: music, speech patterns, and auditory object
+                                    recognition.</p>
+                            </div>
+                        </div>
+
+                        <div class="space-y-4">
+                            <div class="bg-red-50 dark:bg-red-900/20 rounded-lg p-4">
+                                <h4 class="font-semibold text-red-700 dark:text-red-300 mb-2">⚕️ Clinical Disorders</h4>
+                                <ul class="text-sm space-y-1">
+                                    <li>• <strong>Cortical deafness:</strong> Bilateral A1 lesions</li>
+                                    <li>• <strong>Auditory agnosia:</strong> Cannot recognize sounds</li>
+                                    <li>• <strong>Tinnitus:</strong> Phantom auditory sensations</li>
+                                </ul>
+                            </div>
+
+                            <div class="bg-cyan-50 dark:bg-cyan-900/20 rounded-lg p-4">
+                                <h4 class="font-semibold text-cyan-700 dark:text-cyan-300 mb-2">🔊 Auditory Streams</h4>
+                                <p class="text-sm"><strong>Dorsal:</strong> "Where" pathway for spatial
+                                    processing<br><strong>Ventral:</strong> "What" pathway for sound identification</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Language System Content -->
+            <div id="cortex-language-content" class="cortex-system-content">
+                <div
+                    class="bg-gradient-to-br from-cyan-50 to-teal-50 dark:from-cyan-900/20 dark:to-teal-900/20 rounded-xl shadow-lg p-6 border border-cyan-200 dark:border-cyan-700">
+                    <div class="flex items-center mb-4">
+                        <div class="text-4xl mr-4">💬</div>
+                        <div>
+                            <h3 class="text-2xl font-bold text-cyan-700 dark:text-cyan-300">Language System</h3>
+                            <p class="text-cyan-600 dark:text-cyan-400">Speech production and comprehension</p>
+                        </div>
+                    </div>
+
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div class="space-y-4">
+                            <div class="bg-white dark:bg-gray-800 rounded-lg p-4 border-l-4 border-cyan-500">
+                                <h4 class="font-semibold text-cyan-700 dark:text-cyan-300 mb-2">🗣️ Broca's Area</h4>
+                                <p class="text-sm text-gray-600 dark:text-gray-400 mb-2"><strong>Location:</strong> Left
+                                    inferior frontal gyrus (BA 44, 45)</p>
+                                <p class="text-sm">Speech production, grammar processing, and motor aspects of language.
+                                    Connected to motor cortex via arcuate fasciculus.</p>
+                            </div>
+
+                            <div class="bg-white dark:bg-gray-800 rounded-lg p-4 border-l-4 border-teal-500">
+                                <h4 class="font-semibold text-teal-700 dark:text-teal-300 mb-2">👂 Wernicke's Area</h4>
+                                <p class="text-sm text-gray-600 dark:text-gray-400 mb-2"><strong>Location:</strong> Left
+                                    superior temporal gyrus (BA 22)</p>
+                                <p class="text-sm">Language comprehension, semantic processing, and auditory word
+                                    recognition.</p>
+                            </div>
+                        </div>
+
+                        <div class="space-y-4">
+                            <div class="bg-red-50 dark:bg-red-900/20 rounded-lg p-4">
+                                <h4 class="font-semibold text-red-700 dark:text-red-300 mb-2">⚕️ Language Disorders</h4>
+                                <ul class="text-sm space-y-1">
+                                    <li>• <strong>Broca's aphasia:</strong> Non-fluent, telegraphic speech</li>
+                                    <li>• <strong>Wernicke's aphasia:</strong> Fluent but meaningless speech</li>
+                                    <li>• <strong>Conduction aphasia:</strong> Arcuate fasciculus damage</li>
+                                </ul>
+                            </div>
+
+                            <div class="bg-green-50 dark:bg-green-900/20 rounded-lg p-4">
+                                <h4 class="font-semibold text-green-700 dark:text-green-300 mb-2">🔗 Language Networks
+                                </h4>
+                                <p class="text-sm">Dorsal stream (syntax/phonology) and ventral stream (semantics)
+                                    connect language areas.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Executive System Content -->
+            <div id="cortex-executive-content" class="cortex-system-content">
+                <div
+                    class="bg-gradient-to-br from-red-50 to-pink-50 dark:from-red-900/20 dark:to-pink-900/20 rounded-xl shadow-lg p-6 border border-red-200 dark:border-red-700">
+                    <div class="flex items-center mb-4">
+                        <div class="text-4xl mr-4">🧠</div>
+                        <div>
+                            <h3 class="text-2xl font-bold text-red-700 dark:text-red-300">Executive System</h3>
+                            <p class="text-red-600 dark:text-red-400">Planning, decision-making, and cognitive control
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div class="space-y-4">
+                            <div class="bg-white dark:bg-gray-800 rounded-lg p-4 border-l-4 border-red-500">
+                                <h4 class="font-semibold text-red-700 dark:text-red-300 mb-2">🎯 Prefrontal Cortex (PFC)
+                                </h4>
+                                <p class="text-sm text-gray-600 dark:text-gray-400 mb-2"><strong>Location:</strong>
+                                    Frontal lobe (BA 9, 10, 11, 46, 47)</p>
+                                <p class="text-sm">Executive control, working memory, planning, decision-making, and
+                                    personality expression.</p>
+                            </div>
+
+                            <div class="bg-white dark:bg-gray-800 rounded-lg p-4 border-l-4 border-pink-500">
+                                <h4 class="font-semibold text-pink-700 dark:text-pink-300 mb-2">⚖️ Anterior Cingulate
+                                    Cortex</h4>
+                                <p class="text-sm text-gray-600 dark:text-gray-400 mb-2"><strong>Location:</strong>
+                                    Medial frontal cortex (BA 24, 32)</p>
+                                <p class="text-sm">Conflict monitoring, error detection, and emotion regulation.</p>
+                            </div>
+                        </div>
+
+                        <div class="space-y-4">
+                            <div class="bg-yellow-50 dark:bg-yellow-900/20 rounded-lg p-4">
+                                <h4 class="font-semibold text-yellow-700 dark:text-yellow-300 mb-2">🔧 Executive
+                                    Functions</h4>
+                                <ul class="text-sm space-y-1">
+                                    <li>• <strong>Working memory:</strong> Temporary information storage</li>
+                                    <li>• <strong>Cognitive flexibility:</strong> Task switching</li>
+                                    <li>• <strong>Inhibitory control:</strong> Impulse suppression</li>
+                                </ul>
+                            </div>
+
+                            <div class="bg-red-50 dark:bg-red-900/20 rounded-lg p-4">
+                                <h4 class="font-semibold text-red-700 dark:text-red-300 mb-2">⚕️ Executive Disorders
+                                </h4>
+                                <ul class="text-sm space-y-1">
+                                    <li>• <strong>Dysexecutive syndrome:</strong> PFC damage</li>
+                                    <li>• <strong>ADHD:</strong> Attention and impulse control deficits</li>
+                                    <li>• <strong>Schizophrenia:</strong> Working memory impairments</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Remaining systems condensed for space -->
+            <div id="cortex-association-content" class="cortex-system-content">
+                <div
+                    class="bg-gradient-to-br from-indigo-50 to-violet-50 dark:from-indigo-900/20 dark:to-violet-900/20 rounded-xl shadow-lg p-6 border border-indigo-200 dark:border-indigo-700">
+                    <div class="flex items-center mb-4">
+                        <div class="text-4xl mr-4">🔗</div>
+                        <div>
+                            <h3 class="text-2xl font-bold text-indigo-700 dark:text-indigo-300">Association Areas</h3>
+                            <p class="text-indigo-600 dark:text-indigo-400">Integration and higher-order processing</p>
+                        </div>
+                    </div>
+                    <div class="grid md:grid-cols-3 gap-4">
+                        <div class="bg-white dark:bg-gray-800 rounded-lg p-4 border-l-4 border-indigo-500">
+                            <h4 class="font-semibold text-indigo-700 dark:text-indigo-300 mb-2">🧩 Parietal Association
+                            </h4>
+                            <p class="text-sm">Spatial processing, attention, body schema (BA 5, 7, 39, 40)</p>
+                        </div>
+                        <div class="bg-white dark:bg-gray-800 rounded-lg p-4 border-l-4 border-violet-500">
+                            <h4 class="font-semibold text-violet-700 dark:text-violet-300 mb-2">🎭 Temporal Association
+                            </h4>
+                            <p class="text-sm">Object recognition, semantic memory (BA 20, 21, 37, 38)</p>
+                        </div>
+                        <div class="bg-white dark:bg-gray-800 rounded-lg p-4 border-l-4 border-purple-500">
+                            <h4 class="font-semibold text-purple-700 dark:text-purple-300 mb-2">🌟 Frontal Association
+                            </h4>
+                            <p class="text-sm">Executive functions, planning, personality (BA 9, 10, 11)</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="cortex-memory-content" class="cortex-system-content">
+                <div
+                    class="bg-gradient-to-br from-emerald-50 to-green-50 dark:from-emerald-900/20 dark:to-green-900/20 rounded-xl shadow-lg p-6 border border-emerald-200 dark:border-emerald-700">
+                    <div class="flex items-center mb-4">
+                        <div class="text-4xl mr-4">🧩</div>
+                        <div>
+                            <h3 class="text-2xl font-bold text-emerald-700 dark:text-emerald-300">Memory System</h3>
+                            <p class="text-emerald-600 dark:text-emerald-400">Learning, storage, and recall</p>
+                        </div>
+                    </div>
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div class="bg-white dark:bg-gray-800 rounded-lg p-4 border-l-4 border-emerald-500">
+                            <h4 class="font-semibold text-emerald-700 dark:text-emerald-300 mb-2">🌊 Hippocampus</h4>
+                            <p class="text-sm">Declarative memory formation, spatial navigation, temporal sequences</p>
+                        </div>
+                        <div class="bg-white dark:bg-gray-800 rounded-lg p-4 border-l-4 border-green-500">
+                            <h4 class="font-semibold text-green-700 dark:text-green-300 mb-2">💭 Cortical Memory Areas
+                            </h4>
+                            <p class="text-sm">Long-term storage in neocortical areas, working memory in PFC</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="cortex-emotional-content" class="cortex-system-content">
+                <div
+                    class="bg-gradient-to-br from-rose-50 to-red-50 dark:from-rose-900/20 dark:to-red-900/20 rounded-xl shadow-lg p-6 border border-rose-200 dark:border-rose-700">
+                    <div class="flex items-center mb-4">
+                        <div class="text-4xl mr-4">❤️</div>
+                        <div>
+                            <h3 class="text-2xl font-bold text-rose-700 dark:text-rose-300">Emotional System</h3>
+                            <p class="text-rose-600 dark:text-rose-400">Emotion processing and regulation</p>
+                        </div>
+                    </div>
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div class="bg-white dark:bg-gray-800 rounded-lg p-4 border-l-4 border-rose-500">
+                            <h4 class="font-semibold text-rose-700 dark:text-rose-300 mb-2">🧠 Limbic Cortex</h4>
+                            <p class="text-sm">Anterior cingulate, orbitofrontal cortex - emotion regulation</p>
+                        </div>
+                        <div class="bg-white dark:bg-gray-800 rounded-lg p-4 border-l-4 border-red-500">
+                            <h4 class="font-semibold text-red-700 dark:text-red-300 mb-2">⚡ Amygdala Connections</h4>
+                            <p class="text-sm">Fear processing, emotional memory, social cognition</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="cortex-attention-content" class="cortex-system-content">
+                <div
+                    class="bg-gradient-to-br from-amber-50 to-yellow-50 dark:from-amber-900/20 dark:to-yellow-900/20 rounded-xl shadow-lg p-6 border border-amber-200 dark:border-amber-700">
+                    <div class="flex items-center mb-4">
+                        <div class="text-4xl mr-4">🎯</div>
+                        <div>
+                            <h3 class="text-2xl font-bold text-amber-700 dark:text-amber-300">Attention System</h3>
+                            <p class="text-amber-600 dark:text-amber-400">Focus, alertness, and awareness</p>
+                        </div>
+                    </div>
+                    <div class="grid md:grid-cols-3 gap-4">
+                        <div class="bg-white dark:bg-gray-800 rounded-lg p-4 border-l-4 border-amber-500">
+                            <h4 class="font-semibold text-amber-700 dark:text-amber-300 mb-2">🔍 Dorsal Network</h4>
+                            <p class="text-sm">Top-down attention control (frontal & parietal cortex)</p>
+                        </div>
+                        <div class="bg-white dark:bg-gray-800 rounded-lg p-4 border-l-4 border-yellow-500">
+                            <h4 class="font-semibold text-yellow-700 dark:text-yellow-300 mb-2">⚡ Ventral Network</h4>
+                            <p class="text-sm">Bottom-up attention capture (temporal & frontal cortex)</p>
+                        </div>
+                        <div class="bg-white dark:bg-gray-800 rounded-lg p-4 border-l-4 border-orange-500">
+                            <h4 class="font-semibold text-orange-700 dark:text-orange-300 mb-2">🌟 Salience Network</h4>
+                            <p class="text-sm">Switches between networks (anterior insula & ACC)</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Blood Supply Tab -->
+        <section id="content-blood" class="tab-content">
+            <div class="space-y-6">
+                <!-- Main Visualization Container -->
+                <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden">
+                    <!-- Header with Controls -->
+                    <div class="bg-gradient-to-r from-red-500 to-red-600 text-white p-6">
+                        <h3 class="text-xl font-bold mb-4">Circle of Willis - Interactive Blood Supply</h3>
+                        <div class="flex flex-wrap gap-3 items-center">
+                            <button id="show-flow"
+                                class="bg-white/20 hover:bg-white/30 px-4 py-2 rounded-lg transition-all duration-200 flex items-center gap-2">
+                                <span class="text-lg">💫</span>
+                                <span class="text-sm font-medium">Animate Flow</span>
+                            </button>
+                            <button id="show-stroke-panel"
+                                class="bg-white/20 hover:bg-white/30 px-4 py-2 rounded-lg transition-all duration-200 flex items-center gap-2">
+                                <span class="text-lg">⚠️</span>
+                                <span class="text-sm font-medium">Stroke Simulation</span>
+                            </button>
+                            <button id="reset-all"
+                                class="bg-white/20 hover:bg-white/30 px-4 py-2 rounded-lg transition-all duration-200 flex items-center gap-2">
+                                <span class="text-lg">🔄</span>
+                                <span class="text-sm font-medium">Reset</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- SVG Container -->
+                    <div class="bg-gray-50 dark:bg-gray-700 p-4">
+                        <svg id="circle-of-willis-svg" viewBox="0 0 600 400" class="w-full h-auto max-h-96">
+                            <!-- Anterior cerebral arteries -->
+                            <path class="vessel-path" id="aca-path" data-vessel="aca"
+                                d="M 250 100 Q 280 80 300 100 Q 320 80 350 100" stroke="#e53e3e" stroke-width="8"
+                                fill="none" />
+                            <text x="300" y="75" text-anchor="middle"
+                                class="text-xs font-medium fill-gray-700 dark:fill-gray-300">ACA</text>
+
+                            <!-- Middle cerebral arteries -->
+                            <path class="vessel-path" id="mca-left-path" data-vessel="mca-left"
+                                d="M 200 200 Q 150 180 100 200" stroke="#e53e3e" stroke-width="10" fill="none" />
+                            <path class="vessel-path" id="mca-right-path" data-vessel="mca-right"
+                                d="M 400 200 Q 450 180 500 200" stroke="#e53e3e" stroke-width="10" fill="none" />
+                            <text x="125" y="175" text-anchor="middle"
+                                class="text-xs font-medium fill-gray-700 dark:fill-gray-300">MCA</text>
+                            <text x="475" y="175" text-anchor="middle"
+                                class="text-xs font-medium fill-gray-700 dark:fill-gray-300">MCA</text>
+
+                            <!-- Posterior cerebral arteries -->
+                            <path class="vessel-path" id="pca-path" data-vessel="pca"
+                                d="M 250 300 Q 280 320 300 300 Q 320 320 350 300" stroke="#e53e3e" stroke-width="8"
+                                fill="none" />
+                            <text x="300" y="340" text-anchor="middle"
+                                class="text-xs font-medium fill-gray-700 dark:fill-gray-300">PCA</text>
+
+                            <!-- Internal carotid arteries -->
+                            <path class="vessel-path" id="ica-left-path" data-vessel="ica-left"
+                                d="M 200 200 L 200 150 Q 220 120 250 120" stroke="#dc2626" stroke-width="12"
+                                fill="none" />
+                            <path class="vessel-path" id="ica-right-path" data-vessel="ica-right"
+                                d="M 400 200 L 400 150 Q 380 120 350 120" stroke="#dc2626" stroke-width="12"
+                                fill="none" />
+
+                            <!-- Vertebral arteries -->
+                            <path class="vessel-path" id="vertebral-left-path" data-vessel="vertebral-left"
+                                d="M 280 380 L 290 350" stroke="#dc2626" stroke-width="8" fill="none" />
+                            <path class="vessel-path" id="vertebral-right-path" data-vessel="vertebral-right"
+                                d="M 320 380 L 310 350" stroke="#dc2626" stroke-width="8" fill="none" />
+
+                            <!-- Basilar artery -->
+                            <path class="vessel-path" id="basilar-path" data-vessel="basilar" d="M 300 350 L 300 280"
+                                stroke="#b91c1c" stroke-width="12" fill="none" />
+
+                            <!-- Communicating arteries -->
+                            <path class="vessel-path" id="acom-path" data-vessel="acom" d="M 250 100 L 350 100"
+                                stroke="#f56565" stroke-width="6" fill="none" />
+                            <path class="vessel-path" id="pcom-left-path" data-vessel="pcom-left"
+                                d="M 220 180 Q 240 240 280 280" stroke="#f56565" stroke-width="6" fill="none" />
+                            <path class="vessel-path" id="pcom-right-path" data-vessel="pcom-right"
+                                d="M 380 180 Q 360 240 320 280" stroke="#f56565" stroke-width="6" fill="none" />
+
+                            <!-- Enhanced Flow animations -->
+                            <g id="flow-animations" style="display: none;">
+                                <!-- ICA Left flow -->
+                                <circle r="3" fill="#ff3333" opacity="0.9">
+                                    <animateMotion dur="2s" repeatCount="indefinite">
+                                        <mpath href="#ica-left-path" />
+                                    </animateMotion>
+                                </circle>
+                                <!-- ICA Right flow -->
+                                <circle r="3" fill="#ff3333" opacity="0.9">
+                                    <animateMotion dur="2s" repeatCount="indefinite" begin="0.2s">
+                                        <mpath href="#ica-right-path" />
+                                    </animateMotion>
+                                </circle>
+                                <!-- MCA Left flow -->
+                                <circle r="2.5" fill="#ff5555" opacity="0.8">
+                                    <animateMotion dur="1.8s" repeatCount="indefinite" begin="0.4s">
+                                        <mpath href="#mca-left-path" />
+                                    </animateMotion>
+                                </circle>
+                                <!-- MCA Right flow -->
+                                <circle r="2.5" fill="#ff5555" opacity="0.8">
+                                    <animateMotion dur="1.8s" repeatCount="indefinite" begin="0.6s">
+                                        <mpath href="#mca-right-path" />
+                                    </animateMotion>
+                                </circle>
+                                <!-- ACA flow -->
+                                <circle r="2" fill="#ff7777" opacity="0.7">
+                                    <animateMotion dur="2.2s" repeatCount="indefinite" begin="0.8s">
+                                        <mpath href="#aca-path" />
+                                    </animateMotion>
+                                </circle>
+                                <!-- PCA flow -->
+                                <circle r="2" fill="#ff7777" opacity="0.7">
+                                    <animateMotion dur="2.5s" repeatCount="indefinite" begin="1s">
+                                        <mpath href="#pca-path" />
+                                    </animateMotion>
+                                </circle>
+                                <!-- Vertebral arteries flow -->
+                                <circle r="2" fill="#dd2222" opacity="0.8">
+                                    <animateMotion dur="1.8s" repeatCount="indefinite" begin="0.1s">
+                                        <mpath href="#vertebral-left-path" />
+                                    </animateMotion>
+                                </circle>
+                                <circle r="2" fill="#dd2222" opacity="0.8">
+                                    <animateMotion dur="1.8s" repeatCount="indefinite" begin="0.2s">
+                                        <mpath href="#vertebral-right-path" />
+                                    </animateMotion>
+                                </circle>
+                                <!-- Basilar flow -->
+                                <circle r="2.5" fill="#cc1111" opacity="0.9">
+                                    <animateMotion dur="1.5s" repeatCount="indefinite" begin="0.3s">
+                                        <mpath href="#basilar-path" />
+                                    </animateMotion>
+                                </circle>
+                                <!-- Communicating arteries flow -->
+                                <circle r="1.5" fill="#ff9999" opacity="0.6">
+                                    <animateMotion dur="3s" repeatCount="indefinite" begin="1.2s">
+                                        <mpath href="#acom-path" />
+                                    </animateMotion>
+                                </circle>
+                                <circle r="1.5" fill="#ff9999" opacity="0.6">
+                                    <animateMotion dur="3.2s" repeatCount="indefinite" begin="1.4s">
+                                        <mpath href="#pcom-left-path" />
+                                    </animateMotion>
+                                </circle>
+                                <circle r="1.5" fill="#ff9999" opacity="0.6">
+                                    <animateMotion dur="3.2s" repeatCount="indefinite" begin="1.6s">
+                                        <mpath href="#pcom-right-path" />
+                                    </animateMotion>
+                                </circle>
+                            </g>
+
+                            <!-- Vessel Labels -->
+                            <text x="275" y="375" text-anchor="middle"
+                                class="text-xs fill-gray-700 dark:fill-gray-300">VA</text>
+                            <text x="325" y="375" text-anchor="middle"
+                                class="text-xs fill-gray-700 dark:fill-gray-300">VA</text>
+                            <text x="300" y="270" text-anchor="middle"
+                                class="text-xs fill-gray-700 dark:fill-gray-300">BA</text>
+
+                            <text x="300" y="390" text-anchor="middle" class="text-sm fill-gray-600 dark:fill-gray-400">
+                                🖱️ Click vessels to explore
+                            </text>
+                        </svg>
+                    </div>
+                </div>
+
+                <!-- Mobile-Friendly Information Panel -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <!-- Vessel Information -->
+                    <div class="lg:col-span-2 bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+                        <h3 class="text-xl font-bold mb-4 text-red-600 dark:text-red-400">Vessel Information</h3>
+                        <div id="vessel-info" class="space-y-4">
+                            <div class="text-center py-8">
+                                <div class="text-4xl mb-3">🩸</div>
+                                <h4 class="font-bold text-gray-700 dark:text-gray-300 mb-2">Cerebral Circulation</h4>
+                                <p class="text-gray-500 dark:text-gray-400 text-sm">
+                                    Click on any vessel to explore detailed anatomical and clinical information
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quick Actions -->
+                    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+                        <h3 class="text-xl font-bold mb-4 text-red-600 dark:text-red-400">Quick Actions</h3>
+                        <div class="space-y-3">
+                            <div class="text-center">
+                                <div class="text-2xl mb-2">💡</div>
+                                <h4 class="font-semibold text-gray-700 dark:text-gray-300 mb-2">Instructions</h4>
+                                <p class="text-sm text-gray-600 dark:text-gray-400">
+                                    Click vessels to learn about them, use controls to animate flow or simulate strokes
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Collapsible Stroke Simulation Panel -->
+                <div id="stroke-simulation-panel"
+                    class="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden hidden">
+                    <div class="bg-gradient-to-r from-red-500 to-red-600 text-white p-4">
+                        <div class="flex items-center justify-between">
+                            <h3 class="text-lg font-bold">Stroke Simulation</h3>
+                            <button id="close-stroke-panel"
+                                class="bg-white/20 hover:bg-white/30 px-3 py-1 rounded-lg transition-all">
+                                <span class="text-sm">✕</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="p-6 space-y-6">
+                        <!-- Vessel Selection -->
+                        <div>
+                            <h4 class="text-lg font-semibold text-red-700 dark:text-red-400 mb-3">
+                                Select Affected Vessel
+                            </h4>
+                            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+                                <button data-vessel="left-mca"
+                                    class="stroke-vessel-btn p-3 rounded-lg border border-red-300 dark:border-red-600 hover:bg-red-100 dark:hover:bg-red-800/30 transition-all text-center">
+                                    <div class="text-2xl mb-1">🧠</div>
+                                    <div class="text-sm font-medium text-red-700 dark:text-red-400">Left MCA</div>
+                                    <div class="text-xs text-gray-600 dark:text-gray-400">Motor/Speech</div>
+                                </button>
+                                <button data-vessel="right-mca"
+                                    class="stroke-vessel-btn p-3 rounded-lg border border-red-300 dark:border-red-600 hover:bg-red-100 dark:hover:bg-red-800/30 transition-all text-center">
+                                    <div class="text-2xl mb-1">🧠</div>
+                                    <div class="text-sm font-medium text-red-700 dark:text-red-400">Right MCA</div>
+                                    <div class="text-xs text-gray-600 dark:text-gray-400">Spatial/Motor</div>
+                                </button>
+                                <button data-vessel="aca"
+                                    class="stroke-vessel-btn p-3 rounded-lg border border-red-300 dark:border-red-600 hover:bg-red-100 dark:hover:bg-red-800/30 transition-all text-center">
+                                    <div class="text-2xl mb-1">🧠</div>
+                                    <div class="text-sm font-medium text-red-700 dark:text-red-400">ACA</div>
+                                    <div class="text-xs text-gray-600 dark:text-gray-400">Leg/Personality</div>
+                                </button>
+                                <button data-vessel="pca"
+                                    class="stroke-vessel-btn p-3 rounded-lg border border-red-300 dark:border-red-600 hover:bg-red-100 dark:hover:bg-red-800/30 transition-all text-center">
+                                    <div class="text-2xl mb-1">👁️</div>
+                                    <div class="text-sm font-medium text-red-700 dark:text-red-400">PCA</div>
+                                    <div class="text-xs text-gray-600 dark:text-gray-400">Vision</div>
+                                </button>
+                                <button data-vessel="basilar"
+                                    class="stroke-vessel-btn p-3 rounded-lg border border-red-300 dark:border-red-600 hover:bg-red-100 dark:hover:bg-red-800/30 transition-all text-center">
+                                    <div class="text-2xl mb-1">🎯</div>
+                                    <div class="text-sm font-medium text-red-700 dark:text-red-400">Basilar</div>
+                                    <div class="text-xs text-gray-600 dark:text-gray-400">Brainstem</div>
+                                </button>
+                                <button data-vessel="vertebral"
+                                    class="stroke-vessel-btn p-3 rounded-lg border border-red-300 dark:border-red-600 hover:bg-red-100 dark:hover:bg-red-800/30 transition-all text-center">
+                                    <div class="text-2xl mb-1">🎯</div>
+                                    <div class="text-sm font-medium text-red-700 dark:text-red-400">Vertebral</div>
+                                    <div class="text-xs text-gray-600 dark:text-gray-400">Cerebellum</div>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Simulation Results -->
+                        <div id="stroke-results"
+                            class="bg-orange-50 dark:bg-orange-900/20 rounded-lg p-4 border border-orange-200 dark:border-orange-700 hidden">
+                            <h4 class="text-lg font-semibold text-orange-700 dark:text-orange-400 mb-3">
+                                Stroke Simulation Results
+                            </h4>
+                            <div class="grid md:grid-cols-2 gap-4">
+                                <div>
+                                    <h5 class="font-medium text-orange-700 dark:text-orange-400 mb-2">Clinical Signs:
+                                    </h5>
+                                    <ul id="clinical-signs" class="text-sm text-gray-700 dark:text-gray-300 space-y-1">
+                                        <!-- Populated by JavaScript -->
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h5 class="font-medium text-orange-700 dark:text-orange-400 mb-2">Affected
+                                        Territory:</h5>
+                                    <p id="affected-territory" class="text-sm text-gray-700 dark:text-gray-300">
+                                        <!-- Populated by JavaScript -->
+                                    </p>
+                                    <div class="mt-3">
+                                        <h5 class="font-medium text-orange-700 dark:text-orange-400 mb-2">Treatment
+                                            Window:</h5>
+                                        <div class="flex items-center space-x-2">
+                                            <div class="w-2 h-2 bg-red-500 rounded-full animate-pulse"></div>
+                                            <span id="treatment-timer"
+                                                class="text-sm font-mono text-red-600 dark:text-red-400">
+                                                ~4.5 hours window for tPA thrombolysis
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Reset Button -->
+                        <div class="text-center">
+                            <button id="reset-stroke-simulation"
+                                class="px-6 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded-lg font-medium transition-all">
+                                🔄 Reset Simulation
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Additional CSS for improved mobile experience -->
+        <style>
+            /* Mobile-friendly improvements */
+            @media (max-width: 768px) {
+                .stroke-vessel-btn {
+                    padding: 0.5rem !important;
+                    font-size: 0.875rem !important;
+                }
+
+                .stroke-vessel-btn .text-2xl {
+                    font-size: 1.5rem !important;
+                    margin-bottom: 0.25rem !important;
+                }
+
+                .stroke-vessel-btn .text-sm {
+                    font-size: 0.75rem !important;
+                }
+
+                .stroke-vessel-btn .text-xs {
+                    font-size: 0.7rem !important;
+                }
+
+                #circle-of-willis-svg {
+                    max-height: 300px !important;
+                }
+
+                .vessel-path:hover {
+                    stroke-width: 12 !important;
+                }
+            }
+
+            /* Enhanced vessel interactions */
+            .vessel-path {
+                cursor: pointer;
+                transition: all 0.2s ease;
+            }
+
+            .vessel-path:hover {
+                stroke-width: 16;
+                filter: drop-shadow(0 0 8px rgba(239, 68, 68, 0.5));
+            }
+
+            .vessel-selected {
+                stroke-width: 18 !important;
+                filter: drop-shadow(0 0 12px rgba(239, 68, 68, 0.8));
+            }
+
+            .stroke-highlighted {
+                stroke: #dc2626 !important;
+                stroke-width: 20 !important;
+                filter: drop-shadow(0 0 15px rgba(220, 38, 38, 0.9));
+                animation: pulse 2s infinite;
+            }
+
+            @keyframes pulse {
+                0% {
+                    opacity: 1;
+                }
+
+                50% {
+                    opacity: 0.7;
+                }
+
+                100% {
+                    opacity: 1;
+                }
+            }
+
+            /* Smooth transitions for panels */
+            #stroke-simulation-panel {
+                transition: all 0.3s ease;
+            }
+
+            /* Better button interactions */
+            .stroke-vessel-btn {
+                transition: all 0.2s ease;
+                transform: scale(1);
+            }
+
+            .stroke-vessel-btn:hover {
+                transform: scale(1.05);
+            }
+
+            .stroke-vessel-btn:active {
+                transform: scale(0.95);
+            }
+        </style>
+
+        <!-- Development Tab -->
+        <section id="content-development" class="tab-content">
+            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+                <h3 class="text-xl font-bold mb-4 text-red-600 dark:text-red-400">Brain Development Timeline</h3>
+
+                <!-- Simplified Timeline -->
+                <div class="mb-6">
+                    <!-- Progress Bar -->
+                    <div class="bg-gray-200 dark:bg-gray-700 rounded-full h-2 mb-4">
+                        <div id="dev-progress"
+                            class="bg-gradient-to-r from-red-500 to-red-600 h-2 rounded-full transition-all duration-500"
+                            style="width: 16.66%;"></div>
+                    </div>
+
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        <button class="dev-stage active bg-red-600 text-white px-4 py-2 rounded-lg text-sm"
+                            data-stage="conception">
+                            🧬 Conception
+                        </button>
+                        <button class="dev-stage bg-gray-200 dark:bg-gray-700 px-4 py-2 rounded-lg text-sm"
+                            data-stage="neurulation">
+                            🦠 Neurulation (Week 3-4)
+                        </button>
+                        <button class="dev-stage bg-gray-200 dark:bg-gray-700 px-4 py-2 rounded-lg text-sm"
+                            data-stage="organogenesis">
+                            👶 Organogenesis (Week 8)
+                        </button>
+                        <button class="dev-stage bg-gray-200 dark:bg-gray-700 px-4 py-2 rounded-lg text-sm"
+                            data-stage="birth">
+                            🍼 Birth (Week 40)
+                        </button>
+                        <button class="dev-stage bg-gray-200 dark:bg-gray-700 px-4 py-2 rounded-lg text-sm"
+                            data-stage="childhood">
+                            🧒 Childhood (0-12y)
+                        </button>
+                        <button class="dev-stage bg-gray-200 dark:bg-gray-700 px-4 py-2 rounded-lg text-sm"
+                            data-stage="adult">
+                            🧑 Adult (25y+)
+                        </button>
+                    </div>
+
+                    <!-- Development Info -->
+                    <div id="development-info"
+                        class="bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 p-6 rounded-xl border border-blue-200 dark:border-blue-700">
+                        <div class="flex items-start gap-4">
+                            <div class="text-4xl" id="stage-icon">🧬</div>
+                            <div>
+                                <h4 class="font-bold text-lg text-blue-700 dark:text-blue-300 mb-2" id="stage-title">
+                                    Conception (Day 0)
+                                </h4>
+                                <p class="text-gray-700 dark:text-gray-300 mb-4" id="stage-description">
+                                    The journey begins with fertilization when sperm and egg unite to form a zygote.
+                                    This single cell contains all genetic information needed to build a complete nervous
+                                    system.
+                                </p>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                                    <div class="bg-white dark:bg-gray-800 p-3 rounded-lg">
+                                        <h5 class="font-semibold text-blue-600 dark:text-blue-400 mb-2">🔬 Key Events
+                                        </h5>
+                                        <ul class="list-disc list-inside text-gray-600 dark:text-gray-400 space-y-1"
+                                            id="key-events">
+                                            <li>Sperm-egg fusion occurs</li>
+                                            <li>Zygote formation completed</li>
+                                            <li>First mitotic division begins</li>
+                                        </ul>
+                                    </div>
+                                    <div class="bg-white dark:bg-gray-800 p-3 rounded-lg">
+                                        <h5 class="font-semibold text-blue-600 dark:text-blue-400 mb-2">⚕️ Clinical</h5>
+                                        <ul class="list-disc list-inside text-gray-600 dark:text-gray-400 space-y-1"
+                                            id="clinical-info">
+                                            <li>Folic acid prevents neural defects</li>
+                                            <li>Maternal health affects development</li>
+                                            <li>Genetic counseling relevance</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Brain Imaging Tab -->
+        <section id="content-imaging" class="tab-content">
+            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+                <h3 class="text-xl font-bold mb-4 text-red-600 dark:text-red-400">Brain Imaging & Anatomical Planes</h3>
+                <p class="mb-6 text-gray-700 dark:text-gray-300">Understanding brain anatomy requires knowledge of
+                    different imaging planes and how they reveal brain structures. This is essential for interpreting
+                    clinical findings and localizing pathology.</p>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <!-- Anatomical Planes -->
+                    <div class="lg:col-span-2 space-y-6">
+                        <!-- Plane Selection -->
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <button id="axial-plane-btn"
+                                class="plane-selector active p-4 border-2 border-blue-500 rounded-lg bg-blue-50 dark:bg-blue-900/20">
+                                <div class="text-3xl mb-2">🔄</div>
+                                <h4 class="font-bold text-blue-600 dark:text-blue-300">Axial Plane</h4>
+                                <p class="text-sm text-gray-600 dark:text-gray-400">Horizontal / Transverse</p>
+                            </button>
+                            <button id="coronal-plane-btn"
+                                class="plane-selector p-4 border-2 border-gray-300 rounded-lg hover:border-green-500 hover:bg-green-50 dark:hover:bg-green-900/20">
+                                <div class="text-3xl mb-2">📐</div>
+                                <h4 class="font-bold text-green-600 dark:text-green-300">Coronal Plane</h4>
+                                <p class="text-sm text-gray-600 dark:text-gray-400">Frontal / Front-to-back</p>
+                            </button>
+                            <button id="sagittal-plane-btn"
+                                class="plane-selector p-4 border-2 border-gray-300 rounded-lg hover:border-purple-500 hover:bg-purple-50 dark:hover:bg-purple-900/20">
+                                <div class="text-3xl mb-2">📏</div>
+                                <h4 class="font-bold text-purple-600 dark:text-purple-300">Sagittal Plane</h4>
+                                <p class="text-sm text-gray-600 dark:text-gray-400">Left-to-right / Midline</p>
+                            </button>
+                        </div>
+
+                        <!-- Plane Visualization -->
+                        <div class="bg-gray-100 dark:bg-gray-700 rounded-lg p-6 h-80">
+                            <div id="plane-visualization" class="w-full h-full flex items-center justify-center">
+                                <!-- Axial view (default) -->
+                                <div id="axial-view" class="plane-view text-center">
+                                    <div
+                                        class="w-64 h-64 mx-auto relative bg-gradient-to-br from-blue-100 to-blue-200 dark:from-blue-800 dark:to-blue-900 rounded-full border-4 border-blue-300 shadow-lg">
+                                        <div
+                                            class="absolute inset-4 bg-blue-200 dark:bg-blue-700 rounded-full opacity-70">
+                                            <div
+                                                class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-16 h-16 bg-blue-300 dark:bg-blue-600 rounded-full">
+                                            </div>
+                                        </div>
+                                        <div
+                                            class="absolute top-2 left-1/2 transform -translate-x-1/2 text-xs font-bold text-blue-800 dark:text-blue-200">
+                                            ANTERIOR</div>
+                                        <div
+                                            class="absolute bottom-2 left-1/2 transform -translate-x-1/2 text-xs font-bold text-blue-800 dark:text-blue-200">
+                                            POSTERIOR</div>
+                                        <div
+                                            class="absolute left-2 top-1/2 transform -translate-y-1/2 text-xs font-bold text-blue-800 dark:text-blue-200">
+                                            R</div>
+                                        <div
+                                            class="absolute right-2 top-1/2 transform -translate-y-1/2 text-xs font-bold text-blue-800 dark:text-blue-200">
+                                            L</div>
+                                    </div>
+                                    <p class="mt-4 text-sm text-gray-600 dark:text-gray-400">Looking down from above
+                                        (bird's eye view)</p>
+                                </div>
+
+                                <!-- Coronal view -->
+                                <div id="coronal-view" class="plane-view text-center hidden">
+                                    <div
+                                        class="w-64 h-64 mx-auto relative bg-gradient-to-br from-green-100 to-green-200 dark:from-green-800 dark:to-green-900 rounded-xl border-4 border-green-300 shadow-lg">
+                                        <div
+                                            class="absolute inset-4 bg-green-200 dark:bg-green-700 rounded-xl opacity-70">
+                                            <div
+                                                class="absolute top-6 left-1/2 transform -translate-x-1/2 w-20 h-12 bg-green-300 dark:bg-green-600 rounded-t-full">
+                                            </div>
+                                            <div
+                                                class="absolute bottom-6 left-1/2 transform -translate-x-1/2 w-16 h-16 bg-green-400 dark:bg-green-500 rounded-full">
+                                            </div>
+                                        </div>
+                                        <div
+                                            class="absolute top-2 left-1/2 transform -translate-x-1/2 text-xs font-bold text-green-800 dark:text-green-200">
+                                            SUPERIOR</div>
+                                        <div
+                                            class="absolute bottom-2 left-1/2 transform -translate-x-1/2 text-xs font-bold text-green-800 dark:text-green-200">
+                                            INFERIOR</div>
+                                        <div
+                                            class="absolute left-2 top-1/2 transform -translate-y-1/2 text-xs font-bold text-green-800 dark:text-green-200">
+                                            R</div>
+                                        <div
+                                            class="absolute right-2 top-1/2 transform -translate-y-1/2 text-xs font-bold text-green-800 dark:text-green-200">
+                                            L</div>
+                                    </div>
+                                    <p class="mt-4 text-sm text-gray-600 dark:text-gray-400">Looking from front to back
+                                    </p>
+                                </div>
+
+                                <!-- Sagittal view -->
+                                <div id="sagittal-view" class="plane-view text-center hidden">
+                                    <div
+                                        class="w-64 h-64 mx-auto relative bg-gradient-to-br from-purple-100 to-purple-200 dark:from-purple-800 dark:to-purple-900 rounded-xl border-4 border-purple-300 shadow-lg">
+                                        <div
+                                            class="absolute inset-4 bg-purple-200 dark:bg-purple-700 rounded-xl opacity-70">
+                                            <div
+                                                class="absolute top-6 left-8 w-20 h-12 bg-purple-300 dark:bg-purple-600 rounded-t-lg">
+                                            </div>
+                                            <div
+                                                class="absolute bottom-6 right-8 w-16 h-16 bg-purple-400 dark:bg-purple-500 rounded-full">
+                                            </div>
+                                            <div
+                                                class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-8 h-8 bg-purple-500 dark:bg-purple-400 rounded-full">
+                                            </div>
+                                        </div>
+                                        <div
+                                            class="absolute top-2 left-1/2 transform -translate-x-1/2 text-xs font-bold text-purple-800 dark:text-purple-200">
+                                            SUPERIOR</div>
+                                        <div
+                                            class="absolute bottom-2 left-1/2 transform -translate-x-1/2 text-xs font-bold text-purple-800 dark:text-purple-200">
+                                            INFERIOR</div>
+                                        <div
+                                            class="absolute left-2 top-1/2 transform -translate-y-1/2 text-xs font-bold text-purple-800 dark:text-purple-200">
+                                            A</div>
+                                        <div
+                                            class="absolute right-2 top-1/2 transform -translate-y-1/2 text-xs font-bold text-purple-800 dark:text-purple-200">
+                                            P</div>
+                                    </div>
+                                    <p class="mt-4 text-sm text-gray-600 dark:text-gray-400">Looking from side (midline
+                                        view)</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Clinical Information -->
+                    <div class="space-y-4">
+                        <div id="plane-details" class="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg">
+                            <h4 class="font-semibold text-blue-600 dark:text-blue-400 mb-3">📋 Axial Plane Details</h4>
+                            <div class="space-y-3 text-sm">
+                                <div>
+                                    <h5 class="font-medium text-blue-700 dark:text-blue-300">Also Known As:</h5>
+                                    <p class="text-gray-600 dark:text-gray-400">• Transverse plane<br>• Horizontal plane
+                                    </p>
+                                </div>
+                                <div>
+                                    <h5 class="font-medium text-blue-700 dark:text-blue-300">Divides Brain Into:</h5>
+                                    <p class="text-gray-600 dark:text-gray-400">• Superior (upper) portions<br>•
+                                        Inferior (lower) portions</p>
+                                </div>
+                                <div>
+                                    <h5 class="font-medium text-blue-700 dark:text-blue-300">Clinical Use:</h5>
+                                    <p class="text-gray-600 dark:text-gray-400">Most common for CT scans. Essential for
+                                        stroke localization and measuring brain structures.</p>
+                                </div>
+                                <div>
+                                    <h5 class="font-medium text-blue-700 dark:text-blue-300">Hemorrhage Example:</h5>
+                                    <p class="text-gray-600 dark:text-gray-400">"Right frontal hemorrhage at the level
+                                        of the lateral ventricles"</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Coordinate System Guide -->
+                        <div class="bg-yellow-50 dark:bg-yellow-900/20 p-4 rounded-lg">
+                            <h4 class="font-semibold text-yellow-600 dark:text-yellow-400 mb-3">🧭 Coordinate System
+                            </h4>
+                            <div class="space-y-2 text-sm">
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600 dark:text-gray-400">Anterior (A):</span>
+                                    <span class="font-medium">Front</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600 dark:text-gray-400">Posterior (P):</span>
+                                    <span class="font-medium">Back</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600 dark:text-gray-400">Superior (S):</span>
+                                    <span class="font-medium">Top</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600 dark:text-gray-400">Inferior (I):</span>
+                                    <span class="font-medium">Bottom</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600 dark:text-gray-400">Left (L):</span>
+                                    <span class="font-medium">Patient's left</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600 dark:text-gray-400">Right (R):</span>
+                                    <span class="font-medium">Patient's right</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Clinical Examples -->
+                        <div class="bg-red-50 dark:bg-red-900/20 p-4 rounded-lg">
+                            <h4 class="font-semibold text-red-600 dark:text-red-400 mb-3">🚨 Clinical Examples</h4>
+                            <div class="space-y-2 text-sm">
+                                <div>
+                                    <p class="font-medium text-red-700 dark:text-red-300">Stroke Localization:</p>
+                                    <p class="text-gray-600 dark:text-gray-400">"Left MCA infarct extending from corona
+                                        radiata to cortex"</p>
+                                </div>
+                                <div>
+                                    <p class="font-medium text-red-700 dark:text-red-300">Tumor Description:</p>
+                                    <p class="text-gray-600 dark:text-gray-400">"Right frontal mass with midline shift"
+                                    </p>
+                                </div>
+                                <div>
+                                    <p class="font-medium text-red-700 dark:text-red-300">Hemorrhage Location:</p>
+                                    <p class="text-gray-600 dark:text-gray-400">"Subarachnoid hemorrhage in basal
+                                        cisterns"</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Frontiers Tab -->
+        <section id="content-modern" class="tab-content" role="tabpanel" aria-labelledby="tab-modern">
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4 md:p-6 mb-8">
+                <h2 class="text-xl md:text-2xl font-bold mb-4 text-red-700 dark:text-red-300">🔬 Brain Frontiers: What Modern Neuroscience Has Uncovered</h2>
+                <p class="mb-6 text-gray-700 dark:text-gray-300">The brain systems you've explored in the previous tabs are foundational and well-established. But neuroscience has seen transformative advances in recent years. Here are three frontier areas that reshape our understanding of the brain.</p>
+
+                <!-- Connectomics -->
+                <div class="mb-8 p-6 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-xl border border-blue-200 dark:border-blue-700">
+                    <div class="flex items-center mb-4">
+                        <div class="text-3xl mr-4">🗺️</div>
+                        <div>
+                            <h3 class="text-xl font-bold text-blue-700 dark:text-blue-300">Connectomics: The Brain's Wiring Diagram</h3>
+                            <p class="text-sm text-blue-600 dark:text-blue-400">The largest-ever neural wiring map was completed in 2025</p>
+                        </div>
+                    </div>
+                    <p class="text-sm text-gray-700 dark:text-gray-300 mb-4">The <strong>MICrONS project</strong> (April 2025, <em>Nature</em>, 10 studies) produced the most complete wiring diagram of a piece of mammalian brain to date: 1 cubic millimeter of mouse visual cortex, containing <strong>200,000 cells, 4 km of axons, and 523 million synapses</strong>. This is roughly the size of a grain of sand.</p>
+                    <div class="grid md:grid-cols-2 gap-4 mb-4">
+                        <div class="bg-white dark:bg-gray-800 rounded-lg p-4 border-l-4 border-blue-500">
+                            <h4 class="font-semibold text-blue-700 dark:text-blue-300 mb-2">Key Discoveries</h4>
+                            <ul class="text-sm text-gray-700 dark:text-gray-300 list-disc pl-5 space-y-1">
+                                <li><strong>Inhibitory wiring is not random:</strong> Specific inhibitory neuron types target specific excitatory cell types, creating a sophisticated coordination system rather than blanket suppression</li>
+                                <li><strong>Functional wiring maps:</strong> For the first time, neural activity was linked to physical wiring, revealing how structure enables function</li>
+                                <li><strong>Cell-type diversity:</strong> Far more distinct cell types exist than classical models assumed, each with unique connectivity patterns</li>
+                            </ul>
+                        </div>
+                        <div class="bg-white dark:bg-gray-800 rounded-lg p-4 border-l-4 border-indigo-500">
+                            <h4 class="font-semibold text-indigo-700 dark:text-indigo-300 mb-2">Why It Matters</h4>
+                            <ul class="text-sm text-gray-700 dark:text-gray-300 list-disc pl-5 space-y-1">
+                                <li>Think of it as moving from a <strong>road map</strong> to a <strong>traffic system</strong>; not just where roads go, but what flows through them</li>
+                                <li>Understanding specific wiring rules reveals why <strong>disconnection syndromes</strong> cause the symptoms they do</li>
+                                <li>The full dataset (1.6 petabytes) is <strong>openly available</strong> at microns-explorer.org for researchers worldwide</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Brain Eras -->
+                <div class="mb-8 p-6 bg-gradient-to-r from-emerald-50 to-green-50 dark:from-emerald-900/20 dark:to-green-900/20 rounded-xl border border-emerald-200 dark:border-emerald-700">
+                    <div class="flex items-center mb-4">
+                        <div class="text-3xl mr-4">📊</div>
+                        <div>
+                            <h3 class="text-xl font-bold text-emerald-700 dark:text-emerald-300">Five Brain Eras Across the Lifespan</h3>
+                            <p class="text-sm text-emerald-600 dark:text-emerald-400">Brain organization doesn't just decline; it transforms at predictable turning points</p>
+                        </div>
+                    </div>
+                    <p class="text-sm text-gray-700 dark:text-gray-300 mb-4">A 2025 <em>Nature Communications</em> study (n = 3,802, MRI tractography) revealed that the brain doesn't age linearly. Instead, it reorganizes through <strong>five distinct phases</strong> across life, with transition points at approximately ages 9, 32, 66, and 83.</p>
+                    <div class="grid md:grid-cols-5 gap-3 mb-4">
+                        <div class="bg-white dark:bg-gray-800 rounded-lg p-3 border-t-4 border-emerald-300 text-center">
+                            <div class="text-xl font-bold text-emerald-700 dark:text-emerald-300">0-9</div>
+                            <div class="text-xs font-semibold text-emerald-600 dark:text-emerald-400 mb-1">Development</div>
+                            <div class="text-xs text-gray-700 dark:text-gray-300">Rapid wiring, pruning, myelination. Peak neuroplasticity.</div>
+                        </div>
+                        <div class="bg-white dark:bg-gray-800 rounded-lg p-3 border-t-4 border-green-300 text-center">
+                            <div class="text-xl font-bold text-green-700 dark:text-green-300">9-32</div>
+                            <div class="text-xs font-semibold text-green-600 dark:text-green-400 mb-1">Maturation</div>
+                            <div class="text-xs text-gray-700 dark:text-gray-300">Connectivity refines. "Efficiency" peaks around 32.</div>
+                        </div>
+                        <div class="bg-white dark:bg-gray-800 rounded-lg p-3 border-t-4 border-yellow-300 text-center">
+                            <div class="text-xl font-bold text-yellow-700 dark:text-yellow-300">32-66</div>
+                            <div class="text-xs font-semibold text-yellow-600 dark:text-yellow-400 mb-1">Stability</div>
+                            <div class="text-xs text-gray-700 dark:text-gray-300">Gradual connectivity decline begins, but compensatory mechanisms activate.</div>
+                        </div>
+                        <div class="bg-white dark:bg-gray-800 rounded-lg p-3 border-t-4 border-orange-300 text-center">
+                            <div class="text-xl font-bold text-orange-700 dark:text-orange-300">66-83</div>
+                            <div class="text-xs font-semibold text-orange-600 dark:text-orange-400 mb-1">Decline</div>
+                            <div class="text-xs text-gray-700 dark:text-gray-300">Accelerated hub vulnerability. Network efficiency drops noticeably.</div>
+                        </div>
+                        <div class="bg-white dark:bg-gray-800 rounded-lg p-3 border-t-4 border-red-300 text-center">
+                            <div class="text-xl font-bold text-red-700 dark:text-red-300">83+</div>
+                            <div class="text-xs font-semibold text-red-600 dark:text-red-400 mb-1">Late Aging</div>
+                            <div class="text-xs text-gray-700 dark:text-gray-300">Significant reorganization. Some resist decline ("SuperAgers").</div>
+                        </div>
+                    </div>
+                    <div class="bg-white dark:bg-gray-800 rounded-lg p-4 border-l-4 border-emerald-500">
+                        <h4 class="font-semibold text-emerald-700 dark:text-emerald-300 mb-2">Clinical Implication</h4>
+                            <p class="text-sm text-gray-700 dark:text-gray-300">These age boundaries aren't random; they correspond to biological transitions in glial function, myelin maintenance, and vascular health. Understanding them helps predict windows of vulnerability and resilience.</p>
+                    </div>
+                </div>
+
+                <!-- Sleep and Glymphatics -->
+                <div class="mb-8 p-6 bg-gradient-to-r from-cyan-50 to-sky-50 dark:from-cyan-900/20 dark:to-sky-900/20 rounded-xl border border-cyan-200 dark:border-cyan-700">
+                    <div class="flex items-center mb-4">
+                        <div class="text-3xl mr-4">💧</div>
+                        <div>
+                            <h3 class="text-xl font-bold text-cyan-700 dark:text-cyan-300">Sleep, Glymphatics & Brain Maintenance</h3>
+                            <p class="text-sm text-cyan-600 dark:text-cyan-400">Your brain has a waste clearance system, and it works best while you sleep</p>
+                        </div>
+                    </div>
+                    <p class="text-sm text-gray-700 dark:text-gray-300 mb-4">The <strong>glymphatic system</strong> (named for "glia" + "lymphatic") is a recently discovered waste-clearance network in the brain. CSF flows along arterial perivascular spaces, exchanges with interstitial fluid, and carries metabolic waste toward meningeal lymphatic vessels for removal.</p>
+                    <div class="grid md:grid-cols-2 gap-4 mb-4">
+                        <div class="bg-white dark:bg-gray-800 rounded-lg p-4 border-l-4 border-cyan-500">
+                            <h4 class="font-semibold text-cyan-700 dark:text-cyan-300 mb-2">How It Works</h4>
+                            <ul class="text-sm text-gray-700 dark:text-gray-300 list-disc pl-5 space-y-1">
+                                <li><strong>During sleep:</strong> Brain cells shrink by ~60%, expanding the interstitial space and allowing CSF to flush through 10× faster than during wakefulness</li>
+                                <li><strong>Aquaporin-4 channels</strong> on astrocyte endfeet act as the "plumbing valves" controlling CSF inflow</li>
+                                <li><strong>Meningeal lymphatic vessels</strong> (confirmed in 2015) drain waste from the brain into the cervical lymph nodes</li>
+                                <li>2026 <em>Nature Communications</em>: First human confirmation that glymphatic clearance transports amyloid-beta and tau <em>from brain to plasma</em></li>
+                            </ul>
+                        </div>
+                        <div class="bg-white dark:bg-gray-800 rounded-lg p-4 border-l-4 border-sky-500">
+                            <h4 class="font-semibold text-sky-700 dark:text-sky-300 mb-2">Why It Matters</h4>
+                            <ul class="text-sm text-gray-700 dark:text-gray-300 list-disc pl-5 space-y-1">
+                                <li><strong>Sleep deprivation impairs glymphatic clearance</strong>, allowing waste proteins to accumulate, which may help explain the link between poor sleep and Alzheimer's risk</li>
+                                <li><strong>Sleeping position matters:</strong> lateral sleeping enhances glymphatic clearance compared to prone (in animal models)</li>
+                                <li><strong>Aging reduces glymphatic function</strong>, potentially contributing to age-related cognitive decline</li>
+                                <li>Stanford 2025: Ultrasound techniques may enhance brain waste clearance, suggesting future therapeutic approaches</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Revisiting -->
+                <div class="mb-4 p-4 bg-red-50 dark:bg-red-900/20 rounded-lg border border-red-200 dark:border-red-700">
+                    <h4 class="font-semibold text-red-700 dark:text-red-300 mb-2">📋 Revisiting What You Learned</h4>
+                    <p class="text-sm text-gray-700 dark:text-gray-300 mb-2">The brain systems in the previous tabs, motor, sensory, visual, auditory, language, executive, memory, emotional, and attention, remain <strong>correct and essential</strong>. Modern neuroscience adds important context:</p>
+                    <ul class="text-sm text-gray-700 dark:text-gray-300 list-disc pl-5 space-y-1">
+                        <li>Brain systems are <strong>not independent modules</strong>; connectomics reveals precise, non-random wiring between them</li>
+                        <li>Brain organization changes through <strong>predictable life phases</strong>, not just gradual maturation and decline</li>
+                        <li>The brain has a <strong>waste clearance system</strong> critical for long-term health</li>
+                        <li>Understanding vascular supply (Circle of Willis) connects directly to glymphatic flow and lymphatic drainage</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Load JavaScript in correct order -->
+    <script src="js/firebase-init.js"></script>
+    <script src="js/components.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/streamlined-brain-model.js"></script>
+    <script src="js/04-brain-systems-pathways.js"></script>
+
+    <script>
+        // Essential initialization only - delegate to external JS files
+        document.addEventListener('DOMContentLoaded', function () {
+            console.log('🧠 Chapter 4 HTML initialized, loading external controllers...');
+
+            // Simple loading feedback
+            const brainContainer = document.getElementById('brain-3d-container');
+            if (brainContainer) {
+                console.log('Brain container found, waiting for 3D model initialization...');
+            }
+
+            // Wait for external JS to load
+            setTimeout(() => {
+                if (typeof window.chapter4Controller === 'undefined') {
+                    console.log('External controller not found, running fallback initialization...');
+                    initFallbackController();
+                }
+
+                // Add manual trigger for enhanced model
+                const forceEnhancedButton = document.getElementById('force-enhanced-model');
+                if (forceEnhancedButton) {
+                    forceEnhancedButton.addEventListener('click', function () {
+                        console.log('🔧 Manual trigger: Force loading enhanced model...');
+                        const container = document.getElementById('brain-3d-container');
+                        if (container && typeof EnhancedBrainModel !== 'undefined') {
+                            // Clear container and try again
+                            container.innerHTML = '<div class="text-center p-4">🔄 Reinitializing enhanced model...</div>';
+                            setTimeout(() => {
+                                if (window.chapter4Controller && window.chapter4Controller.initBrain3DModel) {
+                                    window.chapter4Controller.initBrain3DModel();
+                                } else if (typeof initBrain3DModel === 'function') {
+                                    initBrain3DModel();
+                                } else {
+                                    console.log('🔧 Creating new enhanced brain model directly...');
+                                    try {
+                                        const brain = new EnhancedBrainModel();
+                                        brain.init().then(() => {
+                                            console.log('✅ Manual enhanced model initialization successful!');
+                                        }).catch(err => {
+                                            console.error('❌ Manual enhanced model failed:', err);
+                                        });
+                                    } catch (e) {
+                                        console.error('❌ Failed to create enhanced model manually:', e);
+                                    }
+                                }
+                            }, 100);
+                        } else {
+                            console.warn('⚠️ Enhanced model not available for manual trigger');
+                        }
+                    });
+                }
+            }, 2000);
+        });
+
+        // Minimal fallback if external JS fails
+        function initFallbackController() {
+            console.log('🔧 Running fallback controller...');
+
+            // Basic tab functionality
+            const tabButtons = document.querySelectorAll('.tab-button');
+            const tabContents = document.querySelectorAll('.tab-content');
+
+            tabButtons.forEach(button => {
+                button.addEventListener('click', function () {
+                    const targetId = this.getAttribute('aria-controls');
+
+                    // Update buttons
+                    tabButtons.forEach(btn => btn.classList.remove('active'));
+                    this.classList.add('active');
+
+                    // Update content
+                    tabContents.forEach(content => content.classList.remove('active'));
+                    const targetTab = document.getElementById(targetId);
+                    if (targetTab) {
+                        targetTab.classList.add('active');
+                    }
+
+                    console.log(`Switched to tab: ${targetId}`);
+                });
+            });
+
+            // Show a notification that fallback mode is active
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: linear-gradient(45deg, #f59e0b, #ef4444);
+                color: white;
+                padding: 12px 20px;
+                border-radius: 8px;
+                font-size: 14px;
+                font-weight: 500;
+                z-index: 9999;
+                box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+                max-width: 300px;
+            `;
+            notification.innerHTML = '⚠️ Running in compatibility mode - some features may be limited';
+            document.body.appendChild(notification);
+
+            // Remove notification after 5 seconds
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.style.opacity = '0';
+                    notification.style.transform = 'translateX(100%)';
+                    setTimeout(() => {
+                        notification.remove();
+                    }, 300);
+                }
+            }, 5000);
+
+            console.log('✅ Fallback controller initialized');
+        }
+
+    </script>
+</body>
+
+</html>

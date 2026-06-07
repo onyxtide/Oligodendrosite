@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://oligodendrosite.com/sitemap.xml
+
+# Crawl delay (optional - 1 second)
+Crawl-delay: 1

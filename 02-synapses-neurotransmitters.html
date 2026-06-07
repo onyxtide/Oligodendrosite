@@ -1,0 +1,923 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Synapses & Neurotransmitters - Interactive Neuroscience Learning | Oligodendrosite</title>
+    <meta name="description" content="Interactive exploration of synaptic transmission, neurotransmitters, and chemical communication in the nervous system. Learn how neurons communicate through detailed simulations.">
+    <meta name="keywords" content="synapses, neurotransmitters, synaptic transmission, chemical synapses, dopamine, serotonin, GABA, acetylcholine, neuroscience">
+    
+    <!-- Brain emoji favicon -->
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧠</text></svg>">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+    <link rel="stylesheet" href="css/main.css">
+    
+</head>
+
+<body class="bg-gray-100 font-sans dark:bg-gray-900 text-gray-800 dark:text-gray-200 transition-colors duration-300">
+    <!-- Header will be loaded here by components.js -->
+    <div id="header-placeholder"></div>
+
+    <!-- Consistent colored header -->
+    <header class="bg-green-700 text-white p-6 shadow-md mb-8">
+        <div class="container mx-auto">
+            <h1 class="text-3xl md:text-4xl font-bold mb-2">Chapter 2: Synapses & Neurotransmitters</h1>
+            <p class="text-lg opacity-90">Discover how neurons communicate through chemical signals</p>
+        </div>
+    </header>
+
+    <main class="container mx-auto p-4 md:p-6">
+        <!-- Introduction Section -->
+        <section class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-8">
+            <h2 class="text-2xl font-bold mb-4 text-green-700">How do neurons talk to each other?</h2>
+            <p class="mb-4">Neurons communicate through specialized junctions called synapses, using chemical messengers
+                called neurotransmitters. But synapses aren't just neuron-to-neuron connections. <strong>Glial cells like astrocytes</strong> actively shape synaptic signaling too. This process is fundamental to everything your brain does, from simple
+                reflexes to complex thoughts and emotions.</p>
+            <p class="mb-2 font-semibold">In this exploration, you'll discover:</p>
+            <ul class="list-disc pl-6 mb-4">
+                <li>How synaptic transmission works at the molecular level</li>
+                <li>Different types of neurotransmitters and their functions</li>
+                <li>The difference between excitatory and inhibitory signals</li>
+                <li>How drugs, diseases, and glial cells affect synaptic function</li>
+            </ul>
+            <p class="text-green-700 font-semibold">Start by selecting a tab below to begin your exploration!</p>
+        </section>
+
+        <!-- Navigation Tabs -->
+        <nav class="mb-6 tab-navigation" role="tablist" aria-label="Chapter sections"
+            style="--tab-active-color:#15803d; --tab-active-color-dark:#86efac; --tab-hover-color:#15803d; --tab-hover-color-dark:#86efac; --tab-active-bg:#dcfce7; --tab-active-bg-dark:rgba(34,197,94,0.18); --tab-hover-bg:#f0fdf4; --tab-hover-bg-dark:rgba(34,197,94,0.12);">
+            <button id="tab-synapse" role="tab" aria-selected="true" aria-controls="content-synapse"
+                class="tab-button relative px-4 py-2 text-green-700 font-medium rounded-lg transition-all duration-300">
+                <span class="hidden sm:inline">Synaptic Structure</span>
+                <span class="sm:hidden">Structure</span>
+            </button>
+            <button id="tab-transmission" role="tab" aria-selected="false" aria-controls="content-transmission"
+                class="tab-button relative px-4 py-2 text-gray-500 font-medium rounded-lg transition-all duration-300 hover:text-green-600 hover:bg-green-50 dark:hover:bg-green-900/20">
+                <span class="hidden sm:inline">Transmission Process</span>
+                <span class="sm:hidden">Process</span>
+            </button>
+            <button id="tab-neurotransmitters" role="tab" aria-selected="false"
+                aria-controls="content-neurotransmitters"
+                class="tab-button relative px-4 py-2 text-gray-500 font-medium rounded-lg transition-all duration-300 hover:text-green-600 hover:bg-green-50 dark:hover:bg-green-900/20">
+                <span class="hidden sm:inline">Neurotransmitters</span>
+                <span class="sm:hidden">NT Types</span>
+            </button>
+            <button id="tab-receptors" role="tab" aria-selected="false" aria-controls="content-receptors"
+                class="tab-button relative px-4 py-2 text-gray-500 font-medium rounded-lg transition-all duration-300 hover:text-green-600 hover:bg-green-50 dark:hover:bg-green-900/20">
+                <span class="hidden sm:inline">Receptors</span>
+                <span class="sm:hidden">Receptors</span>
+            </button>
+            <button id="tab-integration" role="tab" aria-selected="false" aria-controls="content-integration"
+                class="tab-button relative px-4 py-2 text-gray-500 font-medium rounded-lg transition-all duration-300 hover:text-green-600 hover:bg-green-50 dark:hover:bg-green-900/20">
+                <span class="hidden sm:inline">Synaptic Integration</span>
+                <span class="sm:hidden">Integration</span>
+            </button>
+            <button id="tab-modern" role="tab" aria-selected="false" aria-controls="content-modern"
+                class="tab-button relative px-4 py-2 text-gray-500 font-medium rounded-lg transition-all duration-300 hover:text-green-600 hover:bg-green-50 dark:hover:bg-green-900/20">
+                <span class="hidden sm:inline">🔬 Beyond Neuron-to-Neuron</span>
+                <span class="sm:hidden">Modern</span>
+            </button>
+        </nav>
+
+        <!-- Synaptic Structure Tab -->
+        <section id="content-synapse" class="tab-content active" role="tabpanel" aria-labelledby="tab-synapse">
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-8">
+                <h2 class="text-2xl font-bold mb-4 text-green-700">Synaptic Structure: The Communication Junction</h2>
+
+                <div class="lg:flex gap-6">
+                    <div class="lg:w-1/2 mb-6 lg:mb-0">
+                        <div
+                            class="relative h-[500px] border border-gray-200 rounded-lg overflow-hidden bg-gradient-to-b from-blue-50 to-purple-50 dark:from-gray-700 dark:to-gray-800">
+                            <svg id="synapse-svg" viewBox="0 0 900 500" class="w-full h-full">
+                                <!-- Background membrane lines -->
+                                <defs>
+                                    <pattern id="membrane-pattern" patternUnits="userSpaceOnUse" width="4" height="4">
+                                        <rect width="4" height="4" fill="rgba(59, 130, 246, 0.1)" />
+                                        <circle cx="2" cy="2" r="0.5" fill="rgba(59, 130, 246, 0.3)" />
+                                    </pattern>
+                                    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5"
+                                        orient="auto">
+                                        <polygon points="0 0, 10 3.5, 0 7" fill="white" />
+                                    </marker>
+                                    <linearGradient id="cleftGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                                        <stop offset="0%" style="stop-color:#dbeafe;stop-opacity:0.3" />
+                                        <stop offset="50%" style="stop-color:#bfdbfe;stop-opacity:0.6" />
+                                        <stop offset="100%" style="stop-color:#dbeafe;stop-opacity:0.3" />
+                                    </linearGradient>
+                                </defs>
+
+                                <!-- Presynaptic Neuron (Axon Terminal) -->
+                                <g id="presynaptic" class="synapse-part" data-part="presynaptic"
+                                    data-title="Presynaptic Terminal"
+                                    data-description="The axon terminal containing synaptic vesicles, calcium channels, and release machinery for neurotransmitter release.">
+                                    <!-- Axon approaching -->
+                                    <rect x="50" y="235" width="200" height="30" fill="#3b82f6" stroke="#1d4ed8"
+                                        stroke-width="2" rx="15" />
+                                    <!-- Terminal bulge -->
+                                    <ellipse cx="280" cy="250" rx="90" ry="80" fill="#4299e1" stroke="#2563eb"
+                                        stroke-width="3" />
+                                    <text x="280" y="160" text-anchor="middle" font-size="14" font-weight="bold"
+                                        fill="#1e40af">Presynaptic Terminal</text>
+
+                                    <!-- Membrane detail -->
+                                    <path d="M 190 250 Q 370 250 370 250" stroke="#1d4ed8" stroke-width="4"
+                                        fill="none" />
+                                </g>
+
+                                <!-- Synaptic Vesicles (Ready-Release Pool) -->
+                                <g id="vesicles" class="synapse-part" data-part="vesicles"
+                                    data-title="Synaptic Vesicles"
+                                    data-description="Membrane-bound organelles storing neurotransmitters. The ready-release pool contains 10-20 vesicles docked at active zones.">
+                                    <!-- Docked vesicles (ready to release) -->
+                                    <circle cx="340" cy="230" r="12" fill="#fbbf24" stroke="#f59e0b" stroke-width="2"
+                                        class="vesicle docked" />
+                                    <circle cx="320" cy="250" r="12" fill="#fbbf24" stroke="#f59e0b" stroke-width="2"
+                                        class="vesicle docked" />
+                                    <circle cx="340" cy="270" r="12" fill="#fbbf24" stroke="#f59e0b" stroke-width="2"
+                                        class="vesicle docked" />
+
+                                    <!-- Reserve pool vesicles -->
+                                    <circle cx="250" cy="220" r="10" fill="#fed7aa" stroke="#fb923c" stroke-width="1"
+                                        class="vesicle reserve" />
+                                    <circle cx="280" cy="210" r="10" fill="#fed7aa" stroke="#fb923c" stroke-width="1"
+                                        class="vesicle reserve" />
+                                    <circle cx="220" cy="250" r="10" fill="#fed7aa" stroke="#fb923c" stroke-width="1"
+                                        class="vesicle reserve" />
+                                    <circle cx="250" cy="280" r="10" fill="#fed7aa" stroke="#fb923c" stroke-width="1"
+                                        class="vesicle reserve" />
+                                    <circle cx="280" cy="290" r="10" fill="#fed7aa" stroke="#fb923c" stroke-width="1"
+                                        class="vesicle reserve" />
+
+                                    <!-- Vesicle content dots -->
+                                    <g class="vesicle-content">
+                                        <circle cx="340" cy="230" r="3" fill="#dc2626" opacity="0.7" />
+                                        <circle cx="320" cy="250" r="3" fill="#dc2626" opacity="0.7" />
+                                        <circle cx="340" cy="270" r="3" fill="#dc2626" opacity="0.7" />
+                                    </g>
+                                </g>
+
+                                <!-- Calcium Channels -->
+                                <g id="ca-channels" class="synapse-part" data-part="ca-channels"
+                                    data-title="Voltage-Gated Ca²⁺ Channels"
+                                    data-description="P/Q-type and N-type calcium channels that open during action potential depolarization, allowing Ca²⁺ influx to trigger vesicle fusion.">
+                                    <rect x="360" y="225" width="12" height="25" fill="#dc2626" stroke="#991b1b"
+                                        stroke-width="2" rx="3" class="ca-channel closed" />
+                                    <rect x="360" y="250" width="12" height="25" fill="#dc2626" stroke="#991b1b"
+                                        stroke-width="2" rx="3" class="ca-channel closed" />
+                                    <rect x="360" y="275" width="12" height="25" fill="#dc2626" stroke="#991b1b"
+                                        stroke-width="2" rx="3" class="ca-channel closed" />
+
+                                    <!-- Channel labels -->
+                                    <text x="345" y="215" font-size="9" fill="#7f1d1d" font-weight="bold">P/Q</text>
+                                    <text x="345" y="240" font-size="9" fill="#7f1d1d" font-weight="bold">N</text>
+                                    <text x="342" y="265" font-size="9" fill="#7f1d1d" font-weight="bold">Ca²⁺</text>
+                                </g>
+
+                                <!-- Synaptic Cleft -->
+                                <g id="cleft" class="synapse-part" data-part="cleft" data-title="Synaptic Cleft"
+                                    data-description="20-40nm gap between neurons. Contains extracellular matrix, enzymes (acetylcholinesterase), and neurotransmitter transporters.">
+                                    <rect x="370" y="180" width="80" height="140" fill="url(#cleftGradient)"
+                                        stroke="#6b7280" stroke-width="2" stroke-dasharray="8,4" />
+                                    <text x="410" y="160" text-anchor="middle" font-size="12" font-weight="bold"
+                                        fill="#374151">Synaptic Cleft</text>
+                                    <text x="410" y="350" text-anchor="middle" font-size="11" fill="#6b7280">20-40
+                                        nanometers</text>
+
+                                    <!-- Extracellular matrix representation -->
+                                    <g opacity="0.3">
+                                        <line x1="385" y1="200" x2="435" y2="210" stroke="#9ca3af" stroke-width="1" />
+                                        <line x1="390" y1="240" x2="425" y2="230" stroke="#9ca3af" stroke-width="1" />
+                                        <line x1="385" y1="280" x2="440" y2="290" stroke="#9ca3af" stroke-width="1" />
+                                    </g>
+                                </g>
+
+                                <!-- Floating Neurotransmitter Molecules -->
+                                <g id="neurotransmitters" class="synapse-part" data-part="neurotransmitters"
+                                    data-title="Neurotransmitter Molecules"
+                                    data-description="Chemical messengers (glutamate, GABA, acetylcholine, etc.) that diffuse across the cleft and bind to postsynaptic receptors.">
+                                    <!-- Initially hidden, will appear during simulation -->
+                                    <circle cx="385" cy="220" r="4" fill="#10b981" stroke="#059669" stroke-width="1"
+                                        class="neurotransmitter" opacity="0" />
+                                    <circle cx="420" cy="235" r="4" fill="#10b981" stroke="#059669" stroke-width="1"
+                                        class="neurotransmitter" opacity="0" />
+                                    <circle cx="400" cy="250" r="4" fill="#10b981" stroke="#059669" stroke-width="1"
+                                        class="neurotransmitter" opacity="0" />
+                                    <circle cx="435" cy="265" r="4" fill="#10b981" stroke="#059669" stroke-width="1"
+                                        class="neurotransmitter" opacity="0" />
+                                    <circle cx="395" cy="280" r="4" fill="#10b981" stroke="#059669" stroke-width="1"
+                                        class="neurotransmitter" opacity="0" />
+                                    <circle cx="415" cy="295" r="4" fill="#10b981" stroke="#059669" stroke-width="1"
+                                        class="neurotransmitter" opacity="0" />
+                                </g>
+
+                                <!-- Postsynaptic Membrane -->
+                                <g id="postsynaptic" class="synapse-part" data-part="postsynaptic"
+                                    data-title="Postsynaptic Membrane"
+                                    data-description="The receiving neuron's membrane containing neurotransmitter receptors, ion channels, and postsynaptic density proteins.">
+                                    <!-- Membrane structure -->
+                                    <path d="M 450 250 Q 630 250 630 250" stroke="#7c3aed" stroke-width="4"
+                                        fill="none" />
+                                    <ellipse cx="620" cy="250" rx="90" ry="80" fill="#8b5cf6" stroke="#7c3aed"
+                                        stroke-width="3" />
+                                    <text x="620" y="160" text-anchor="middle" font-size="14" font-weight="bold"
+                                        fill="#5b21b6">Postsynaptic Membrane</text>
+
+                                    <!-- Postsynaptic density -->
+                                    <rect x="450" y="235" width="15" height="30" fill="#6366f1" opacity="0.7" rx="2" />
+                                    <text x="475" y="255" font-size="8" fill="#4338ca" font-weight="bold">PSD</text>
+
+                                    <!-- Continuing dendrite -->
+                                    <rect x="650" y="235" width="200" height="30" fill="#7c3aed" stroke="#6d28d9"
+                                        stroke-width="2" rx="15" />
+                                </g>
+
+                                <!-- Neurotransmitter Receptors -->
+                                <g id="receptors" class="synapse-part" data-part="receptors"
+                                    data-title="Neurotransmitter Receptors"
+                                    data-description="Ionotropic (AMPA, NMDA, GABA-A) and metabotropic (mGluR, GABA-B) receptors that respond to neurotransmitter binding.">
+                                    <!-- AMPA receptors (fast) -->
+                                    <rect x="470" y="220" width="18" height="15" fill="#f97316" stroke="#ea580c"
+                                        stroke-width="2" rx="4" class="receptor ampa" />
+                                    <rect x="470" y="265" width="18" height="15" fill="#f97316" stroke="#ea580c"
+                                        stroke-width="2" rx="4" class="receptor ampa" />
+                                    <text x="479" y="232" text-anchor="middle" font-size="9" fill="white"
+                                        font-weight="bold">AMPA</text>
+                                    <text x="479" y="277" text-anchor="middle" font-size="9" fill="white"
+                                        font-weight="bold">AMPA</text>
+
+                                    <!-- NMDA receptor (slow) -->
+                                    <rect x="495" y="242" width="18" height="15" fill="#dc2626" stroke="#b91c1c"
+                                        stroke-width="2" rx="4" class="receptor nmda" />
+                                    <text x="504" y="254" text-anchor="middle" font-size="9" fill="white"
+                                        font-weight="bold">NMDA</text>
+                                </g>
+
+                                <!-- Ion Channels -->
+                                <g id="ion-channels" class="synapse-part" data-part="ion-channels"
+                                    data-title="Ligand-Gated Ion Channels"
+                                    data-description="Channels that open when neurotransmitters bind, allowing Na⁺, K⁺, Ca²⁺, or Cl⁻ ions to flow and change membrane potential.">
+                                    <!-- Sodium channels -->
+                                    <rect x="520" y="220" width="10" height="25" fill="#06b6d4" stroke="#0891b2"
+                                        stroke-width="2" rx="2" class="ion-channel closed" />
+                                    <rect x="535" y="220" width="10" height="25" fill="#06b6d4" stroke="#0891b2"
+                                        stroke-width="2" rx="2" class="ion-channel closed" />
+                                    <text x="525" y="205" font-size="8" fill="#0e7490" font-weight="bold">Na⁺</text>
+
+                                    <!-- Potassium channels -->
+                                    <rect x="520" y="255" width="10" height="25" fill="#8b5cf6" stroke="#7c3aed"
+                                        stroke-width="2" rx="2" class="ion-channel closed" />
+                                    <rect x="535" y="255" width="10" height="25" fill="#8b5cf6" stroke="#7c3aed"
+                                        stroke-width="2" rx="2" class="ion-channel closed" />
+                                    <text x="525" y="305" font-size="8" fill="#5b21b6" font-weight="bold">K⁺</text>
+                                </g>
+
+                                <!-- Mitochondria -->
+                                <g id="mitochondria" class="synapse-part" data-part="mitochondria"
+                                    data-title="Mitochondria"
+                                    data-description="Provide ATP for vesicle recycling, neurotransmitter synthesis, ion pumps, and maintaining synaptic function.">
+                                    <ellipse cx="220" cy="220" rx="30" ry="18" fill="#ef4444" stroke="#dc2626"
+                                        stroke-width="2" />
+                                    <ellipse cx="580" cy="280" rx="30" ry="18" fill="#ef4444" stroke="#dc2626"
+                                        stroke-width="2" />
+                                    <!-- Cristae -->
+                                    <path d="M 195 220 Q 220 210 245 220" stroke="#b91c1c" stroke-width="2"
+                                        fill="none" />
+                                    <path d="M 555 280 Q 580 270 605 280" stroke="#b91c1c" stroke-width="2"
+                                        fill="none" />
+                                    <text x="220" y="225" text-anchor="middle" font-size="10" fill="white"
+                                        font-weight="bold">ATP</text>
+                                    <text x="580" y="285" text-anchor="middle" font-size="10" fill="white"
+                                        font-weight="bold">ATP</text>
+                                </g>
+
+                                <!-- Action Potential Wave -->
+                                <g id="action-potential" opacity="0">
+                                    <path d="M 50 250 Q 150 250 250 250" stroke="#fbbf24" stroke-width="6" fill="none"
+                                        stroke-linecap="round" />
+                                    <circle cx="50" cy="250" r="8" fill="#fbbf24">
+                                        <animate attributeName="cx" values="50;280" dur="1s" fill="freeze" />
+                                    </circle>
+                                    <text x="145" y="400" text-anchor="middle" font-size="12" fill="#f59e0b"
+                                        font-weight="bold">Action Potential</text>
+                                </g>
+
+                                <!-- Calcium Ions (animated during simulation) -->
+                                <g id="calcium-ions" opacity="0">
+                                    <circle cx="375" cy="240" r="3" fill="#ff6b6b" class="calcium-ion" />
+                                    <circle cx="375" cy="260" r="3" fill="#ff6b6b" class="calcium-ion" />
+                                    <circle cx="375" cy="280" r="3" fill="#ff6b6b" class="calcium-ion" />
+                                </g>
+
+                                <!-- Signal Flow Arrow -->
+                                <path d="M 130 200 L 770 200" stroke="white" stroke-width="3" fill="none"
+                                    marker-end="url(#arrowhead)" opacity="0.7" />
+                                <text x="450" y="145" text-anchor="middle" font-size="12" font-weight="bold"
+                                    fill="white">Signal Direction</text>
+                            </svg>
+
+                            <!-- Info Overlay -->
+                            <div id="synapse-info"
+                                class="absolute top-2 left-2 right-2 bg-white dark:bg-gray-800 bg-opacity-95 dark:bg-opacity-95 p-4 rounded-lg shadow-lg border border-blue-200 dark:border-blue-700 hidden">
+                                <div class="flex items-start justify-between">
+                                    <div class="flex-1">
+                                        <h3 id="synapse-part-title"
+                                            class="font-bold text-blue-700 dark:text-blue-300 mb-2 text-lg">Part Name
+                                        </h3>
+                                        <p id="synapse-part-description"
+                                            class="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">Description
+                                            goes here</p>
+                                    </div>
+                                    <button id="close-synapse-info"
+                                        class="ml-3 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M6 18L18 6M6 6l12 12"></path>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="text-sm text-center mt-3 text-gray-600 dark:text-gray-400">
+                            <span class="font-medium">💡 Interactive:</span> Click on any part of the synapse to learn
+                            more about its function
+                        </p>
+                    </div>
+
+                    <div class="lg:w-1/2">
+                        <h3 class="text-xl font-semibold mb-3">Key Synaptic Components</h3>
+                        <p class="mb-4">Synapses are highly specialized structures that enable precise chemical
+                            communication between neurons:</p>
+
+                        <div class="space-y-4">
+                            <div class="p-3 border-l-4 border-blue-500 bg-blue-50 dark:bg-blue-900/20 rounded">
+                                <h4 class="font-semibold text-blue-800 dark:text-blue-200">Presynaptic Terminal</h4>
+                                <p class="text-sm text-gray-700 dark:text-gray-300">Contains synaptic vesicles, Ca²⁺ channels, and release machinery.
+                                    Action potentials trigger neurotransmitter release here.</p>
+                            </div>
+
+                            <div class="p-3 border-l-4 border-yellow-500 bg-yellow-50 dark:bg-yellow-900/20 rounded">
+                                <h4 class="font-semibold text-yellow-800 dark:text-yellow-200">Synaptic Vesicles</h4>
+                                <p class="text-sm text-gray-700 dark:text-gray-300">Membrane-bound organelles storing ~5,000-10,000 neurotransmitter
+                                    molecules each. Ready-releasable pool contains ~10-20 vesicles.</p>
+                            </div>
+
+                            <div class="p-3 border-l-4 border-gray-500 bg-gray-50 dark:bg-gray-700 rounded">
+                                <h4 class="font-semibold text-gray-800 dark:text-gray-200">Synaptic Cleft</h4>
+                                <p class="text-sm text-gray-700 dark:text-gray-300">20-50 nanometer gap where neurotransmitters diffuse. Contains enzymes
+                                    (AChE) and transporters for signal termination.</p>
+                            </div>
+
+                            <div class="p-3 border-l-4 border-purple-500 bg-purple-50 dark:bg-purple-900/20 rounded">
+                                <h4 class="font-semibold text-purple-800 dark:text-purple-200">Postsynaptic Membrane</h4>
+                                <p class="text-sm text-gray-700 dark:text-gray-300">Contains neurotransmitter receptors and ion channels. Generates EPSPs
+                                    or IPSPs based on receptor type.</p>
+                            </div>
+
+                            <div class="p-3 border-l-4 border-orange-500 bg-orange-50 dark:bg-orange-900/20 rounded">
+                                <h4 class="font-semibold text-orange-800 dark:text-orange-200">Receptors & Channels</h4>
+                                <p class="text-sm text-gray-700 dark:text-gray-300">Ionotropic receptors (fast, ~1ms) directly gate ion channels.
+                                    Metabotropic receptors (slow, ~100ms) use second messengers.</p>
+                            </div>
+                        </div>
+
+                        <button id="simulate-transmission-btn"
+                            class="mt-6 bg-green-600 hover:bg-green-700 text-white font-medium py-3 px-6 rounded-lg transition-all duration-200 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50">
+                            <span class="flex items-center justify-center">
+                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M14.828 14.828a4 4 0 01-5.656 0M9 10h1m4 0h1m-6 4h1m4 0h1m-6 4h1m4 0h1M4 6h16M4 10h16M4 14h16M4 18h16">
+                                    </path>
+                                </svg>
+                                Start Synaptic Transmission Simulation
+                            </span>
+                        </button>
+
+                        <div
+                            class="mt-4 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-700">
+                            <p class="text-sm text-blue-700 dark:text-blue-300">
+                                <strong>📡 Watch:</strong> The simulation shows medically accurate timing and molecular
+                                interactions during synaptic transmission. Each step is based on real neuroscience
+                                research!
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Transmission Process Tab -->
+        <section id="content-transmission" class="tab-content" role="tabpanel" aria-labelledby="tab-transmission">
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-8">
+                <h2 class="text-2xl font-bold mb-4 text-green-700">Synaptic Transmission: Step-by-Step Process</h2>
+
+                <div class="lg:flex gap-6">
+                    <div class="lg:w-1/2 mb-6 lg:mb-0">
+                        <h3 class="text-xl font-semibold mb-3">Interactive Transmission Timeline</h3>
+                        <p class="mb-4">Follow the precise sequence of events during synaptic transmission. Each step
+                            occurs within milliseconds:</p>
+
+                        <div class="mb-4">
+                            <label for="transmission-speed"
+                                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Animation Speed:</label>
+                            <input type="range" id="transmission-speed" min="1" max="5" value="3" class="slider w-full">
+                            <div class="flex justify-between text-xs text-gray-500 dark:text-gray-400">
+                                <span>Slow</span>
+                                <span>Normal</span>
+                                <span>Fast</span>
+                            </div>
+                        </div>
+
+                        <div class="chart-container" style="height: 300px;">
+                            <canvas id="transmission-timeline-chart"></canvas>
+                        </div>
+
+                        <button id="start-transmission"
+                            class="mt-4 bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded transition">
+                            Start Transmission
+                        </button>
+                    </div>
+
+                    <div class="lg:w-1/2">
+                        <h3 class="text-xl font-semibold mb-3">Transmission Steps</h3>
+
+                        <div class="space-y-4">
+                            <div id="step-1"
+                                class="transmission-step p-3 border-l-4 border-blue-500 bg-blue-50 rounded opacity-50 dark:bg-blue-900/20 dark:border-blue-400">
+                                <h4 class="font-semibold">1. Action Potential Arrival (t=0ms)</h4>
+                                <p class="text-sm">Action potential depolarizes presynaptic terminal to +30mV, opening
+                                    voltage-gated Ca²⁺ channels.</p>
+                                <ul class="list-disc pl-5 text-xs mt-1">
+                                    <li>Membrane depolarization activates Ca²⁺ channels</li>
+                                    <li>Ca²⁺ influx increases from 0.1μM to 10-100μM</li>
+                                </ul>
+                            </div>
+
+                            <div id="step-2"
+                                class="transmission-step p-3 border-l-4 border-red-500 bg-red-50 rounded opacity-50 dark:bg-red-900/20 dark:border-red-400">
+                                <h4 class="font-semibold">2. Calcium Influx (t=0.1-0.3ms)</h4>
+                                <p class="text-sm">Ca²⁺ enters through N-type and P/Q-type channels, binding to
+                                    synaptotagmin sensors.</p>
+                                <ul class="list-disc pl-5 text-xs mt-1">
+                                    <li>Synaptotagmin acts as Ca²⁺ sensor</li>
+                                    <li>SNARE proteins prepare for vesicle fusion</li>
+                                </ul>
+                            </div>
+
+                            <div id="step-3"
+                                class="transmission-step p-3 border-l-4 border-yellow-500 bg-yellow-50 rounded opacity-50 dark:bg-yellow-900/20 dark:border-yellow-400">
+                                <h4 class="font-semibold">3. Vesicle Fusion (t=0.2-0.5ms)</h4>
+                                <p class="text-sm">Ca²⁺-triggered exocytosis: vesicles fuse with presynaptic membrane
+                                    via SNARE complex.</p>
+                                <ul class="list-disc pl-5 text-xs mt-1">
+                                    <li>Fusion pore opens (~1-2nm diameter)</li>
+                                    <li>~5,000-10,000 neurotransmitter molecules released</li>
+                                </ul>
+                            </div>
+
+                            <div id="step-4"
+                                class="transmission-step p-3 border-l-4 border-green-500 bg-green-50 rounded opacity-50 dark:bg-green-900/20 dark:border-green-400">
+                                <h4 class="font-semibold">4. Neurotransmitter Diffusion (t=0.1-1ms)</h4>
+                                <p class="text-sm">Neurotransmitters diffuse across 20-50nm synaptic cleft, reaching
+                                    peak concentration in ~100μs.</p>
+                                <ul class="list-disc pl-5 text-xs mt-1">
+                                    <li>Diffusion time depends on cleft width</li>
+                                    <li>Concentration peaks at ~1mM in cleft</li>
+                                </ul>
+                            </div>
+
+                            <div id="step-5"
+                                class="transmission-step p-3 border-l-4 border-purple-500 bg-purple-50 rounded opacity-50 dark:bg-purple-900/20 dark:border-purple-400">
+                                <h4 class="font-semibold">5. Receptor Binding (t=0.1-2ms)</h4>
+                                <p class="text-sm">Neurotransmitters bind to postsynaptic receptors, causing
+                                    conformational changes.</p>
+                                <ul class="list-disc pl-5 text-xs mt-1">
+                                    <li>Ionotropic: Direct channel opening</li>
+                                    <li>Metabotropic: G-protein activation</li>
+                                </ul>
+                            </div>
+
+                            <div id="step-6"
+                                class="transmission-step p-3 border-l-4 border-indigo-500 bg-indigo-50 rounded opacity-50 dark:bg-indigo-900/20 dark:border-indigo-400">
+                                <h4 class="font-semibold">6. Postsynaptic Response (t=1-10ms)</h4>
+                                <p class="text-sm">Ion channels open, generating EPSP or IPSP. Signal integration
+                                    determines if action potential fires.</p>
+                                <ul class="list-disc pl-5 text-xs mt-1">
+                                    <li>EPSP: Na⁺/Ca²⁺ influx, depolarization</li>
+                                    <li>IPSP: K⁺ efflux or Cl⁻ influx, hyperpolarization</li>
+                                </ul>
+                            </div>
+
+                            <div id="step-7"
+                                class="transmission-step p-3 border-l-4 border-gray-500 bg-gray-50 rounded opacity-50 dark:bg-gray-800 dark:border-gray-400">
+                                <h4 class="font-semibold">7. Signal Termination (t=1-100ms)</h4>
+                                <p class="text-sm">Neurotransmitter removal by reuptake, enzymatic degradation, or
+                                    diffusion.</p>
+                                <ul class="list-disc pl-5 text-xs mt-1">
+                                    <li>Reuptake transporters (DAT, SERT, NET)</li>
+                                    <li>Enzymes (AChE, MAO, COMT)</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Neurotransmitters Tab -->
+        <section id="content-neurotransmitters" class="tab-content" role="tabpanel"
+            aria-labelledby="tab-neurotransmitters">
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-8">
+                <h2 class="text-2xl font-bold mb-4 text-green-700">Neurotransmitters: The Brain's Chemical Messengers
+                </h2>
+
+                <div class="mb-6">
+                    <p class="mb-4">Over 100 different neurotransmitters have been identified, each with specific
+                        functions and effects. They can be classified by chemical structure and function:</p>
+
+                    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+                        <!-- Amino Acids -->
+                        <div class="p-4 border border-blue-200 dark:border-blue-700 rounded-lg bg-blue-50 dark:bg-blue-900/20">
+                            <h4 class="font-semibold text-blue-700 dark:text-blue-300 mb-2">Amino Acids</h4>
+                            <div class="space-y-2">
+                                <div class="p-2 bg-white dark:bg-gray-700 rounded border border-gray-200 dark:border-gray-600">
+                                    <h5 class="font-medium text-green-700 dark:text-green-300">Glutamate</h5>
+                                    <p class="text-xs">Primary excitatory neurotransmitter (~80% of synapses)</p>
+                                    <p class="text-xs"><strong>Function:</strong> Learning, memory, synaptic plasticity
+                                    </p>
+                                    <p class="text-xs"><strong>Receptors:</strong> AMPA, NMDA, kainate, mGluR</p>
+                                </div>
+                                <div class="p-2 bg-white dark:bg-gray-700 rounded border border-gray-200 dark:border-gray-600">
+                                    <h5 class="font-medium text-red-700 dark:text-red-300">GABA</h5>
+                                    <p class="text-xs">Primary inhibitory neurotransmitter (~20% of synapses)</p>
+                                    <p class="text-xs"><strong>Function:</strong> Anxiety control, sleep, seizure
+                                        prevention</p>
+                                    <p class="text-xs"><strong>Receptors:</strong> GABA-A (ionotropic), GABA-B
+                                        (metabotropic)</p>
+                                </div>
+                                <div class="p-2 bg-white dark:bg-gray-700 rounded border border-gray-200 dark:border-gray-600">
+                                    <h5 class="font-medium text-purple-700 dark:text-purple-300">Glycine</h5>
+                                    <p class="text-xs">Inhibitory in spinal cord and brainstem</p>
+                                    <p class="text-xs"><strong>Function:</strong> Motor control, reflexes</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Monoamines -->
+                        <div class="p-4 border border-purple-200 dark:border-purple-700 rounded-lg bg-purple-50 dark:bg-purple-900/20">
+                            <h4 class="font-semibold text-purple-700 dark:text-purple-300 mb-2">Monoamines</h4>
+                            <div class="space-y-2">
+                                <div class="p-2 bg-white dark:bg-gray-700 rounded border border-gray-200 dark:border-gray-600">
+                                    <h5 class="font-medium text-blue-700 dark:text-blue-300">Dopamine</h5>
+                                    <p class="text-xs">Reward, motivation, motor control</p>
+                                    <p class="text-xs"><strong>Pathways:</strong> Nigrostriatal, mesolimbic,
+                                        mesocortical</p>
+                                    <p class="text-xs"><strong>Disorders:</strong> Parkinson's, schizophrenia, addiction
+                                    </p>
+                                </div>
+                                <div class="p-2 bg-white dark:bg-gray-700 rounded border border-gray-200 dark:border-gray-600">
+                                    <h5 class="font-medium text-yellow-700 dark:text-yellow-300">Serotonin (5-HT)</h5>
+                                    <p class="text-xs">Mood, sleep, appetite, pain</p>
+                                    <p class="text-xs"><strong>Receptors:</strong> 14 subtypes (5-HT1-7)</p>
+                                    <p class="text-xs"><strong>Disorders:</strong> Depression, anxiety, migraine</p>
+                                </div>
+                                <div class="p-2 bg-white dark:bg-gray-700 rounded border border-gray-200 dark:border-gray-600">
+                                    <h5 class="font-medium text-orange-700 dark:text-orange-300">Norepinephrine</h5>
+                                    <p class="text-xs">Attention, arousal, stress response</p>
+                                    <p class="text-xs"><strong>Source:</strong> Locus coeruleus</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Cholinergic -->
+                        <div class="p-4 border border-green-200 dark:border-green-700 rounded-lg bg-green-50 dark:bg-green-900/20">
+                            <h4 class="font-semibold text-green-700 dark:text-green-300 mb-2">Cholinergic</h4>
+                            <div class="space-y-2">
+                                <div class="p-2 bg-white dark:bg-gray-700 rounded border border-gray-200 dark:border-gray-600">
+                                    <h5 class="font-medium text-green-700 dark:text-green-300">Acetylcholine (ACh)</h5>
+                                    <p class="text-xs">First discovered neurotransmitter (1921)</p>
+                                    <p class="text-xs"><strong>CNS:</strong> Attention, learning, memory</p>
+                                    <p class="text-xs"><strong>PNS:</strong> Neuromuscular junction, autonomic</p>
+                                    <p class="text-xs"><strong>Receptors:</strong> Nicotinic (ionotropic), muscarinic
+                                        (metabotropic)</p>
+                                    <p class="text-xs"><strong>Degradation:</strong> Acetylcholinesterase (AChE)</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Neuropeptides -->
+                        <div class="p-4 border border-red-200 dark:border-red-700 rounded-lg bg-red-50 dark:bg-red-900/20">
+                            <h4 class="font-semibold text-red-700 dark:text-red-300 mb-2">Neuropeptides</h4>
+                            <div class="space-y-2">
+                                <div class="p-2 bg-white dark:bg-gray-700 rounded border border-gray-200 dark:border-gray-600">
+                                    <h5 class="font-medium text-red-700 dark:text-red-300">Endorphins</h5>
+                                    <p class="text-xs">Natural opioids, pain relief, euphoria</p>
+                                    <p class="text-xs"><strong>Function:</strong> Stress response, reward</p>
+                                </div>
+                                <div class="p-2 bg-white dark:bg-gray-700 rounded border border-gray-200 dark:border-gray-600">
+                                    <h5 class="font-medium text-pink-700 dark:text-pink-300">Substance P</h5>
+                                    <p class="text-xs">Pain transmission, inflammation</p>
+                                    <p class="text-xs"><strong>Function:</strong> Nociception, mood</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Purines -->
+                        <div class="p-4 border border-orange-200 dark:border-orange-700 rounded-lg bg-orange-50 dark:bg-orange-900/20">
+                            <h4 class="font-semibold text-orange-700 dark:text-orange-300 mb-2">Purines</h4>
+                            <div class="space-y-2">
+                                <div class="p-2 bg-white dark:bg-gray-700 rounded border border-gray-200 dark:border-gray-600">
+                                    <h5 class="font-medium text-orange-700 dark:text-orange-300">ATP</h5>
+                                    <p class="text-xs">Co-transmitter, fast synaptic transmission</p>
+                                    <p class="text-xs"><strong>Function:</strong> Pain, autonomic control</p>
+                                </div>
+                                <div class="p-2 bg-white dark:bg-gray-700 rounded border border-gray-200 dark:border-gray-600">
+                                    <h5 class="font-medium text-amber-700 dark:text-amber-300">Adenosine</h5>
+                                    <p class="text-xs">Sleep regulation, neuroprotection</p>
+                                    <p class="text-xs"><strong>Function:</strong> Caffeine antagonist</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Gases -->
+                        <div
+                            class="p-4 border border-cyan-300 rounded-lg bg-cyan-900 dark:bg-cyan-900 dark:border-cyan-600">
+                            <h4 class="font-semibold text-cyan-100 dark:text-cyan-100 mb-2">Gaseous</h4>
+                            <div class="space-y-2">
+                                <div
+                                    class="p-2 bg-cyan-800 dark:bg-cyan-800 rounded border border-cyan-600 dark:border-cyan-500">
+                                    <h5 class="font-medium text-cyan-100 dark:text-cyan-100">Nitric Oxide (NO)</h5>
+                                    <p class="text-xs text-cyan-200 dark:text-cyan-200">Retrograde messenger,
+                                        vasodilation</p>
+                                    <p class="text-xs text-cyan-200 dark:text-cyan-200"><strong
+                                            class="text-cyan-100 dark:text-cyan-100">Function:</strong> LTP, blood flow
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Receptors Tab -->
+        <section id="content-receptors" class="tab-content" role="tabpanel" aria-labelledby="tab-receptors">
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-8">
+                <h2 class="text-2xl font-bold mb-4 text-green-700">Neurotransmitter Receptors: Signal Detection</h2>
+
+                <div class="mb-6">
+                    <p class="mb-4">Neurotransmitter receptors are specialized proteins that detect and respond to
+                        chemical signals. They fall into two main categories:</p>
+
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <!-- Ionotropic Receptors -->
+                        <div class="p-6 border border-blue-200 dark:border-blue-700 rounded-lg bg-blue-50 dark:bg-blue-900/20">
+                            <h3 class="text-xl font-semibold text-blue-700 dark:text-blue-300 mb-4">Ionotropic Receptors</h3>
+                            <p class="text-sm mb-4">Ligand-gated ion channels that directly open when neurotransmitter
+                                binds</p>
+
+                            <div class="space-y-3">
+                                <div class="p-3 bg-white dark:bg-gray-700 rounded border border-gray-200 dark:border-gray-600">
+                                    <h4 class="font-medium text-green-700 dark:text-green-300">AMPA Receptors</h4>
+                                    <p class="text-xs">Glutamate receptors, fast excitatory transmission</p>
+                                    <p class="text-xs"><strong>Ions:</strong> Na⁺, K⁺ | <strong>Speed:</strong> ~1ms</p>
+                                </div>
+                                <div class="p-3 bg-white dark:bg-gray-700 rounded border border-gray-200 dark:border-gray-600">
+                                    <h4 class="font-medium text-purple-700 dark:text-purple-300">NMDA Receptors</h4>
+                                    <p class="text-xs">Glutamate + glycine, voltage-dependent</p>
+                                    <p class="text-xs"><strong>Ions:</strong> Na⁺, K⁺, Ca²⁺ | <strong>Function:</strong>
+                                        LTP</p>
+                                </div>
+                                <div class="p-3 bg-white dark:bg-gray-700 rounded border border-gray-200 dark:border-gray-600">
+                                    <h4 class="font-medium text-red-700 dark:text-red-300">GABA-A Receptors</h4>
+                                    <p class="text-xs">Primary inhibitory receptors</p>
+                                    <p class="text-xs"><strong>Ions:</strong> Cl⁻ | <strong>Drugs:</strong>
+                                        Benzodiazepines</p>
+                                </div>
+                                <div class="p-3 bg-white dark:bg-gray-700 rounded border border-gray-200 dark:border-gray-600">
+                                    <h4 class="font-medium text-blue-700 dark:text-blue-300">Nicotinic Receptors</h4>
+                                    <p class="text-xs">Acetylcholine, neuromuscular junction</p>
+                                    <p class="text-xs"><strong>Ions:</strong> Na⁺, K⁺ | <strong>Location:</strong> NMJ,
+                                        ganglia</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Metabotropic Receptors -->
+                        <div class="p-6 border border-purple-200 dark:border-purple-700 rounded-lg bg-purple-50 dark:bg-purple-900/20">
+                            <h3 class="text-xl font-semibold text-purple-700 dark:text-purple-300 mb-4">Metabotropic Receptors</h3>
+                            <p class="text-sm mb-4">G-protein coupled receptors that use second messenger systems</p>
+
+                            <div class="space-y-3">
+                                <div class="p-3 bg-white dark:bg-gray-700 rounded border border-gray-200 dark:border-gray-600">
+                                    <h4 class="font-medium text-yellow-700 dark:text-yellow-300">Muscarinic Receptors</h4>
+                                    <p class="text-xs">Acetylcholine, autonomic nervous system</p>
+                                    <p class="text-xs"><strong>Types:</strong> M1-M5 | <strong>Speed:</strong> ~100ms
+                                    </p>
+                                </div>
+                                <div class="p-3 bg-white dark:bg-gray-700 rounded border border-gray-200 dark:border-gray-600">
+                                    <h4 class="font-medium text-blue-700 dark:text-blue-300">Dopamine Receptors</h4>
+                                    <p class="text-xs">D1-like (D1, D5) and D2-like (D2, D3, D4)</p>
+                                    <p class="text-xs"><strong>Function:</strong> Motor control, reward</p>
+                                </div>
+                                <div class="p-3 bg-white dark:bg-gray-700 rounded border border-gray-200 dark:border-gray-600">
+                                    <h4 class="font-medium text-orange-700 dark:text-orange-300">Serotonin Receptors</h4>
+                                    <p class="text-xs">14 subtypes (5-HT1-7), diverse functions</p>
+                                    <p class="text-xs"><strong>Function:</strong> Mood, sleep, appetite</p>
+                                </div>
+                                <div class="p-3 bg-white dark:bg-gray-700 rounded border border-gray-200 dark:border-gray-600">
+                                    <h4 class="font-medium text-green-700 dark:text-green-300">mGluR</h4>
+                                    <p class="text-xs">Metabotropic glutamate receptors</p>
+                                    <p class="text-xs"><strong>Types:</strong> Group I, II, III |
+                                        <strong>Function:</strong> Modulation
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Synaptic Integration Tab -->
+        <section id="content-integration" class="tab-content" role="tabpanel" aria-labelledby="tab-integration">
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-8">
+                <h2 class="text-2xl font-bold mb-4 text-green-700">Synaptic Integration: Computing with Neurons</h2>
+
+                <div class="lg:flex gap-6">
+                    <div class="lg:w-1/2 mb-6 lg:mb-0">
+                        <h3 class="text-xl font-semibold mb-3">Spatial and Temporal Summation</h3>
+                        <p class="mb-4">Neurons integrate multiple synaptic inputs to determine whether to fire an
+                            action potential:</p>
+
+                        <div class="space-y-4">
+                            <div class="p-4 border border-green-200 dark:border-green-700 rounded-lg bg-green-50 dark:bg-green-900/20">
+                                <h4 class="font-semibold text-green-700 dark:text-green-300">Spatial Summation</h4>
+                                <p class="text-sm text-gray-700 dark:text-gray-300">Multiple synapses active simultaneously</p>
+                                <ul class="list-disc pl-5 text-xs mt-2 text-gray-700 dark:text-gray-300">
+                                    <li>Different locations on dendrites</li>
+                                    <li>EPSPs and IPSPs add algebraically</li>
+                                    <li>Depends on input resistance</li>
+                                </ul>
+                            </div>
+
+                            <div class="p-4 border border-blue-200 dark:border-blue-700 rounded-lg bg-blue-50 dark:bg-blue-900/20">
+                                <h4 class="font-semibold text-blue-700 dark:text-blue-300">Temporal Summation</h4>
+                                <p class="text-sm text-gray-700 dark:text-gray-300">Same synapse active repeatedly</p>
+                                <ul class="list-disc pl-5 text-xs mt-2 text-gray-700 dark:text-gray-300">
+                                    <li>Rapid succession of inputs</li>
+                                    <li>Depends on membrane time constant</li>
+                                    <li>Facilitation vs. depression</li>
+                                </ul>
+                            </div>
+
+                            <div class="p-4 border border-purple-200 dark:border-purple-700 rounded-lg bg-purple-50 dark:bg-purple-900/20">
+                                <h4 class="font-semibold text-purple-700 dark:text-purple-300">Synaptic Plasticity</h4>
+                                <p class="text-sm text-gray-700 dark:text-gray-300">Activity-dependent changes in synaptic strength</p>
+                                <ul class="list-disc pl-5 text-xs mt-2 text-gray-700 dark:text-gray-300">
+                                    <li><strong>LTP:</strong> Long-term potentiation</li>
+                                    <li><strong>LTD:</strong> Long-term depression</li>
+                                    <li><strong>Hebbian rule:</strong> "Cells that fire together, wire together"</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="lg:w-1/2">
+                        <h3 class="text-xl font-semibold mb-3">Clinical Significance</h3>
+
+                        <div class="space-y-4">
+                            <div class="p-4 border border-red-200 dark:border-red-700 rounded-lg bg-red-50 dark:bg-red-900/20">
+                                <h4 class="font-semibold text-red-700 dark:text-red-300">Synaptic Disorders</h4>
+                                <ul class="list-disc pl-5 text-sm text-gray-700 dark:text-gray-300">
+                                    <li><strong>Myasthenia Gravis:</strong> Autoimmune attack on ACh receptors</li>
+                                    <li><strong>Lambert-Eaton:</strong> Reduced Ca²⁺ channel function</li>
+                                    <li><strong>Botulism:</strong> Blocks ACh release</li>
+                                </ul>
+                            </div>
+
+                            <div class="p-4 border border-yellow-200 dark:border-yellow-700 rounded-lg bg-yellow-50 dark:bg-yellow-900/20">
+                                <h4 class="font-semibold text-yellow-700 dark:text-yellow-300">Drug Targets</h4>
+                                <ul class="list-disc pl-5 text-sm text-gray-700 dark:text-gray-300">
+                                    <li><strong>SSRIs:</strong> Block serotonin reuptake</li>
+                                    <li><strong>Benzodiazepines:</strong> Enhance GABA-A function</li>
+                                    <li><strong>Antipsychotics:</strong> Block dopamine receptors</li>
+                                    <li><strong>Cholinesterase inhibitors:</strong> Modulate cholinergic signaling in Alzheimer's disease</li>
+                                </ul>
+                            </div>
+
+                            <div class="p-4 border border-blue-200 dark:border-blue-700 rounded-lg bg-blue-50 dark:bg-blue-900/20">
+                                <h4 class="font-semibold text-blue-700 dark:text-blue-300">Research Applications</h4>
+                                <ul class="list-disc pl-5 text-sm text-gray-700 dark:text-gray-300">
+                                    <li><strong>Optogenetics:</strong> Light-controlled neurotransmitter release</li>
+                                    <li><strong>Patch-clamp:</strong> Single channel recordings</li>
+                                    <li><strong>Two-photon microscopy:</strong> Live synaptic imaging</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Beyond Neuron-to-Neuron Tab -->
+        <section id="content-modern" class="tab-content" role="tabpanel" aria-labelledby="tab-modern">
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-8">
+                <h2 class="text-2xl font-bold mb-4 text-green-700 dark:text-green-300">🔬 Beyond Neuron-to-Neuron: The Modern Synapse</h2>
+                <p class="mb-6 text-gray-700 dark:text-gray-300">The classical view of synapses as simple neuron-to-neuron junctions has undergone a transformation. Modern neuroscience reveals that synapses are more complex, more dynamic, and more collaborative than previously understood. Here's what's changed.</p>
+
+                <!-- Tripartite Synapse -->
+                <div class="mb-8 p-6 bg-gradient-to-r from-teal-50 to-cyan-50 dark:from-teal-900/20 dark:to-cyan-900/20 rounded-xl border border-teal-200 dark:border-teal-700">
+                    <div class="flex items-center mb-4">
+                        <div class="text-3xl mr-4">🤝</div>
+                        <div>
+                            <h3 class="text-xl font-bold text-teal-700 dark:text-teal-300">The Tripartite Synapse</h3>
+                            <p class="text-sm text-teal-600 dark:text-teal-400">Astrocytes are active partners, not bystanders</p>
+                        </div>
+                    </div>
+                    <p class="text-sm text-gray-700 dark:text-gray-300 mb-4">The <strong>tripartite synapse</strong> model (Araque et al., 1999) established that each synapse involves three elements: the presynaptic terminal, the postsynaptic terminal, and an <strong>astrocyte process</strong> that wraps around the synaptic cleft. This wasn't just structural; astrocytes actively modulate signaling.</p>
+                    <div class="grid md:grid-cols-2 gap-4 mb-4">
+                        <div class="bg-white dark:bg-gray-800 rounded-lg p-4 border-l-4 border-teal-500">
+                            <h4 class="font-semibold text-teal-700 dark:text-teal-300 mb-2">What Astrocytes Do at Synapses</h4>
+                            <ul class="text-sm text-gray-700 dark:text-gray-300 list-disc pl-5 space-y-1">
+                                <li><strong>Gliotransmitter release:</strong> ATP, glutamate, and D-serine from astrocytes modulate synaptic strength in real time</li>
+                                <li><strong>Glutamate clearance:</strong> EAAT1/EAAT2 transporters remove excess glutamate, preventing excitotoxicity</li>
+                                <li><strong>Potassium buffering:</strong> Astrocytes siphon extracellular K⁺, maintaining the ion environment neurons need to fire</li>
+                                <li><strong>Metabolic coupling:</strong> Astrocytes supply lactate to neurons as fuel during intense activity (astrocyte-neuron lactate shuttle)</li>
+                            </ul>
+                        </div>
+                        <div class="bg-white dark:bg-gray-800 rounded-lg p-4 border-l-4 border-purple-500">
+                            <h4 class="font-semibold text-purple-700 dark:text-purple-300 mb-2">2025-26 Breakthroughs</h4>
+                            <ul class="text-sm text-gray-700 dark:text-gray-300 list-disc pl-5 space-y-1">
+                                <li><strong>Behavioral control:</strong> Astrocytes mediate norepinephrine signaling that governs behavioral persistence and "giving up" responses (Freeman et al., <em>Science</em>, 2025)</li>
+                                <li><strong>Amygdala memory:</strong> Astrocyte engrams help consolidate fear memories (Gomez-Castro et al., <em>Nature</em>, 2025)</li>
+                                <li><strong>CCN1 synapse stabilization:</strong> Astrocyte-secreted CCN1 protein stabilizes neural circuits after injury (Shen et al., <em>Nature</em>, 2025)</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Volume Transmission -->
+                <div class="mb-8 p-6 bg-gradient-to-r from-violet-50 to-fuchsia-50 dark:from-violet-900/20 dark:to-fuchsia-900/20 rounded-xl border border-violet-200 dark:border-violet-700">
+                    <div class="flex items-center mb-4">
+                        <div class="text-3xl mr-4">🌊</div>
+                        <div>
+                            <h3 class="text-xl font-bold text-violet-700 dark:text-violet-300">Volume Transmission: Signaling Without Synapses</h3>
+                            <p class="text-sm text-violet-600 dark:text-violet-400">Not all brain signaling travels through discrete synapses</p>
+                        </div>
+                    </div>
+                    <p class="text-sm text-gray-700 dark:text-gray-300 mb-4">Classical synaptic transmission (the kind you learned in earlier tabs) is <strong>wired transmission</strong>: point-to-point, fast, and precise. But the brain also uses <strong>volume transmission</strong>, where neurotransmitters and neuromodulators spread through extracellular fluid and reach many neurons at once, like ripples in a pond rather than a direct phone call.</p>
+                    <div class="grid md:grid-cols-3 gap-4 mb-4">
+                        <div class="bg-white dark:bg-gray-800 rounded-lg p-4 border border-gray-200 dark:border-gray-600 text-center">
+                            <div class="text-2xl mb-2">⚡</div>
+                            <h5 class="font-semibold text-violet-700 dark:text-violet-300 text-sm mb-1">Wired Transmission</h5>
+                            <p class="text-xs text-gray-700 dark:text-gray-300">Fast, precise, one-to-one. Synaptic vesicles → cleft → postsynaptic receptors. Millisecond timescale.</p>
+                        </div>
+                        <div class="bg-white dark:bg-gray-800 rounded-lg p-4 border border-gray-200 dark:border-gray-600 text-center">
+                            <div class="text-2xl mb-2">🌊</div>
+                            <h5 class="font-semibold text-violet-700 dark:text-violet-300 text-sm mb-1">Volume Transmission</h5>
+                            <p class="text-xs text-gray-700 dark:text-gray-300">Diffuse, slower, one-to-many. Neuromodulators spread through extracellular space, affecting many cells across broader areas.</p>
+                        </div>
+                        <div class="bg-white dark:bg-gray-800 rounded-lg p-4 border border-gray-200 dark:border-gray-600 text-center">
+                            <div class="text-2xl mb-2">🔄</div>
+                            <h5 class="font-semibold text-violet-700 dark:text-violet-300 text-sm mb-1">Both Work Together</h5>
+                            <p class="text-xs text-gray-700 dark:text-gray-300">Dopamine, serotonin, norepinephrine, and acetylcholine use volume transmission to set the "tone" for entire brain regions, shaping how wired synapses operate.</p>
+                        </div>
+                    </div>
+                    <div class="bg-white dark:bg-gray-800 rounded-lg p-4 border-l-4 border-violet-500">
+                        <h4 class="font-semibold text-violet-700 dark:text-violet-300 mb-2">Key Neuromodulator Systems</h4>
+                        <div class="grid md:grid-cols-2 gap-3">
+                            <div class="text-sm text-gray-700 dark:text-gray-300"><strong>Dopamine:</strong> Motivation, reward prediction, movement. Released from VTA and substantia nigra. Recent work shows dopamine and serotonin <em>inversely modulate</em> the same neurons during learning (Nature Communications, 2026).</div>
+                            <div class="text-sm text-gray-700 dark:text-gray-300"><strong>Serotonin:</strong> Mood, satiety, sleep-wake cycles. Raphe nuclei project widely. SSRI antidepressants target serotonin reuptake in volume transmission.</div>
+                            <div class="text-sm text-gray-700 dark:text-gray-300"><strong>Norepinephrine:</strong> Arousal, attention, stress response. Locus coeruleus releases NE across cortex. 2025 work shows NE signals <em>through astrocytes</em> to alter network state.</div>
+                            <div class="text-sm text-gray-700 dark:text-gray-300"><strong>Acetylcholine:</strong> Attention, learning, REM sleep. Basal forebrain projections. Adenosine from astrocytes modulates cholinergic signaling (Nature, 2024).</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Updated Understanding -->
+                <div class="mb-6 p-4 bg-green-50 dark:bg-green-900/20 rounded-lg border border-green-200 dark:border-green-700">
+                    <h4 class="font-semibold text-green-700 dark:text-green-300 mb-2">📋 Revisiting What You Learned</h4>
+                    <p class="text-sm text-gray-700 dark:text-gray-300 mb-2">The synaptic mechanisms in the earlier tabs, vesicle release, receptor binding, EPSPs, and IPSPs, remain <strong>correct and fundamental</strong>. What's changed is the context:</p>
+                    <ul class="text-sm text-gray-700 dark:text-gray-300 list-disc pl-5 space-y-1">
+                        <li>Synapses are not just <strong>two-part</strong> junctions; astrocytes form an essential <strong>third partner</strong></li>
+                        <li>Signaling isn't only <strong>point-to-point</strong>; <strong>volume transmission</strong> shapes brain-wide states</li>
+                        <li>Neuromodulators like dopamine and serotonin operate through <strong>both</strong> wired and volume transmission simultaneously</li>
+                        <li>Glial cells are <strong>active signalers</strong>, not passive support; they release their own transmitters and regulate synaptic strength</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer will be loaded here by components.js -->
+    <div id="footer-placeholder"></div>
+
+    <script src="js/firebase-init.js"></script>
+    <script src="js/components.js"></script>
+    <script src="js/02-synapses-neurotransmitters.js"></script>
+</body>
+
+</html>

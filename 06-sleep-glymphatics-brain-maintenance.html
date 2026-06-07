@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sleep, Glymphatics & Brain Maintenance - Interactive Neuroscience Learning | Oligodendrosite</title>
+    <meta name="description" content="Explore sleep neuroscience, glymphatic waste clearance, circadian rhythms, and brain health through a modern interactive neuroscience chapter.">
+    <meta name="keywords" content="sleep neuroscience, glymphatic system, circadian rhythms, brain maintenance, brain health, amyloid clearance, sleep and memory, neuroscience">
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧠</text></svg>">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+    <link rel="stylesheet" href="css/main.css">
+</head>
+
+<body class="bg-gray-100 font-sans dark:bg-gray-900 text-gray-800 dark:text-gray-200 transition-colors duration-300">
+    <div id="header-placeholder"></div>
+
+    <header class="bg-cyan-800 text-white p-6 shadow-md mb-8">
+        <div class="container mx-auto">
+            <h1 class="text-3xl md:text-4xl font-bold mb-2">Chapter 6: Sleep, Glymphatics & Brain Maintenance</h1>
+            <p class="text-lg opacity-90">How your brain cleans, repairs, and recharges itself every night</p>
+        </div>
+    </header>
+
+    <main class="container mx-auto p-4 md:p-6">
+        <section class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-8">
+            <h2 class="text-2xl font-bold mb-4 text-cyan-700 dark:text-cyan-300">Why sleep matters for the brain</h2>
+            <p class="mb-4">Sleep is not passive downtime. It is an active neurobiological state that supports memory consolidation, waste clearance, circadian alignment, and long-term brain resilience. This chapter connects modern sleep science to the broader story of neural maintenance.</p>
+            <p class="mb-2 font-semibold">In this exploration, you'll discover:</p>
+            <ul class="list-disc pl-6 mb-4">
+                <li>How sleep stages support memory and cognition</li>
+                <li>How the glymphatic system helps clear brain waste</li>
+                <li>How circadian rhythms coordinate brain and body timing</li>
+                <li>How sleep quality affects long-term brain health</li>
+            </ul>
+            <p class="text-cyan-700 dark:text-cyan-300 font-semibold">Start by selecting a tab below to begin your exploration!</p>
+        </section>
+
+        <nav class="mb-6 tab-navigation" role="tablist" aria-label="Chapter sections"
+            style="--tab-active-color:#0e7490; --tab-active-color-dark:#67e8f9; --tab-hover-color:#0e7490; --tab-hover-color-dark:#67e8f9; --tab-active-bg:#cffafe; --tab-active-bg-dark:rgba(6,182,212,0.18); --tab-hover-bg:#ecfeff; --tab-hover-bg-dark:rgba(6,182,212,0.12);">
+            <button id="tab-sleep" role="tab" aria-selected="true" aria-controls="content-sleep"
+                class="tab-button relative px-4 py-2 text-cyan-700 font-medium rounded-lg transition-all duration-300">
+                <span class="hidden sm:inline">Sleep Neuroscience</span>
+                <span class="sm:hidden">Sleep</span>
+            </button>
+            <button id="tab-glymphatic" role="tab" aria-selected="false" aria-controls="content-glymphatic"
+                class="tab-button relative px-4 py-2 text-gray-500 font-medium rounded-lg transition-all duration-300 hover:text-cyan-600 hover:bg-cyan-50 dark:hover:bg-cyan-900/20">
+                <span class="hidden sm:inline">Glymphatic System</span>
+                <span class="sm:hidden">Glymph</span>
+            </button>
+            <button id="tab-circadian" role="tab" aria-selected="false" aria-controls="content-circadian"
+                class="tab-button relative px-4 py-2 text-gray-500 font-medium rounded-lg transition-all duration-300 hover:text-cyan-600 hover:bg-cyan-50 dark:hover:bg-cyan-900/20">
+                <span class="hidden sm:inline">Circadian Rhythms</span>
+                <span class="sm:hidden">Rhythms</span>
+            </button>
+            <button id="tab-brain-health" role="tab" aria-selected="false" aria-controls="content-brain-health"
+                class="tab-button relative px-4 py-2 text-gray-500 font-medium rounded-lg transition-all duration-300 hover:text-cyan-600 hover:bg-cyan-50 dark:hover:bg-cyan-900/20">
+                <span class="hidden sm:inline">Brain Health</span>
+                <span class="sm:hidden">Health</span>
+            </button>
+        </nav>
+
+        <section id="content-sleep" class="tab-content active" role="tabpanel" aria-labelledby="tab-sleep">
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-8">
+                <h2 class="text-2xl font-bold mb-4 text-cyan-700 dark:text-cyan-300">Sleep Neuroscience</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <article class="bg-gradient-to-br from-cyan-700 to-cyan-900 rounded-xl p-6 text-white shadow-md">
+                        <h3 class="text-lg font-semibold mb-2">Why We Sleep</h3>
+                        <p class="text-sm">Sleep cycles through NREM and REM stages, with each stage supporting different aspects of restoration and memory processing. REM sleep contributes to emotional learning and memory integration, while slow-wave sleep supports large-scale replay and system-wide recovery.</p>
+                    </article>
+                    <article class="bg-gradient-to-br from-cyan-800 to-slate-900 rounded-xl p-6 text-white shadow-md">
+                        <h3 class="text-lg font-semibold mb-2">Sleep and Memory</h3>
+                        <p class="text-sm">The synaptic homeostasis hypothesis proposes that sleep helps rebalance overall synaptic strength after waking experience. At the same time, hippocampal replay during slow-wave sleep helps stabilize recently learned information into longer-term memory networks.</p>
+                    </article>
+                    <article class="bg-gradient-to-br from-sky-700 to-slate-900 rounded-xl p-6 text-white shadow-md">
+                        <h3 class="text-lg font-semibold mb-2">Sleep Deprivation Effects</h3>
+                        <p class="text-sm">Insufficient sleep impairs attention, working memory, emotion regulation, and decision-making. Severe deprivation can increase perceptual disturbances and hallucination risk, while chronic sleep loss is associated with mood, metabolic, and cognitive problems.</p>
+                    </article>
+                </div>
+                <div class="mt-6 p-4 bg-gray-50 dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600">
+                    <h4 class="font-semibold text-cyan-700 dark:text-cyan-300 mb-2">Clinical note</h4>
+                    <p class="text-sm text-gray-700 dark:text-gray-300">Insomnia, sleep apnea, and narcolepsy are common sleep disorders. This chapter is educational and not a substitute for diagnosis or treatment. If you have persistent sleep problems, consult a healthcare professional.</p>
+                </div>
+                <p class="mt-3 text-xs text-gray-600 dark:text-gray-400">Sources: Tononi &amp; Cirelli, 2008; NIH sleep research summaries; National Sleep Foundation reviews.</p>
+            </div>
+        </section>
+
+        <section id="content-glymphatic" class="tab-content" role="tabpanel" aria-labelledby="tab-glymphatic">
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-8">
+                <h2 class="text-2xl font-bold mb-4 text-cyan-700 dark:text-cyan-300">Glymphatic System</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
+                    <article class="bg-gradient-to-br from-sky-700 to-slate-900 rounded-xl p-6 text-white shadow-md">
+                        <h3 class="text-lg font-semibold mb-2">How It Works</h3>
+                        <p class="text-sm">Cerebrospinal fluid travels along arterial perivascular spaces, exchanges with interstitial fluid, and helps move metabolic waste toward venous and meningeal lymphatic drainage routes. Foundational work by Iliff and colleagues established the framework, and recent human studies strengthened its clinical relevance.</p>
+                    </article>
+                    <article class="bg-gradient-to-br from-indigo-700 to-slate-900 rounded-xl p-6 text-white shadow-md">
+                        <h3 class="text-lg font-semibold mb-2">AQP4: The Plumbing Valve</h3>
+                        <p class="text-sm">Aquaporin-4 channels on astrocyte endfeet are central to CSF-interstitial fluid exchange. When AQP4 polarity or function is disrupted, glymphatic efficiency declines, linking astrocyte biology directly to sleep-dependent clearance.</p>
+                    </article>
+                    <article class="bg-gradient-to-br from-indigo-700 to-slate-900 rounded-xl p-6 text-white shadow-md">
+                        <h3 class="text-lg font-semibold mb-2">Meningeal Lymphatics</h3>
+                        <p class="text-sm">Meningeal lymphatic vessels, confirmed in 2015, provide a drainage route from the brain to peripheral lymphatic circulation. Their discovery reshaped how neuroscience thinks about immune surveillance and waste removal.</p>
+                    </article>
+                    <article class="bg-gradient-to-br from-cyan-800 to-slate-900 rounded-xl p-6 text-white shadow-md">
+                        <h3 class="text-lg font-semibold mb-2">Sleep Clears Waste</h3>
+                        <p class="text-sm">Sleep enhances glymphatic flow, increasing the movement of fluid through brain tissue and improving clearance of proteins such as amyloid-beta. This is one reason chronic sleep disruption is treated as a brain-health concern, not just a fatigue issue.</p>
+                    </article>
+                </div>
+                <p class="mt-3 text-xs text-gray-600 dark:text-gray-400">Sources: Iliff et al., 2012; Louveau et al., 2015; Nature Communications, 2026 human glymphatic evidence.</p>
+            </div>
+        </section>
+
+        <section id="content-circadian" class="tab-content" role="tabpanel" aria-labelledby="tab-circadian">
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-8">
+                <h2 class="text-2xl font-bold mb-4 text-cyan-700 dark:text-cyan-300">Circadian Rhythms</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <article class="bg-gradient-to-br from-indigo-700 to-slate-900 rounded-xl p-6 text-white shadow-md">
+                        <h3 class="text-lg font-semibold mb-2">The Suprachiasmatic Nucleus</h3>
+                        <p class="text-sm">The suprachiasmatic nucleus is the brain's master clock. It receives light information from the retina and helps synchronize sleep, hormone release, temperature regulation, and daily behavior.</p>
+                    </article>
+                    <article class="bg-gradient-to-br from-violet-700 to-slate-900 rounded-xl p-6 text-white shadow-md">
+                        <h3 class="text-lg font-semibold mb-2">Clock Genes</h3>
+                        <p class="text-sm">PER, CRY, BMAL1, and CLOCK proteins form molecular feedback loops that generate 24-hour rhythms inside cells. Circadian timing is therefore both a brain-system property and a gene-regulated cellular process.</p>
+                    </article>
+                    <article class="bg-gradient-to-br from-sky-700 to-slate-900 rounded-xl p-6 text-white shadow-md">
+                        <h3 class="text-lg font-semibold mb-2">Light and the Clock</h3>
+                        <p class="text-sm">Blue-enriched light suppresses melatonin and can shift circadian timing later. This helps explain why evening screen exposure often interferes with sleep onset in modern life.</p>
+                    </article>
+                </div>
+                <div class="mt-6 p-4 bg-gray-50 dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600">
+                    <h4 class="font-semibold text-cyan-700 dark:text-cyan-300 mb-2">Chronotypes and health</h4>
+                    <p class="text-sm text-gray-700 dark:text-gray-300">Morning and evening chronotypes are natural variations, but circadian misalignment can have real health consequences, especially for shift workers whose schedules repeatedly oppose their internal clock.</p>
+                </div>
+                <p class="mt-3 text-xs text-gray-600 dark:text-gray-400">Sources: Moore &amp; Eichler models of circadian regulation; Hastings et al., 2014; chronobiology reviews on light and shift work.</p>
+            </div>
+        </section>
+
+        <section id="content-brain-health" class="tab-content" role="tabpanel" aria-labelledby="tab-brain-health">
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-8">
+                <h2 class="text-2xl font-bold mb-4 text-cyan-700 dark:text-cyan-300">Brain Health</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <article class="bg-gradient-to-br from-emerald-700 to-slate-900 rounded-xl p-6 text-white shadow-md">
+                        <h3 class="text-lg font-semibold mb-2">Sleep and Alzheimer's</h3>
+                        <p class="text-sm">Sleep quality and neurodegeneration likely influence each other in both directions. Poor sleep can reduce effective waste clearance, while neurodegenerative change can also disrupt sleep architecture.</p>
+                    </article>
+                    <article class="bg-gradient-to-br from-emerald-800 to-slate-900 rounded-xl p-6 text-white shadow-md">
+                        <h3 class="text-lg font-semibold mb-2">Exercise and Neurogenesis</h3>
+                        <p class="text-sm">Physical activity, enriched environments, and sustained learning are associated with healthier hippocampal plasticity and may support adult neurogenesis and broader cognitive resilience.</p>
+                    </article>
+                    <article class="bg-gradient-to-br from-lime-700 to-slate-900 rounded-xl p-6 text-white shadow-md">
+                        <h3 class="text-lg font-semibold mb-2">SuperAgers</h3>
+                        <p class="text-sm">Some adults maintain exceptional memory well into old age. Recent work suggests these "SuperAgers" preserve stronger hippocampal structure, network efficiency, and potentially healthier regenerative niches than typical aging trajectories.</p>
+                    </article>
+                </div>
+                <div class="mt-6 p-4 bg-gray-50 dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600">
+                    <h4 class="font-semibold text-cyan-700 dark:text-cyan-300 mb-2">Practical brain health</h4>
+                    <p class="text-sm text-gray-700 dark:text-gray-300">Evidence-based brain-health habits include regular exercise, sleep hygiene, cognitive engagement, and social connection. These are supportive habits, not personalized medical treatment plans, so consult a healthcare professional for individual concerns.</p>
+                </div>
+                <p class="mt-3 text-xs text-gray-600 dark:text-gray-400">Sources: Iliff et al., 2012; Nature Communications, 2026; adult neurogenesis literature; Molecular Psychiatry aging and resilience reviews.</p>
+            </div>
+        </section>
+
+        <section class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-12" aria-labelledby="sleep-summary-title">
+            <h3 id="sleep-summary-title" class="text-xl font-bold text-cyan-700 dark:text-cyan-300 mb-2">📋 How This Connects to Previous Chapters</h3>
+            <p class="text-sm text-gray-700 dark:text-gray-300">Chapter 1 introduced myelin and basic neural physiology, Chapter 2 explained signaling, Chapter 3 explored plasticity, and Chapter 4 expanded to large-scale brain systems. This chapter adds the maintenance layer: how sleep, circadian timing, and fluid clearance help preserve those systems over time.</p>
+        </section>
+    </main>
+
+    <div id="footer-placeholder"></div>
+
+    <script src="js/firebase-init.js"></script>
+    <script src="js/components.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/06-sleep-glymphatics-brain-maintenance.js"></script>
+</body>
+
+</html>

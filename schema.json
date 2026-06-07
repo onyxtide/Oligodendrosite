@@ -1,0 +1,55 @@
+{
+  "@context": "https://schema.org",
+  "@type": "EducationalOrganization",
+  "name": "Oligodendrosite",
+  "url": "https://oligodendrosite.com",
+  "description": "Interactive neuroscience learning platform with cutting-edge simulations and comprehensive educational content",
+  "educationalCredentialAwarded": "Certificate of Completion",
+  "hasOfferCatalog": {
+    "@type": "OfferCatalog",
+    "name": "Neuroscience Learning Modules",
+    "itemListElement": [
+      {
+        "@type": "Course",
+        "name": "Neurons & Action Potentials",
+        "description": "Learn about neuron structure, action potentials, and nervous system function through interactive simulations",
+        "url": "https://oligodendrosite.com/01-neurons-action-potentials.html",
+        "courseCode": "NEURO-001",
+        "educationalLevel": "Undergraduate",
+        "timeRequired": "PT2H"
+      },
+      {
+        "@type": "Course",
+        "name": "Synapses & Neurotransmitters",
+        "description": "Interactive exploration of synaptic transmission, neurotransmitters, and chemical communication",
+        "url": "https://oligodendrosite.com/02-synapses-neurotransmitters.html",
+        "courseCode": "NEURO-002",
+        "educationalLevel": "Undergraduate",
+        "timeRequired": "PT2H"
+      },
+      {
+        "@type": "Course",
+        "name": "Neural Networks & Plasticity",
+        "description": "Learn how neurons form complex networks and adapt through experience and plasticity",
+        "url": "https://oligodendrosite.com/03-neural-networks-plasticity.html",
+        "courseCode": "NEURO-003",
+        "educationalLevel": "Undergraduate",
+        "timeRequired": "PT2H"
+      },
+      {
+        "@type": "Course",
+        "name": "Brain Systems & Neural Pathways",
+        "description": "Explore brain anatomy, neural pathways, and complex brain systems through 3D models",
+        "url": "https://oligodendrosite.com/04-brain-systems-pathways.html",
+        "courseCode": "NEURO-004",
+        "educationalLevel": "Undergraduate",
+        "timeRequired": "PT2H"
+      }
+    ]
+  },
+  "contactPoint": {
+    "@type": "ContactPoint",
+    "contactType": "Customer Service",
+    "url": "https://oligodendrosite.com"
+  }
+}
