@@ -331,9 +331,6 @@ function createLocale(code, sourceLocale) {
   return { success: true, locale: code };
 }
 
-function readChapter(fileName) { return null; }
-function writeChapter(fileName, content) { return false; }
-
 function listMedia() {
   const mediaDir = path.join(SITE_ROOT, 'assets');
   if (!fs.existsSync(mediaDir)) return [];
