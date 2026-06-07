@@ -306,9 +306,21 @@ async function handleRequest(req, res) {
     return sendJSON(res, { valid: authCheck(req) });
   }
 
-  // -------- Protected endpoints --------
-  if (!authCheck(req)) {
-    return sendError(res, 'Unauthorized', 401);
+  // -------- Static files for /admin/ (no auth required) --------
+  if (pathname.startsWith('/admin/')) {
+    const adminPath = path.join(__dirname, pathname.replace('/admin/', ''));
+    if (fs.existsSync(adminPath) && fs.statSync(adminPath).isFile()) {
+      const ext = path.extname(adminPath);
+      res.writeHead(200, { 'Content-Type': getMimeType(adminPath) });
+      return res.end(fs.readFileSync(adminPath));
+    }
+  }
+
+  // -------- Protected API endpoints (auth required) --------
+  if (pathname.startsWith('/api/') && pathname !== '/api/auth/login' && pathname !== '/api/auth/github' && pathname !== '/api/auth/session') {
+    if (!authCheck(req)) {
+      return sendError(res, 'Unauthorized', 401);
+    }
   }
 
   // Chapters
@@ -351,7 +363,6 @@ async function handleRequest(req, res) {
     const boundary = (req.headers['content-type'] || '').match(/boundary=(.+)/);
     if (!boundary) return sendError(res, 'Multipart required');
     const { raw } = await parseBody(req);
-    // Simple multipart parser
     const boundaryStr = '--' + boundary[1];
     const parts = raw.split(boundaryStr).filter(p => p.includes('filename='));
     if (!parts.length) return sendError(res, 'No file found');
@@ -362,7 +373,6 @@ async function handleRequest(req, res) {
     const filenameMatch = headers.match(/filename="(.+?)"/);
     if (!filenameMatch) return sendError(res, 'No filename');
     const filename = filenameMatch[1];
-    // Detect if base64
     let buffer;
     if (headers.includes('Content-Transfer-Encoding: base64')) {
       buffer = Buffer.from(fileData.trim(), 'base64');
@@ -389,21 +399,7 @@ async function handleRequest(req, res) {
     return sendJSON(res, gitPush());
   }
 
-  // -------- Static files for /admin/ --------
-  if (pathname.startsWith('/admin/')) {
-    const adminPath = path.join(__dirname, pathname.replace('/admin/', ''));
-    if (fs.existsSync(adminPath) && fs.statSync(adminPath).isFile()) {
-      const ext = path.extname(adminPath);
-      res.writeHead(200, { 'Content-Type': getMimeType(adminPath) });
-      return res.end(fs.readFileSync(adminPath));
-    }
-    // Fallback to admin index
-    const indexPath = path.join(__dirname, 'index.html');
-    res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
-    return res.end(fs.readFileSync(indexPath));
-  }
-
-  // Default: serve admin login
+  // Default: serve admin login page
   const loginPath = path.join(__dirname, 'index.html');
   res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
   res.end(fs.readFileSync(loginPath));

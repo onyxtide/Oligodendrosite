@@ -29,9 +29,7 @@ body { font-family: system-ui, -apple-system, sans-serif; }
 .nav-btn:hover { background: #1f2937; color: #e5e7eb; }
 .nav-btn.active { background: #7c3aed20; color: #a78bfa; }
 
-.tab-content { display: block; }
-.tab-content.hidden { display: none; }
-.tab-content.active { display: block; }
+.tab-content { display: none; }
 
 .chapter-card:hover { transform: translateX(4px); }
 .media-card:hover { border-color: #7c3aed; }

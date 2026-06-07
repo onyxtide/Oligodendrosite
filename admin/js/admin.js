@@ -223,16 +223,18 @@ document.getElementById('media-upload').addEventListener('change', (e) => {
   e.target.value = '';
 });
 
+function switchTab(tabName) {
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.querySelector(`.nav-btn[data-tab="${tabName}"]`)?.classList.add('active');
+  document.querySelectorAll('.tab-content').forEach(t => { t.style.display = 'none'; });
+  const tabEl = document.getElementById(`tab-${tabName}`);
+  if (tabEl) tabEl.style.display = 'block';
+  if (tabName === 'media') loadMedia();
+  if (tabName === 'settings') refreshGitStatus();
+  if (tabName === 'chapters') loadChapters();
+}
 document.querySelectorAll('.nav-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    document.querySelectorAll('.tab-content').forEach(t => t.classList.add('hidden'));
-    document.getElementById(`tab-${btn.dataset.tab}`).classList.remove('hidden');
-    if (btn.dataset.tab === 'media') loadMedia();
-    if (btn.dataset.tab === 'settings') refreshGitStatus();
-    if (btn.dataset.tab === 'chapters') loadChapters();
-  });
+  btn.addEventListener('click', () => switchTab(btn.dataset.tab));
 });
 
 (async () => {

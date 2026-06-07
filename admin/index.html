@@ -67,7 +67,7 @@
       </aside>
 
       <main class="flex-1 overflow-auto p-6 bg-gray-950">
-        <div id="tab-chapters" class="tab-content active">
+        <div id="tab-chapters" class="tab-content" style="display:block">
           <h2 class="text-xl font-bold mb-6 text-gray-200">Chapter Management</h2>
           <div id="chapter-list" class="grid gap-3">
           </div>
@@ -111,8 +111,8 @@
   </div>
 
   <!-- Chapter Editor Modal -->
-  <div id="editor-modal" class="hidden fixed inset-0 bg-black bg-opacity-80 z-50 flex items-center justify-center p-4">
-    <div class="bg-gray-900 rounded-2xl border border-gray-800 w-full max-w-7xl max-h-[90vh] flex flex-col">
+  <div id="editor-modal" class="hidden fixed inset-0 bg-black bg-opacity-90 z-50 flex p-2">
+    <div class="bg-gray-900 rounded-2xl border border-gray-800 w-full max-w-none flex flex-col">
       <div class="flex items-center justify-between p-4 border-b border-gray-800">
         <div class="flex items-center gap-3">
           <span class="text-2xl">📝</span>
@@ -127,7 +127,7 @@
       </div>
       <div class="flex-1 overflow-hidden">
         <textarea id="editor-content"
-          class="w-full h-full p-4 bg-gray-950 text-gray-200 font-mono text-sm resize-none focus:outline-none border-0"
+          class="w-full h-full p-6 bg-gray-950 text-gray-200 font-mono text-base leading-relaxed resize-none focus:outline-none border-0"
           spellcheck="false"></textarea>
       </div>
       <div class="flex items-center justify-between p-3 border-t border-gray-800 bg-gray-900 text-xs text-gray-500">
