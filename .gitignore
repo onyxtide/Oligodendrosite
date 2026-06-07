@@ -13,6 +13,9 @@ firebase-debug.*.log*
 # Admin backups (local editor backups)
 .admin-backups/
 
+# Firebase service account keys (never commit)
+*-firebase-adminsdk-*.json
+
 # Local SSL certificates
 .local-ssl/
 
