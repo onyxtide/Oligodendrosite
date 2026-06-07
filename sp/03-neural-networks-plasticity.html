@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="sp">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Νευρωνικά Δίκτυα & Πλαστικότητα Εγκεφάλου - Διαδραστική Εκμάθηση Νευροεπιστήμης | Oligodendrosite</title>
+    <meta name="description" content="Εξερεύνησε τα νευρωνικά δίκτυα, την εγκεφαλική πλαστικότητα, την LTP και την LTD μέσα από διαδραστικές προσομοιώσεις.">
+    <meta name="keywords" content="νευρωνικά δίκτυα, πλαστικότητα, LTP, LTD, μνήμη, μάθηση, νευροεπιστήμη">
+    
+    <!-- Brain emoji favicon -->
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧠</text></svg>">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+    <!-- External CSS loaded after Tailwind to ensure proper override -->
+    <link rel="stylesheet" href="../css/main.css">
+    
+</head>
+
+<body class="bg-gray-100 font-sans dark:bg-gray-900 text-gray-800 dark:text-gray-200 transition-colors duration-300">
+    <!-- Header Placeholder -->
+    <div id="header-placeholder"></div>
+
+    <!-- Consistent colored header -->
+    <header class="bg-purple-700 text-white p-6 shadow-md mb-8">
+        <div class="container mx-auto">
+            <h1 class="text-3xl md:text-4xl font-bold mb-2">Κεφάλαιο 3: Νευρωνικά Δίκτυα & Πλαστικότητα Εγκεφάλου</h1>
+            <p class="text-lg opacity-90">Ανακάλυψε πώς οι νευρώνες συνδέονται και προσαρμόζονται μέσα από την εμπειρία</p>
+        </div>
+    </header>
+
+    <main class="container mx-auto p-4 md:p-6">
+        <!-- Introduction Section -->
+        <section class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-8">
+            <h2 class="text-2xl font-bold mb-4 text-purple-700 dark:text-purple-300">Πώς δημιουργεί δίκτυα ο εγκέφαλος και πώς προσαρμόζεται;</h2>
+            <p class="mb-4">Ο εγκέφαλός σου περιέχει περίπου 86 δισεκατομμύρια νευρώνες που σχηματίζουν τρισεκατομμύρια συνδέσεις. Αυτά τα νευρωνικά δίκτυα επεξεργάζονται πληροφορίες, αποθηκεύουν μνήμες και, εντυπωσιακά, μπορούν να αναδιοργανώνονται σε όλη τη διάρκεια της ζωής σου, ένα φαινόμενο που ονομάζεται νευροπλαστικότητα. Παρότι η εββιανή πλαστικότητα αποτελεί βασική αρχή, η σύγχρονη έρευνα δείχνει ότι λειτουργούν <strong>πολλαπλοί μηχανισμοί μάθησης</strong> σε διαφορετικές κλίμακες.</p>
+            <p class="mb-2 font-semibold">Σε αυτή την ενότητα θα ανακαλύψεις:</p>
+            <ul class="list-disc pl-6 mb-4">
+                <li>Πώς οι νευρώνες σχηματίζουν σύνθετα δίκτυα για επεξεργασία πληροφοριών</li>
+                <li>Τους μηχανισμούς της συναπτικής πλαστικότητας και της μάθησης</li>
+                <li>Τις κύριες νευρωνικές οδούς που ελέγχουν τη συμπεριφορά και τη νόηση</li>
+                <li>Πώς σχηματίζονται, αποθηκεύονται και ανακαλούνται οι μνήμες</li>
+            </ul>
+            <p class="text-purple-700 dark:text-purple-300 font-semibold">Ξεκίνα επιλέγοντας μία από τις παρακάτω καρτέλες!</p>
+        </section>
+
+        <!-- Navigation Tabs -->
+        <nav class="mb-6 tab-navigation" role="tablist" aria-label="Ενότητες κεφαλαίου"
+            style="--tab-active-color:#7e22ce; --tab-active-color-dark:#c4b5fd; --tab-hover-color:#7e22ce; --tab-hover-color-dark:#c4b5fd; --tab-active-bg:#f3e8ff; --tab-active-bg-dark:rgba(168,85,247,0.18); --tab-hover-bg:#faf5ff; --tab-hover-bg-dark:rgba(168,85,247,0.12);">
+            <button id="tab-networks" role="tab" aria-selected="true" aria-controls="content-networks"
+                class="tab-button relative px-4 py-2 text-purple-700 font-medium rounded-lg transition-all duration-300">
+                <span class="hidden sm:inline">Νευρωνικά Δίκτυα</span>
+                <span class="sm:hidden">Δίκτυα</span>
+            </button>
+            <button id="tab-plasticity" role="tab" aria-selected="false" aria-controls="content-plasticity"
+                class="tab-button relative px-4 py-2 text-gray-500 font-medium rounded-lg transition-all duration-300 hover:text-purple-600 hover:bg-purple-50 dark:hover:bg-purple-900/20">
+                <span class="hidden sm:inline">Πλαστικότητα Εγκεφάλου</span>
+                <span class="sm:hidden">Πλαστ.</span>
+            </button>
+            <button id="tab-pathways" role="tab" aria-selected="false" aria-controls="content-pathways"
+                class="tab-button relative px-4 py-2 text-gray-500 font-medium rounded-lg transition-all duration-300 hover:text-purple-600 hover:bg-purple-50 dark:hover:bg-purple-900/20">
+                <span class="hidden sm:inline">Νευρωνικές Οδοί</span>
+                <span class="sm:hidden">Οδοί</span>
+            </button>
+            <button id="tab-memory" role="tab" aria-selected="false" aria-controls="content-memory"
+                class="tab-button relative px-4 py-2 text-gray-500 font-medium rounded-lg transition-all duration-300 hover:text-purple-600 hover:bg-purple-50 dark:hover:bg-purple-900/20">
+                <span class="hidden sm:inline">Μάθηση & Μνήμη</span>
+                <span class="sm:hidden">Μνήμη</span>
+            </button>
+            <button id="tab-modern" role="tab" aria-selected="false" aria-controls="content-modern"
+                class="tab-button relative px-4 py-2 text-gray-500 font-medium rounded-lg transition-all duration-300 hover:text-purple-600 hover:bg-purple-50 dark:hover:bg-purple-900/20">
+                <span class="hidden sm:inline">🔬 Σύγχρονη Πλαστικότητα</span>
+                <span class="sm:hidden">Σύγχρ.</span>
+            </button>
+        </nav>
+
+        <!-- Νευρωνικά Δίκτυα Tab -->
+        <section id="content-networks" class="tab-content active" role="tabpanel" aria-labelledby="tab-networks">
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-8">
+                <h2 class="text-2xl font-bold mb-4 text-purple-700 dark:text-purple-300">Νευρωνικά Δίκτυα: η υπολογιστική αρχιτεκτονική του εγκεφάλου</h2>
+
+                <div class="lg:flex gap-6">
+                    <div class="lg:w-1/2 mb-6 lg:mb-0">
+                        <div class="relative h-[400px] border border-gray-200 dark:border-gray-600 rounded-lg overflow-hidden bg-gray-50 dark:bg-gray-700 flex items-center justify-center"
+                            role="img" aria-label="Διαδραστικό διάγραμμα νευρωνικού δικτύου">
+                            <svg id="network-svg" viewBox="0 0 600 400" class="w-full h-full" style="max-width: 100%; max-height: 100%;">
+                                <!-- Network visualization will be rendered here -->
+                            </svg>
+                        </div>
+                        <p class="text-sm text-center mt-2 text-gray-600 dark:text-gray-400">
+                            💡 Κάνε κλικ στους νευρώνες για να τους ενεργοποιήσεις και να δεις τη διάδοση του σήματος
+                        </p>
+
+                        <div class="mt-4 flex gap-2">
+                            <button id="run-network"
+                                class="bg-purple-600 hover:bg-purple-700 text-white font-medium py-2 px-4 rounded transition">
+                                Εκκίνηση Δικτύου
+                            </button>
+                            <button id="reset-network"
+                                class="bg-gray-600 hover:bg-gray-700 text-white font-medium py-2 px-4 rounded transition">
+                                Επαναφορά
+                            </button>
+                        </div>
+
+                        <div class="mt-4">
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Τύπος
+                                Δικτύου:</label>
+                            <select id="network-type"
+                                class="w-full p-2 border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-700">
+                                <option value="feedforward">Τροφοδοτικό Δίκτυο</option>
+                                <option value="recurrent">Αναδρομικό Δίκτυο</option>
+                                <option value="small-world">Δίκτυο Μικρού Κόσμου</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="lg:w-1/2">
+                        <h3 class="text-xl font-semibold mb-3">Τύποι αρχιτεκτονικής δικτύων</h3>
+                        <p class="mb-4">Διαφορετικοί τύποι νευρωνικών δικτύων εξυπηρετούν συγκεκριμένες υπολογιστικές λειτουργίες στον εγκέφαλο:</p>
+
+                        <div class="space-y-4">
+                            <div class="p-4 border-l-4 border-purple-500 bg-purple-50 dark:bg-purple-900/20 rounded">
+                                <h4 class="font-semibold text-purple-700 dark:text-purple-300">Τροφοδοτικά Δίκτυα</h4>
+                                <p class="text-sm text-gray-700 dark:text-gray-300 mt-1">Η πληροφορία ρέει προς μία κατεύθυνση από την είσοδο στην έξοδο. Συναντάται σε οδούς αισθητικής επεξεργασίας όπως η ιεραρχία του οπτικού φλοιού (V1 → V2 → V4 → IT).</p>
+                            </div>
+
+                            <div class="p-4 border-l-4 border-blue-500 bg-blue-50 dark:bg-blue-900/20 rounded">
+                                <h4 class="font-semibold text-blue-700 dark:text-blue-300">Αναδρομικά Δίκτυα</h4>
+                                <p class="text-sm text-gray-700 dark:text-gray-300 mt-1">Περιέχουν βρόχους ανάδρασης που επιτρέπουν τη λειτουργική μνήμη και τη χρονική επεξεργασία. Απαραίτητα για τον προμετωπιαίο φλοιό και τα ιπποκάμπεια κυκλώματα.</p>
+                            </div>
+
+                            <div class="p-4 border-l-4 border-green-500 bg-green-50 dark:bg-green-900/20 rounded">
+                                <h4 class="font-semibold text-green-700 dark:text-green-300">Δίκτυα Μικρού Κόσμου</h4>
+                                <p class="text-sm text-gray-700 dark:text-gray-300 mt-1">Υψηλή ομαδοποίηση με μικρά μήκη διαδρομών. Βελτιστοποιεί την ισορροπία απόδοσης-κόστους. Χαρακτηριστικό των μοτίβων φλοιικής συνδεσιμότητας.</p>
+                            </div>
+                        </div>
+
+                        <div
+                            class="mt-6 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-700">
+                            <h4 class="font-semibold text-blue-700 dark:text-blue-300 mb-2">Κλινική Σημασία</h4>
+                            <p class="text-sm text-gray-700 dark:text-gray-300">
+                                Διαταραχές των δικτύων σχετίζονται με πολλές νευρολογικές και ψυχιατρικές παθήσεις. Η νόσος Alzheimer επηρεάζει τους κεντρικούς κόμβους, ο αυτισμός σχετίζεται με αλλαγές στη συνδεσιμότητα και η σχιζοφρένεια παρουσιάζει μειωμένα χαρακτηριστικά δικτύων μικρού κόσμου.
+                            </p>
+                        </div>
+
+                        <div id="network-stats" class="mt-4 text-sm text-gray-600 dark:text-gray-400">
+                            <p>Στατιστικά Δικτύου:</p>
+                            <ul class="list-disc list-inside mt-1">
+                                <li>Κόμβοι: <span id="node-count">0</span></li>
+                                <li>Συνδέσεις: <span id="connection-count">0</span></li>
+                                <li>Ενεργοί Κόμβοι: <span id="active-nodes">0</span></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Πλαστικότητα Εγκεφάλου Tab -->
+        <section id="content-plasticity" class="tab-content" role="tabpanel" aria-labelledby="tab-plasticity">
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-8">
+                <h2 class="text-2xl font-bold mb-4 text-purple-700 dark:text-purple-300">Πλαστικότητα Εγκεφάλου: πώς προσαρμόζεται ο εγκέφαλος</h2>
+
+                <div class="lg:flex gap-6">
+                    <div class="lg:w-1/2 mb-6 lg:mb-0">
+                        <h3 class="text-xl font-semibold mb-3">Προσομοίωση Συναπτικής Πλαστικότητας</h3>
+                        <p class="mb-4">Η Μακρόχρονη Ενδυνάμωση (LTP) και η Μακρόχρονη Εξασθένηση (LTD) αποτελούν κυτταρική βάση της μάθησης και της μνήμης:</p>
+
+                        <div class="chart-container mb-4" style="height: 300px;">
+                            <canvas id="plasticity-chart"></canvas>
+                        </div>
+
+                        <div class="space-y-3">
+                            <div>
+                                <label
+                                    class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Συχνότητα
+                                    Διέγερσης (Hz):</label>
+                                <input type="range" id="frequency-slider" min="1" max="100" value="10" class="w-full">
+                                <div class="flex justify-between text-xs text-gray-500">
+                                    <span>1 Hz (LTD)</span>
+                                    <span id="frequency-display">10 Hz</span>
+                                    <span>100 Hz (LTP)</span>
+                                </div>
+                            </div>
+
+                            <button id="stimulate-synapses"
+                                class="w-full bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded transition">
+                                Εφαρμογή Διέγερσης
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="lg:w-1/2">
+                        <h3 class="text-xl font-semibold mb-3">Μηχανισμοί Πλαστικότητας</h3>
+
+                        <div class="space-y-4">
+                            <div
+                                class="p-4 border border-green-200 dark:border-green-700 rounded-lg bg-green-50 dark:bg-green-900/20">
+                                <h4 class="font-semibold text-green-700 dark:text-green-300 mb-2">Μακρόχρονη Ενδυνάμωση (LTP)</h4>
+                                <ul class="text-sm text-gray-700 dark:text-gray-300 space-y-1">
+                                    <li>• Διέγερση υψηλής συχνότητας (>50 Hz)</li>
+                                    <li>• Εισροή Ca²⁺ μέσω υποδοχέων NMDA</li>
+                                    <li>• Εισαγωγή υποδοχέων AMPA</li>
+                                    <li>• Ενισχύει τις συναπτικές συνδέσεις</li>
+                                </ul>
+                            </div>
+
+                            <div
+                                class="p-4 border border-red-200 dark:border-red-700 rounded-lg bg-red-50 dark:bg-red-900/20">
+                                <h4 class="font-semibold text-red-700 dark:text-red-300 mb-2">Μακρόχρονη Εξασθένηση (LTD)
+                                </h4>
+                                <ul class="text-sm text-gray-700 dark:text-gray-300 space-y-1">
+                                    <li>• Διέγερση χαμηλής συχνότητας (1-5 Hz)</li>
+                                    <li>• Μέτρια αύξηση Ca²⁺</li>
+                                    <li>• Ενδοκυττάρωση υποδοχέων AMPA</li>
+                                    <li>• Εξασθενεί τις συναπτικές συνδέσεις</li>
+                                </ul>
+                            </div>
+
+                            <div
+                                class="p-4 border border-blue-200 dark:border-blue-700 rounded-lg bg-blue-50 dark:bg-blue-900/20">
+                                <h4 class="font-semibold text-blue-700 dark:text-blue-300 mb-2">Ομοιοστατική Πλαστικότητα
+                                </h4>
+                                <ul class="text-sm text-gray-700 dark:text-gray-300 space-y-1">
+                                    <li>• Συναπτική κλιμάκωση</li>
+                                    <li>• Αλλαγές ενδογενούς διεγερσιμότητας</li>
+                                    <li>• Διατηρεί τη σταθερότητα των δικτύων</li>
+                                    <li>• Αποτρέπει την ανεξέλεγκτη διέγερση</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div
+                            class="mt-6 p-4 bg-purple-50 dark:bg-purple-900/20 rounded-lg border border-purple-200 dark:border-purple-700">
+                            <h4 class="font-semibold text-purple-700 dark:text-purple-300 mb-2">Κλινικές Εφαρμογές
+                            </h4>
+                            <p class="text-sm text-gray-700 dark:text-gray-300">
+                                Η κατανόηση της πλαστικότητας επιτρέπει θεραπείες για την αποκατάσταση εγκεφαλικών, τη θεραπεία της κατάθλιψης (rTMS) και τη γνωστική ενίσχυση. Οι κρίσιμες περίοδοι στην ανάπτυξη καθοδηγούν τον χρόνο των παρεμβάσεων.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Νευρωνικές Οδοί Tab -->
+        <section id="content-pathways" class="tab-content" role="tabpanel" aria-labelledby="tab-pathways">
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-8">
+                <h2 class="text-2xl font-bold mb-4 text-purple-700 dark:text-purple-300">Νευρωνικές Οδοί: Διαδρομές
+                    Πληροφορίας</h2>
+
+                <div class="mb-6">
+                    <p class="mb-4">Οι νευρωνικές οδοί είναι ανατομικά διακριτά κυκλώματα που αποτελούν τους δρόμους πληροφορίας του εγκεφάλου. Συνδέουν συγκεκριμένες εγκεφαλικές περιοχές για την επεξεργασία αισθητηριακής εισόδου, τον έλεγχο της κινητικής εξόδου και την ολοκλήρωση γνωστικών λειτουργιών. Η κατανόηση αυτών των κυκλωμάτων είναι απαραίτητη για τη διάγνωση και την αντιμετώπιση νευρολογικών παθήσεων.</p>
+                    
+                    <div class="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg mb-4">
+                        <h4 class="font-semibold text-blue-600 dark:text-blue-400 mb-2">🧠 Αρχές Οργάνωσης Νευρωνικών Οδών</h4>
+                        <ul class="text-sm text-gray-700 dark:text-gray-300 space-y-1">
+                            <li>• <strong>Ιεραρχική Επεξεργασία:</strong> Η πληροφορία ρέει από πρωτογενείς σε δευτερογενείς και έπειτα σε συνειρμικές περιοχές</li>
+                            <li>• <strong>Παράλληλη Επεξεργασία:</strong> Πολλαπλές οδοί επεξεργάζονται διαφορετικές πλευρές ταυτόχρονα</li>
+                            <li>• <strong>Διατροπική Ολοκλήρωση:</strong> Ανώτερες περιοχές συνδυάζουν πληροφορίες από πολλές αισθήσεις</li>
+                            <li>• <strong>Πλεονασμός:</strong> Κρίσιμες λειτουργίες διαθέτουν εφεδρικές οδούς για ανθεκτικότητα</li>
+                        </ul>
+                    </div>
+
+                    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        <!-- Visual Pathway -->
+                        <div class="pathway-card p-4 border border-blue-200 dark:border-blue-700 rounded-lg bg-blue-50 dark:bg-blue-900/20 hover:shadow-md transition cursor-pointer"
+                            data-pathway="visual">
+                            <div class="flex items-center mb-3">
+                                <div class="p-2 bg-blue-100 dark:bg-blue-800 rounded-lg mr-3">
+                                    <svg class="w-6 h-6 text-blue-600 dark:text-blue-300" fill="none"
+                                        stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z">
+                                        </path>
+                                    </svg>
+                                </div>
+                                <h4 class="font-semibold text-blue-700 dark:text-blue-300">Οπτική Οδός</h4>
+                            </div>
+                            <p class="text-sm text-gray-700 dark:text-gray-300 mb-2">Αμφιβληστροειδής → LGN → V1 → V2 → V4/V5</p>
+                            <p class="text-xs text-gray-600 dark:text-gray-400">Ραχιαίο ρεύμα: κίνηση και χωρική επεξεργασία<br>Κοιλιακό ρεύμα: αναγνώριση αντικειμένων και μορφή</p>
+                            <div class="mt-2 flex gap-1">
+                                <span class="px-2 py-1 bg-blue-100 dark:bg-blue-800 text-xs rounded">Magnocellular</span>
+                                <span class="px-2 py-1 bg-blue-100 dark:bg-blue-800 text-xs rounded">Parvocellular</span>
+                            </div>
+                        </div>
+
+                        <!-- Motor Pathway -->
+                        <div class="pathway-card p-4 border border-red-200 dark:border-red-700 rounded-lg bg-red-50 dark:bg-red-900/20 hover:shadow-md transition cursor-pointer"
+                            data-pathway="motor">
+                            <div class="flex items-center mb-3">
+                                <div class="p-2 bg-red-100 dark:bg-red-800 rounded-lg mr-3">
+                                    <svg class="w-6 h-6 text-red-600 dark:text-red-300" fill="none"
+                                        stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                                    </svg>
+                                </div>
+                                <h4 class="font-semibold text-red-700 dark:text-red-300">Κινητική Οδός</h4>
+                            </div>
+                            <p class="text-sm text-gray-700 dark:text-gray-300 mb-2">M1 → Πυραμιδικός Χιασμός → Νωτιαίος Μυελός</p>
+                            <p class="text-xs text-gray-600 dark:text-gray-400">Το 85% των ινών χιάζεται στον προμήκη μυελό<br>Ανώτεροι κινητικοί νευρώνες → Κατώτεροι κινητικοί νευρώνες</p>
+                            <div class="mt-2 flex gap-1">
+                                <span class="px-2 py-1 bg-red-100 dark:bg-red-800 text-xs rounded">Lateral CST</span>
+                                <span class="px-2 py-1 bg-red-100 dark:bg-red-800 text-xs rounded">Ventral CST</span>
+                            </div>
+                        </div>
+
+                        <!-- Auditory Pathway -->
+                        <div class="pathway-card p-4 border border-green-200 dark:border-green-700 rounded-lg bg-green-50 dark:bg-green-900/20 hover:shadow-md transition cursor-pointer"
+                            data-pathway="auditory">
+                            <div class="flex items-center mb-3">
+                                <div class="p-2 bg-green-100 dark:bg-green-800 rounded-lg mr-3">
+                                    <svg class="w-6 h-6 text-green-600 dark:text-green-300" fill="none"
+                                        stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728"></path>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M6.343 6.343a8 8 0 000 11.314m5.657-2.828a4 4 0 000-5.656"></path>
+                                    </svg>
+                                </div>
+                                <h4 class="font-semibold text-green-700 dark:text-green-300">Ακουστική Οδός</h4>
+                            </div>
+                            <p class="text-sm text-gray-700 dark:text-gray-300 mb-2">Κοχλίας → CN VIII → SOC → IC → MGN → A1</p>
+                            <p class="text-xs text-gray-600 dark:text-gray-400">Διατηρείται η τονοτοπική οργάνωση<br>Αμφιωτική επεξεργασία για εντοπισμό ήχου</p>
+                            <div class="mt-2 flex gap-1">
+                                <span class="px-2 py-1 bg-green-100 dark:bg-green-800 text-xs rounded">Συχνότητα</span>
+                                <span class="px-2 py-1 bg-green-100 dark:bg-green-800 text-xs rounded">Θέση</span>
+                            </div>
+                        </div>
+
+                        <!-- Pain Pathway -->
+                        <div class="pathway-card p-4 border border-orange-200 dark:border-orange-700 rounded-lg bg-orange-50 dark:bg-orange-900/20 hover:shadow-md transition cursor-pointer"
+                            data-pathway="pain">
+                            <div class="flex items-center mb-3">
+                                <div class="p-2 bg-orange-100 dark:bg-orange-800 rounded-lg mr-3">
+                                    <svg class="w-6 h-6 text-orange-600 dark:text-orange-300" fill="none"
+                                        stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg>
+                                </div>
+                                <h4 class="font-semibold text-orange-700 dark:text-orange-300">Οδός Πόνου</h4>
+                            </div>
+                            <p class="text-sm text-gray-700 dark:text-gray-300 mb-2">Αλγοϋποδοχείς → Νωτιαίος Μυελός →
+                                Θάλαμος → S1/S2</p>
+                            <p class="text-xs text-gray-600 dark:text-gray-400">Γρήγορη (Aδ) και αργή (ίνες C) μετάδοση
+                                και διαμόρφωση του πόνου</p>
+                        </div>
+
+                        <!-- Memory Pathway -->
+                        <div class="pathway-card p-4 border border-purple-200 dark:border-purple-700 rounded-lg bg-purple-50 dark:bg-purple-900/20 hover:shadow-md transition cursor-pointer"
+                            data-pathway="memory">
+                            <div class="flex items-center mb-3">
+                                <div class="p-2 bg-purple-100 dark:bg-purple-800 rounded-lg mr-3">
+                                    <svg class="w-6 h-6 text-purple-600 dark:text-purple-300" fill="none"
+                                        stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z">
+                                        </path>
+                                    </svg>
+                                </div>
+                                <h4 class="font-semibold text-purple-700 dark:text-purple-300">Κύκλωμα Μνήμης</h4>
+                            </div>
+                            <p class="text-sm text-gray-700 dark:text-gray-300 mb-2">Ιππόκαμπος ↔ Φλοιός ↔ PFC</p>
+                            <p class="text-xs text-gray-600 dark:text-gray-400">Κωδικοποιεί, παγιώνει και ανακαλεί
+                                επεισοδιακές και σημασιολογικές μνήμες</p>
+                        </div>
+
+                        <!-- Reward Pathway -->
+                        <div class="pathway-card p-4 border border-yellow-200 dark:border-yellow-700 rounded-lg bg-yellow-50 dark:bg-yellow-900/20 hover:shadow-md transition cursor-pointer"
+                            data-pathway="reward">
+                            <div class="flex items-center mb-3">
+                                <div class="p-2 bg-yellow-100 dark:bg-yellow-800 rounded-lg mr-3">
+                                    <svg class="w-6 h-6 text-yellow-600 dark:text-yellow-300" fill="none"
+                                        stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z">
+                                        </path>
+                                    </svg>
+                                </div>
+                                <h4 class="font-semibold text-yellow-700 dark:text-yellow-300">Οδός Ανταμοιβής</h4>
+                            </div>
+                            <p class="text-sm text-gray-700 dark:text-gray-300 mb-2">VTA → NAc → PFC</p>
+                            <p class="text-xs text-gray-600 dark:text-gray-400">Ντοπαμινεργικό σύστημα για κίνητρο,
+                                εθισμό και μάθηση</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="pathway-details"
+                    class="mt-6 p-4 bg-gray-50 dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600">
+                    <h4 class="font-semibold text-gray-800 dark:text-gray-200 mb-2">Επίλεξε μια οδό παραπάνω για να δεις
+                        αναλυτικές πληροφορίες</h4>
+                    <p class="text-sm text-gray-600 dark:text-gray-400">Κάνε κλικ σε οποιαδήποτε κάρτα νευρωνικής οδού για να εξερευνήσεις
+                        την ανατομία, τη λειτουργία και την κλινική της σημασία λεπτομερώς.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Μάθηση & Μνήμη Tab -->
+        <section id="content-memory" class="tab-content" role="tabpanel" aria-labelledby="tab-memory">
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-8">
+                <h2 class="text-2xl font-bold mb-4 text-purple-700 dark:text-purple-300">Μάθηση & Μνήμη: Πώς
+                    η Εμπειρία Αλλάζει τον Εγκέφαλό σου</h2>
+
+                <div class="lg:flex gap-6">
+                    <div class="lg:w-1/2 mb-6 lg:mb-0">
+                        <h3 class="text-xl font-semibold mb-3">Διαδικασία Σχηματισμού Μνήμης</h3>
+                        <p class="mb-4">Ο σχηματισμός μνήμης περιλαμβάνει τρία βασικά στάδια: κωδικοποίηση, παγίωση και
+                            ανάκληση. Κάθε στάδιο ενεργοποιεί διαφορετικές εγκεφαλικές περιοχές:</p>
+
+                        <div class="chart-container mb-4" style="height: 300px;">
+                            <canvas id="memory-chart"></canvas>
+                        </div>
+
+                        <div class="flex gap-2 mb-4">
+                            <button id="encode-memory"
+                                class="bg-blue-600 hover:bg-blue-700 text-white text-sm px-3 py-2 rounded transition">
+                                Κωδικοποίηση
+                            </button>
+                            <button id="consolidate-memory"
+                                class="bg-green-600 hover:bg-green-700 text-white text-sm px-3 py-2 rounded transition">
+                                Παγίωση
+                            </button>
+                            <button id="retrieve-memory"
+                                class="bg-purple-600 hover:bg-purple-700 text-white text-sm px-3 py-2 rounded transition">
+                                Ανάκληση
+                            </button>
+                            <button id="reset-memory"
+                                class="bg-gray-600 hover:bg-gray-700 text-white text-sm px-3 py-2 rounded transition">
+                                Επαναφορά
+                            </button>
+                        </div>
+
+                        <div id="memory-info" class="text-sm text-gray-600 dark:text-gray-400">
+                            <p><strong>Τρέχον Στάδιο:</strong> <span id="current-stage">Έτοιμο</span></p>
+                            <p><strong>Ενεργές Περιοχές:</strong> <span id="active-regions">Καμία</span></p>
+                        </div>
+                    </div>
+
+                    <div class="lg:w-1/2">
+                        <h3 class="text-xl font-semibold mb-3">Συστήματα Μνήμης</h3>
+
+                        <div class="space-y-4">
+                            <div
+                                class="p-4 border border-blue-200 dark:border-blue-700 rounded-lg bg-blue-50 dark:bg-blue-900/20">
+                                <h4 class="font-semibold text-blue-700 dark:text-blue-300 mb-2">Εργαζόμενη Μνήμη</h4>
+                                <p class="text-sm text-gray-700 dark:text-gray-300 mb-2">Προσωρινή αποθήκευση και
+                                    επεξεργασία πληροφοριών</p>
+                                <ul class="text-xs text-gray-600 dark:text-gray-400 space-y-1">
+                                    <li>• Δίκτυα προμετωπιαίου φλοιού</li>
+                                    <li>• Όριο χωρητικότητας 7±2 στοιχείων</li>
+                                    <li>• Απαραίτητη για συλλογιστική και επίλυση προβλημάτων</li>
+                                </ul>
+                            </div>
+
+                            <div
+                                class="p-4 border border-green-200 dark:border-green-700 rounded-lg bg-green-50 dark:bg-green-900/20">
+                                <h4 class="font-semibold text-green-700 dark:text-green-300 mb-2">Μακρόχρονη Μνήμη</h4>
+                                <p class="text-sm text-gray-700 dark:text-gray-300 mb-2">Μόνιμη αποθήκευση
+                                    πληροφοριών και εμπειριών</p>
+                                <div class="grid grid-cols-2 gap-2 text-xs text-gray-600 dark:text-gray-400">
+                                    <div>
+                                        <p class="font-medium">Δηλωτική:</p>
+                                        <ul class="space-y-1">
+                                            <li>• Επεισοδιακή (γεγονότα)</li>
+                                            <li>• Σημασιολογική (γεγονότα)</li>
+                                        </ul>
+                                    </div>
+                                    <div>
+                                        <p class="font-medium">Μη δηλωτική:</p>
+                                        <ul class="space-y-1">
+                                            <li>• Διαδικαστική (δεξιότητες)</li>
+                                            <li>• Προέγερση</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div
+                                class="p-4 border border-purple-200 dark:border-purple-700 rounded-lg bg-purple-50 dark:bg-purple-900/20">
+                                <h4 class="font-semibold text-purple-700 dark:text-purple-300 mb-2">Κύριες Εγκεφαλικές Περιοχές
+                                </h4>
+                                <div class="text-sm text-gray-700 dark:text-gray-300 space-y-2">
+                                    <p><strong>Ιππόκαμπος:</strong> Κωδικοποίηση και παγίωση επεισοδιακών μνημών</p>
+                                    <p><strong>Προμετωπιαίος Φλοιός:</strong> Εργαζόμενη μνήμη και εκτελεστικός έλεγχος</p>
+                                    <p><strong>Αμυγδαλή:</strong> Ενίσχυση συναισθηματικής μνήμης</p>
+                                    <p><strong>Παρεγκεφαλίδα:</strong> Κινητική μάθηση και διαδικαστική μνήμη</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div
+                            class="mt-6 p-4 bg-orange-50 dark:bg-orange-900/20 rounded-lg border border-orange-200 dark:border-orange-700">
+                            <h4 class="font-semibold text-orange-700 dark:text-orange-300 mb-2">Διαταραχές Μνήμης</h4>
+                            <p class="text-sm text-gray-700 dark:text-gray-300">
+                                Η νόσος Alzheimer επηρεάζει κυρίως την ιπποκάμπεια μνήμη, ενώ η νόσος Huntington
+                                επηρεάζει τη διαδικαστική μάθηση. Η κατανόηση αυτών των συστημάτων καθοδηγεί τις θεραπευτικές
+                                παρεμβάσεις.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Summary Section -->
+        <section class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+            <h3 class="text-xl font-bold mb-4 text-purple-700 dark:text-purple-300">Περίληψη Βασικών Εννοιών</h3>
+            <div class="grid md:grid-cols-2 gap-6">
+                <div>
+                    <h4 class="font-semibold mb-2 text-gray-800 dark:text-gray-200">Νευρωνικά Δίκτυα</h4>
+                    <ul class="text-sm text-gray-700 dark:text-gray-300 space-y-1">
+                        <li>• 86 δισεκατομμύρια νευρώνες, τρισεκατομμύρια συνδέσεις</li>
+                        <li>• Διαφορετικές αρχιτεκτονικές εξυπηρετούν συγκεκριμένες λειτουργίες</li>
+                        <li>• Ιδιότητες μικρού κόσμου βελτιστοποιούν την απόδοση</li>
+                        <li>• Διαταραχές των δικτύων προκαλούν ασθένειες</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-2 text-gray-800 dark:text-gray-200">Πλαστικότητα Εγκεφάλου</h4>
+                    <ul class="text-sm text-gray-700 dark:text-gray-300 space-y-1">
+                        <li>• Η LTP ενισχύει, η LTD εξασθενεί τις συνάψεις</li>
+                        <li>• Μηχανισμοί εξαρτώμενοι από τη δραστηριότητα</li>
+                        <li>• Κρίσιμες περίοδοι και δια βίου προσαρμογή</li>
+                        <li>• Θεμέλιο της μάθησης και της αποκατάστασης</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Σύγχρονη Πλαστικότητα Tab -->
+        <section id="content-modern" class="tab-content" role="tabpanel" aria-labelledby="tab-modern">
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-8">
+                <h2 class="text-2xl font-bold mb-4 text-purple-700 dark:text-purple-300">🔬 Σύγχρονη Πλαστικότητα: Πέρα από το «Νευρώνες που Πυροδοτούνται Μαζί, Συνδέονται»</h2>
+                <p class="mb-6 text-gray-700 dark:text-gray-300">Η πλαστικότητα Hebb, δηλαδή «οι νευρώνες που πυροδοτούνται μαζί, συνδέονται», είναι θεμελιώδης αρχή και παραμένει σωστή. Όμως η τελευταία δεκαετία έδειξε ότι η <strong>πλαστικότητα είναι πολύ πιο πλούσια, πιο τοπική και πιο δυναμική δομικά</strong> από όσο πρότειναν τα κλασικά μοντέλα.</p>
+
+                <!-- Dendritic Plasticity -->
+                <div class="mb-8 p-6 bg-gradient-to-r from-fuchsia-50 to-pink-50 dark:from-fuchsia-900/20 dark:to-pink-900/20 rounded-xl border border-fuchsia-200 dark:border-fuchsia-700">
+                    <div class="flex items-center mb-4">
+                        <div class="text-3xl mr-4">🌳</div>
+                        <div>
+                            <h3 class="text-xl font-bold text-fuchsia-700 dark:text-fuchsia-300">Πλαστικότητα Δενδριτικών Διαμερισμάτων</h3>
+                            <p class="text-sm text-fuchsia-600 dark:text-fuchsia-400">Διαφορετικοί κλάδοι ενός μόνο νευρώνα μπορούν να μαθαίνουν ανεξάρτητα</p>
+                        </div>
+                    </div>
+                    <p class="text-sm text-gray-700 dark:text-gray-300 mb-4">Μια σημαντική μελέτη του 2025 στο <em>Science</em> έδειξε ότι διαφορετικοί δενδριτικοί κλάδοι στον <em>ίδιο νευρώνα</em> μπορούν να ακολουθούν <strong>διαφορετικούς κανόνες πλαστικότητας ταυτόχρονα</strong> κατά τη μάθηση. Αυτό σημαίνει ότι ένα μόνο κύτταρο δεν είναι απλώς μία υπολογιστική μονάδα, αλλά λειτουργεί σαν <strong>σύνολο τοπικών μαθητών</strong>, με κάθε κλάδο να προσαρμόζεται ανεξάρτητα.</p>
+                    <div class="grid md:grid-cols-2 gap-4 mb-4">
+                        <div class="bg-white dark:bg-gray-800 rounded-lg p-4 border-l-4 border-fuchsia-500">
+                            <h4 class="font-semibold text-fuchsia-700 dark:text-fuchsia-300 mb-2">Κλασικό Μοντέλο</h4>
+                            <ul class="text-sm text-gray-700 dark:text-gray-300 list-disc pl-5 space-y-1">
+                                <li>Η πλαστικότητα συμβαίνει στο <strong>επίπεδο του κυττάρου</strong>, δηλαδή ολόκληρος ο νευρώνας ενισχύεται ή εξασθενεί</li>
+                                <li>Κανόνας Hebb: συσχετισμένη πυροδότηση → ισχυρότερη σύναψη</li>
+                                <li>Μονός νευρώνας = μία υπολογιστική μονάδα</li>
+                            </ul>
+                        </div>
+                        <div class="bg-white dark:bg-gray-800 rounded-lg p-4 border-l-4 border-pink-500">
+                            <h4 class="font-semibold text-pink-700 dark:text-pink-300 mb-2">Σύγχρονη Κατανόηση</h4>
+                            <ul class="text-sm text-gray-700 dark:text-gray-300 list-disc pl-5 space-y-1">
+                                <li>Η πλαστικότητα συμβαίνει στο <strong>επίπεδο του δενδριτικού κλάδου</strong>, άρα κάθε κλάδος μπορεί να μαθαίνει διαφορετικούς κανόνες</li>
+                                <li>Συνυπάρχουν ειδική κατά κλάδο STDP, πλαστικότητα συμπεριφορικής χρονικής κλίμακας (BTSP) και ομοιοστατική κλιμάκωση</li>
+                                <li>Ένας νευρώνας = <strong>σύνολο ημι-ανεξάρτητων επεξεργαστών</strong></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="bg-white dark:bg-gray-800 rounded-lg p-4 border border-gray-200 dark:border-gray-600">
+                        <h5 class="font-semibold text-purple-700 dark:text-purple-300 text-sm mb-1">Πλαστικότητα Συμπεριφορικής Χρονικής Κλίμακας (BTSP)</h5>
+                        <p class="text-xs text-gray-700 dark:text-gray-300">Μια μελέτη του 2024 στο <em>Nature</em> περιέγραψε την BTSP, έναν μηχανισμό μη Hebbian όπου οι δενδριτικοί κλάδοι μαθαίνουν ακολουθίες συμπεριφοράς απευθείας από την εμπειρία, χωρίς να απαιτείται ταυτόχρονη προσυναπτική και μετασυναπτική πυροδότηση. Πρόκειται για θεμελιωδώς διαφορετικό κανόνα μάθησης από εκείνον που πρότεινε ο Hebb.</p>
+                    </div>
+                </div>
+
+                <!-- Memory Engrams -->
+                <div class="mb-8 p-6 bg-gradient-to-r from-rose-50 to-red-50 dark:from-rose-900/20 dark:to-red-900/20 rounded-xl border border-rose-200 dark:border-rose-700">
+                    <div class="flex items-center mb-4">
+                        <div class="text-3xl mr-4">🧬</div>
+                        <div>
+                            <h3 class="text-xl font-bold text-rose-700 dark:text-rose-300">Μνημονικά Εγγράμματα: Η Φυσική Αρχιτεκτονική της Μνήμης</h3>
+                            <p class="text-sm text-rose-600 dark:text-rose-400">Οι αναμνήσεις δεν είναι ασαφή μοτίβα — ζουν σε συγκεκριμένα κύτταρα με μετρήσιμη δομή</p>
+                        </div>
+                    </div>
+                    <p class="text-sm text-gray-700 dark:text-gray-300 mb-4">Ένα <strong>εγγράμμα</strong> είναι το φυσικό ίχνος μιας μνήμης στον εγκέφαλο, δηλαδή το συγκεκριμένο σύνολο νευρώνων που ενεργοποιείται κατά τη μάθηση και του οποίου η επανενεργοποίηση παράγει την ανάκληση. Πρόσφατες ανακαλύψεις επέτρεψαν για πρώτη φορά την οπτικοποίηση και τον χειρισμό των εγγραμμάτων.</p>
+                    <div class="grid md:grid-cols-3 gap-4 mb-4">
+                        <div class="bg-white dark:bg-gray-800 rounded-lg p-4 border-l-4 border-rose-500">
+                            <h5 class="font-semibold text-rose-700 dark:text-rose-300 text-sm mb-1">Αρχιτεκτονική Εγγράμματος</h5>
+                            <p class="text-xs text-gray-700 dark:text-gray-300">Μια μελέτη του 2025 στο <em>Science</em> απεικόνισε τη <strong>συναπτική αρχιτεκτονική ενός μνημονικού εγγράμματος</strong> στον ιππόκαμπο ποντικού με πρωτοφανή ανάλυση, δείχνοντας ότι τα κύτταρα του εγγράμματος έχουν μεγαλύτερες και πολυπληθέστερες δενδριτικές άκανθες ειδικά στις συνάψεις του δικτύου του εγγράμματος.</p>
+                        </div>
+                        <div class="bg-white dark:bg-gray-800 rounded-lg p-4 border-l-4 border-red-500">
+                            <h5 class="font-semibold text-red-700 dark:text-red-300 text-sm mb-1">Ακρίβεια Εγγράμματος</h5>
+                            <p class="text-xs text-gray-700 dark:text-gray-300">Οι νεοφλοιϊκοί νευρώνες εγγράμματος εμφανίζουν <strong>πλαστικότητα εγγενούς διεγερσιμότητας</strong>, γίνονται δηλαδή παροδικά πιο διεγέρσιμοι αμέσως μετά τη μάθηση, καθορίζοντας ποια κύτταρα «επιλέγονται» για να αποθηκεύσουν τη μνήμη (Nature Communications, 2025).</p>
+                        </div>
+                        <div class="bg-white dark:bg-gray-800 rounded-lg p-4 border-l-4 border-pink-500">
+                            <h5 class="font-semibold text-pink-700 dark:text-pink-300 text-sm mb-1">Κλινικές Επιπτώσεις</h5>
+                            <p class="text-xs text-gray-700 dark:text-gray-300">Η κατανόηση ότι η μνήμη έχει φυσικό υπόστρωμα σημαίνει ότι οι νευροεκφυλιστικές ασθένειες μπορεί να διαταράσσουν τη σταθερότητα των εγγραμμάτων και η διέγερση των εγγραμματικών κυκλωμάτων θα μπορούσε να γίνει θεραπευτική στρατηγική.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Myelin as Plasticity -->
+                <div class="mb-8 p-6 bg-gradient-to-r from-amber-50 to-yellow-50 dark:from-amber-900/20 dark:to-yellow-900/20 rounded-xl border border-amber-200 dark:border-amber-700">
+                    <div class="flex items-center mb-4">
+                        <div class="text-3xl mr-4">⚡</div>
+                        <div>
+                            <h3 class="text-xl font-bold text-amber-700 dark:text-amber-300">Πλαστικότητα Μυελίνης: Ένας Δεύτερος Τρόπος Μάθησης</h3>
+                            <p class="text-sm text-amber-600 dark:text-amber-400">Η εξαρτώμενη από την εμπειρία μυελίνωση είναι ένας μηχανισμός πλαστικότητας παράλληλα με τη συναπτική αλλαγή</p>
+                        </div>
+                    </div>
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div class="bg-white dark:bg-gray-800 rounded-lg p-4 border-l-4 border-amber-500">
+                            <h4 class="font-semibold text-amber-700 dark:text-amber-300 mb-2">Τι Αλλάζει</h4>
+                            <ul class="text-sm text-gray-700 dark:text-gray-300 list-disc pl-5 space-y-1">
+                                <li>Το <strong>πάχος της μυελίνης</strong> αυξάνεται σε κυκλώματα που χρησιμοποιούνται ενεργά</li>
+                                <li><strong>Νέα τμήματα μυελίνης</strong> σχηματίζονται σε προηγουμένως αμύελους άξονες κατά τη μάθηση</li>
+                                <li>Το <strong>μήκος των μεσοκομβίων</strong> προσαρμόζεται, ρυθμίζοντας την ταχύτητα αγωγής του σήματος</li>
+                                <li>Τα OPCs (πρόδρομα κύτταρα ολιγοδενδροκυττάρων) παραμένουν πολλαπλασιαστικά καθ'\ όλη τη διάρκεια της ζωής, ανταποκρινόμενα στη νευρωνική δραστηριότητα</li>
+                            </ul>
+                        </div>
+                        <div class="bg-white dark:bg-gray-800 rounded-lg p-4 border-l-4 border-yellow-500">
+                            <h4 class="font-semibold text-yellow-700 dark:text-yellow-300 mb-2">Γιατί έχει σημασία για την πλαστικότητα</h4>
+                            <ul class="text-sm text-gray-700 dark:text-gray-300 list-disc pl-5 space-y-1">
+                                <li>Η πλαστικότητα της μυελίνης <strong>συγχρονίζει σήματα</strong> μέσα στα νευρωνικά κυκλώματα, ο χρονισμός είναι καθοριστικός</li>
+                                <li>Ο αποκλεισμός νέας μυελίνωσης δυσχεραίνει την κινητική μάθηση (McKenzie et al., 2014, <em>Science</em>)</li>
+                                <li>Μελέτη του 2024 στο <em>Nature</em>: τα ολιγοδενδροκύτταρα και η μυελίνη <strong>περιορίζουν τη νευρωνική πλαστικότητα</strong>, ενώ η αφαίρεσή τους αυξάνει την προσαρμοστικότητα των κυκλωμάτων</li>
+                                <li>Η μυελίνη είναι ταυτόχρονα <strong>διευκολυντής μάθησης</strong> και <strong>μηχανισμός σταθερότητας</strong></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Revisiting -->
+                <div class="mb-4 p-4 bg-purple-50 dark:bg-purple-900/20 rounded-lg border border-purple-200 dark:border-purple-700">
+                    <h4 class="font-semibold text-purple-700 dark:text-purple-300 mb-2">📋 Επανεξετάζοντας όσα έμαθες</h4>
+                    <p class="text-sm text-gray-700 dark:text-gray-300 mb-2">Οι μηχανισμοί Hebbian και συναπτικής πλαστικότητας στις προηγούμενες καρτέλες, LTP, LTD και STDP, παραμένουν <strong>σωστοί και θεμελιώδεις</strong>. Η σύγχρονη νευροεπιστήμη προσθέτει σημαντικά επίπεδα:</p>
+                    <ul class="text-sm text-gray-700 dark:text-gray-300 list-disc pl-5 space-y-1">
+                        <li>Η πλαστικότητα <strong>δεν είναι μόνο συναπτική</strong>, οι δενδριτικοί κλάδοι μαθαίνουν ανεξάρτητα</li>
+                        <li>Η μνήμη έχει <strong>φυσικό υπόστρωμα</strong>, τα εγγράμματα, που μπορούμε πλέον να οπτικοποιούμε και να χειριζόμαστε</li>
+                        <li>Η μυελίνη είναι ένα <strong>παράλληλο σύστημα πλαστικότητας</strong> δίπλα στη συναπτική αλλαγή</li>
+                        <li>Ο εγκέφαλος χρησιμοποιεί <strong>πολλαπλούς συνυπάρχοντες κανόνες μάθησης</strong>, όχι μόνο έναν</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer Placeholder -->
+    <div id="footer-placeholder"></div>
+
+    <script src="../js/firebase-init.js"></script>
+    <script src="../js/components.js"></script>
+    <script src="../js/main.js"></script>
+    <script src="../js/03-neural-networks-plasticity.js"></script>
+</body>
+
+</html>

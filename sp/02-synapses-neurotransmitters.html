@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+<html lang="sp">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Συνάψεις & Νευροδιαβιβαστές - Διαδραστική Εκμάθηση Νευροεπιστήμης | Oligodendrosite</title>
+    <meta name="description" content="Διαδραστική εξερεύνηση της συναπτικής μετάδοσης, των νευροδιαβιβαστών και της χημικής επικοινωνίας στο νευρικό σύστημα.">
+    <meta name="keywords" content="συνάψεις, νευροδιαβιβαστές, συναπτική μετάδοση, ντοπαμίνη, σεροτονίνη, GABA, ακετυλοχολίνη, νευροεπιστήμη">
+    
+    <!-- Brain emoji favicon -->
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧠</text></svg>">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+    <link rel="stylesheet" href="../css/main.css">
+    
+</head>
+
+<body class="bg-gray-100 font-sans dark:bg-gray-900 text-gray-800 dark:text-gray-200 transition-colors duration-300">
+    <!-- Header will be loaded here by components.js -->
+    <div id="header-placeholder"></div>
+
+    <!-- Consistent colored header -->
+    <header class="bg-green-700 text-white p-6 shadow-md mb-8">
+        <div class="container mx-auto">
+            <h1 class="text-3xl md:text-4xl font-bold mb-2">Κεφάλαιο 2: Συνάψεις & Νευροδιαβιβαστές</h1>
+            <p class="text-lg opacity-90">Ανακάλυψε πώς επικοινωνούν οι νευρώνες μέσω χημικών σημάτων</p>
+        </div>
+    </header>
+
+    <main class="container mx-auto p-4 md:p-6">
+        <!-- Introduction Section -->
+        <section class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-8">
+            <h2 class="text-2xl font-bold mb-4 text-green-700">Πώς επικοινωνούν οι νευρώνες μεταξύ τους;</h2>
+            <p class="mb-4">Οι νευρώνες επικοινωνούν μέσω εξειδικευμένων συνδέσεων που ονομάζονται συνάψεις, χρησιμοποιώντας χημικούς αγγελιοφόρους που λέγονται νευροδιαβιβαστές. Οι συνάψεις όμως δεν είναι μόνο συνδέσεις νευρώνα με νευρώνα. <strong>Γλοιακά κύτταρα όπως τα αστροκύτταρα</strong> επηρεάζουν ενεργά τη συναπτική σηματοδότηση. Αυτή η διαδικασία είναι θεμελιώδης για καθετί που κάνει ο εγκέφαλός σου, από απλά αντανακλαστικά μέχρι σύνθετες σκέψεις και συναισθήματα.</p>
+            <p class="mb-2 font-semibold">Σε αυτή την ενότητα θα ανακαλύψεις:</p>
+            <ul class="list-disc pl-6 mb-4">
+                <li>Πώς λειτουργεί η συναπτική μετάδοση σε μοριακό επίπεδο</li>
+                <li>Διαφορετικούς τύπους νευροδιαβιβαστών και τις λειτουργίες τους</li>
+                <li>Τη διαφορά ανάμεσα στα διεγερτικά και τα ανασταλτικά σήματα</li>
+                <li>Πώς φάρμακα, παθήσεις και γλοιακά κύτταρα επηρεάζουν τη συναπτική λειτουργία</li>
+            </ul>
+            <p class="text-green-700 font-semibold">Ξεκίνα επιλέγοντας μία από τις παρακάτω καρτέλες!</p>
+        </section>
+
+        <!-- Navigation Tabs -->
+        <nav class="mb-6 tab-navigation" role="tablist" aria-label="Ενότητες κεφαλαίου"
+            style="--tab-active-color:#15803d; --tab-active-color-dark:#86efac; --tab-hover-color:#15803d; --tab-hover-color-dark:#86efac; --tab-active-bg:#dcfce7; --tab-active-bg-dark:rgba(34,197,94,0.18); --tab-hover-bg:#f0fdf4; --tab-hover-bg-dark:rgba(34,197,94,0.12);">
+            <button id="tab-synapse" role="tab" aria-selected="true" aria-controls="content-synapse"
+                class="tab-button relative px-4 py-2 text-green-700 font-medium rounded-lg transition-all duration-300">
+                <span class="hidden sm:inline">Δομή της σύναψης</span>
+                <span class="sm:hidden">Δομή</span>
+            </button>
+            <button id="tab-transmission" role="tab" aria-selected="false" aria-controls="content-transmission"
+                class="tab-button relative px-4 py-2 text-gray-500 font-medium rounded-lg transition-all duration-300 hover:text-green-600 hover:bg-green-50 dark:hover:bg-green-900/20">
+                <span class="hidden sm:inline">Διαδικασία μετάδοσης</span>
+                <span class="sm:hidden">Μετάδοση</span>
+            </button>
+            <button id="tab-neurotransmitters" role="tab" aria-selected="false"
+                aria-controls="content-neurotransmitters"
+                class="tab-button relative px-4 py-2 text-gray-500 font-medium rounded-lg transition-all duration-300 hover:text-green-600 hover:bg-green-50 dark:hover:bg-green-900/20">
+                <span class="hidden sm:inline">Νευροδιαβιβαστές</span>
+                <span class="sm:hidden">Τύποι</span>
+            </button>
+            <button id="tab-receptors" role="tab" aria-selected="false" aria-controls="content-receptors"
+                class="tab-button relative px-4 py-2 text-gray-500 font-medium rounded-lg transition-all duration-300 hover:text-green-600 hover:bg-green-50 dark:hover:bg-green-900/20">
+                <span class="hidden sm:inline">Υποδοχείς</span>
+                <span class="sm:hidden">Υποδοχείς</span>
+            </button>
+            <button id="tab-integration" role="tab" aria-selected="false" aria-controls="content-integration"
+                class="tab-button relative px-4 py-2 text-gray-500 font-medium rounded-lg transition-all duration-300 hover:text-green-600 hover:bg-green-50 dark:hover:bg-green-900/20">
+                <span class="hidden sm:inline">Συναπτική ολοκλήρωση</span>
+                <span class="sm:hidden">Ολοκλήρ.</span>
+            </button>
+            <button id="tab-modern" role="tab" aria-selected="false" aria-controls="content-modern"
+                class="tab-button relative px-4 py-2 text-gray-500 font-medium rounded-lg transition-all duration-300 hover:text-green-600 hover:bg-green-50 dark:hover:bg-green-900/20">
+                <span class="hidden sm:inline">🔬 Πέρα από τον νευρώνα-προς-νευρώνα</span>
+                <span class="sm:hidden">Σύγχρ.</span>
+            </button>
+        </nav>
+
+        <!-- Δομή της σύναψης Tab -->
+        <section id="content-synapse" class="tab-content active" role="tabpanel" aria-labelledby="tab-synapse">
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-8">
+                <h2 class="text-2xl font-bold mb-4 text-green-700">Δομή της σύναψης: το σημείο επικοινωνίας</h2>
+
+                <div class="lg:flex gap-6">
+                    <div class="lg:w-1/2 mb-6 lg:mb-0">
+                        <div
+                            class="relative h-[500px] border border-gray-200 rounded-lg overflow-hidden bg-gradient-to-b from-blue-50 to-purple-50 dark:from-gray-700 dark:to-gray-800">
+                            <svg id="synapse-svg" viewBox="0 0 900 500" class="w-full h-full">
+                                <!-- Background membrane lines -->
+                                <defs>
+                                    <pattern id="membrane-pattern" patternUnits="userSpaceOnUse" width="4" height="4">
+                                        <rect width="4" height="4" fill="rgba(59, 130, 246, 0.1)" />
+                                        <circle cx="2" cy="2" r="0.5" fill="rgba(59, 130, 246, 0.3)" />
+                                    </pattern>
+                                    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5"
+                                        orient="auto">
+                                        <polygon points="0 0, 10 3.5, 0 7" fill="white" />
+                                    </marker>
+                                    <linearGradient id="cleftGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                                        <stop offset="0%" style="stop-color:#dbeafe;stop-opacity:0.3" />
+                                        <stop offset="50%" style="stop-color:#bfdbfe;stop-opacity:0.6" />
+                                        <stop offset="100%" style="stop-color:#dbeafe;stop-opacity:0.3" />
+                                    </linearGradient>
+                                </defs>
+
+                                <!-- Presynaptic Neuron (Axon Terminal) -->
+                                <g id="presynaptic" class="synapse-part" data-part="presynaptic"
+                                    data-title="Προσυναπτικό τελικό άκρο"
+                                    data-description="Το τελικό άκρο του άξονα που περιέχει συναπτικά κυστίδια, διαύλους ασβεστίου και τον μηχανισμό απελευθέρωσης νευροδιαβιβαστών.">
+                                    <!-- Axon approaching -->
+                                    <rect x="50" y="235" width="200" height="30" fill="#3b82f6" stroke="#1d4ed8"
+                                        stroke-width="2" rx="15" />
+                                    <!-- Terminal bulge -->
+                                    <ellipse cx="280" cy="250" rx="90" ry="80" fill="#4299e1" stroke="#2563eb"
+                                        stroke-width="3" />
+                                    <text x="280" y="160" text-anchor="middle" font-size="14" font-weight="bold"
+                                        fill="#1e40af">Προσυναπτικό τελικό άκρο</text>
+
+                                    <!-- Membrane detail -->
+                                    <path d="M 190 250 Q 370 250 370 250" stroke="#1d4ed8" stroke-width="4"
+                                        fill="none" />
+                                </g>
+
+                                <!-- Συναπτικά κυστίδια (Ready-Release Pool) -->
+                                <g id="vesicles" class="synapse-part" data-part="vesicles"
+                                    data-title="Συναπτικά κυστίδια"
+                                    data-description="Μεμβρανικά οργανίδια που αποθηκεύουν νευροδιαβιβαστές. Ο άμεσα διαθέσιμος πληθυσμός περιέχει 10-20 κυστίδια αγκυροβολημένα στις ενεργές ζώνες.">
+                                    <!-- Docked vesicles (ready to release) -->
+                                    <circle cx="340" cy="230" r="12" fill="#fbbf24" stroke="#f59e0b" stroke-width="2"
+                                        class="vesicle docked" />
+                                    <circle cx="320" cy="250" r="12" fill="#fbbf24" stroke="#f59e0b" stroke-width="2"
+                                        class="vesicle docked" />
+                                    <circle cx="340" cy="270" r="12" fill="#fbbf24" stroke="#f59e0b" stroke-width="2"
+                                        class="vesicle docked" />
+
+                                    <!-- Reserve pool vesicles -->
+                                    <circle cx="250" cy="220" r="10" fill="#fed7aa" stroke="#fb923c" stroke-width="1"
+                                        class="vesicle reserve" />
+                                    <circle cx="280" cy="210" r="10" fill="#fed7aa" stroke="#fb923c" stroke-width="1"
+                                        class="vesicle reserve" />
+                                    <circle cx="220" cy="250" r="10" fill="#fed7aa" stroke="#fb923c" stroke-width="1"
+                                        class="vesicle reserve" />
+                                    <circle cx="250" cy="280" r="10" fill="#fed7aa" stroke="#fb923c" stroke-width="1"
+                                        class="vesicle reserve" />
+                                    <circle cx="280" cy="290" r="10" fill="#fed7aa" stroke="#fb923c" stroke-width="1"
+                                        class="vesicle reserve" />
+
+                                    <!-- Vesicle content dots -->
+                                    <g class="vesicle-content">
+                                        <circle cx="340" cy="230" r="3" fill="#dc2626" opacity="0.7" />
+                                        <circle cx="320" cy="250" r="3" fill="#dc2626" opacity="0.7" />
+                                        <circle cx="340" cy="270" r="3" fill="#dc2626" opacity="0.7" />
+                                    </g>
+                                </g>
+
+                                <!-- Calcium Channels -->
+                                <g id="ca-channels" class="synapse-part" data-part="ca-channels"
+                                    data-title="Τασεοεξαρτώμενοι Δίαυλοι Ca²⁺"
+                                    data-description="Δίαυλοι ασβεστίου τύπου P/Q και N που ανοίγουν κατά την εκπόλωση του δυναμικού ενέργειας, επιτρέποντας την εισροή Ca²⁺ που ενεργοποιεί τη σύντηξη κυστιδίων.">
+                                    <rect x="360" y="225" width="12" height="25" fill="#dc2626" stroke="#991b1b"
+                                        stroke-width="2" rx="3" class="ca-channel closed" />
+                                    <rect x="360" y="250" width="12" height="25" fill="#dc2626" stroke="#991b1b"
+                                        stroke-width="2" rx="3" class="ca-channel closed" />
+                                    <rect x="360" y="275" width="12" height="25" fill="#dc2626" stroke="#991b1b"
+                                        stroke-width="2" rx="3" class="ca-channel closed" />
+
+                                    <!-- Channel labels -->
+                                    <text x="345" y="215" font-size="9" fill="#7f1d1d" font-weight="bold">P/Q</text>
+                                    <text x="345" y="240" font-size="9" fill="#7f1d1d" font-weight="bold">N</text>
+                                    <text x="342" y="265" font-size="9" fill="#7f1d1d" font-weight="bold">Ca²⁺</text>
+                                </g>
+
+                                <!-- Συναπτικό χάσμα -->
+                                <g id="cleft" class="synapse-part" data-part="cleft" data-title="Συναπτικό χάσμα"
+                                    data-description="Κενό 20-40nm μεταξύ των νευρώνων. Περιέχει εξωκυττάρια ουσία, ένζυμα (ακετυλοχολινεστεράση) και μεταφορείς νευροδιαβιβαστών.">
+                                    <rect x="370" y="180" width="80" height="140" fill="url(#cleftGradient)"
+                                        stroke="#6b7280" stroke-width="2" stroke-dasharray="8,4" />
+                                    <text x="410" y="160" text-anchor="middle" font-size="12" font-weight="bold"
+                                        fill="#374151">Συναπτικό χάσμα</text>
+                                    <text x="410" y="350" text-anchor="middle" font-size="11" fill="#6b7280">20-40
+                                        νανόμετρα</text>
+
+                                    <!-- Extracellular matrix representation -->
+                                    <g opacity="0.3">
+                                        <line x1="385" y1="200" x2="435" y2="210" stroke="#9ca3af" stroke-width="1" />
+                                        <line x1="390" y1="240" x2="425" y2="230" stroke="#9ca3af" stroke-width="1" />
+                                        <line x1="385" y1="280" x2="440" y2="290" stroke="#9ca3af" stroke-width="1" />
+                                    </g>
+                                </g>
+
+                                <!-- Floating Neurotransmitter Molecules -->
+                                <g id="neurotransmitters" class="synapse-part" data-part="neurotransmitters"
+                                    data-title="Μόρια Νευροδιαβιβαστών"
+                                    data-description="Χημικοί αγγελιοφόροι, όπως γλουταμικό, GABA και ακετυλοχολίνη, που διαχέονται στο χάσμα και συνδέονται με μετασυναπτικούς υποδοχείς.">
+                                    <!-- Initially hidden, will appear during simulation -->
+                                    <circle cx="385" cy="220" r="4" fill="#10b981" stroke="#059669" stroke-width="1"
+                                        class="neurotransmitter" opacity="0" />
+                                    <circle cx="420" cy="235" r="4" fill="#10b981" stroke="#059669" stroke-width="1"
+                                        class="neurotransmitter" opacity="0" />
+                                    <circle cx="400" cy="250" r="4" fill="#10b981" stroke="#059669" stroke-width="1"
+                                        class="neurotransmitter" opacity="0" />
+                                    <circle cx="435" cy="265" r="4" fill="#10b981" stroke="#059669" stroke-width="1"
+                                        class="neurotransmitter" opacity="0" />
+                                    <circle cx="395" cy="280" r="4" fill="#10b981" stroke="#059669" stroke-width="1"
+                                        class="neurotransmitter" opacity="0" />
+                                    <circle cx="415" cy="295" r="4" fill="#10b981" stroke="#059669" stroke-width="1"
+                                        class="neurotransmitter" opacity="0" />
+                                </g>
+
+                                <!-- Μετασυναπτική μεμβράνη -->
+                                <g id="postsynaptic" class="synapse-part" data-part="postsynaptic"
+                                    data-title="Μετασυναπτική μεμβράνη"
+                                    data-description="Η μεμβράνη του νευρώνα που δέχεται το σήμα και περιέχει υποδοχείς νευροδιαβιβαστών, ιοντικούς διαύλους και πρωτεΐνες μετασυναπτικής πυκνότητας.">
+                                    <!-- Membrane structure -->
+                                    <path d="M 450 250 Q 630 250 630 250" stroke="#7c3aed" stroke-width="4"
+                                        fill="none" />
+                                    <ellipse cx="620" cy="250" rx="90" ry="80" fill="#8b5cf6" stroke="#7c3aed"
+                                        stroke-width="3" />
+                                    <text x="620" y="160" text-anchor="middle" font-size="14" font-weight="bold"
+                                        fill="#5b21b6">Μετασυναπτική μεμβράνη</text>
+
+                                    <!-- Postsynaptic density -->
+                                    <rect x="450" y="235" width="15" height="30" fill="#6366f1" opacity="0.7" rx="2" />
+                                    <text x="475" y="255" font-size="8" fill="#4338ca" font-weight="bold">PSD</text>
+
+                                    <!-- Continuing dendrite -->
+                                    <rect x="650" y="235" width="200" height="30" fill="#7c3aed" stroke="#6d28d9"
+                                        stroke-width="2" rx="15" />
+                                </g>
+
+                                <!-- Neurotransmitter Υποδοχείς -->
+                                <g id="receptors" class="synapse-part" data-part="receptors"
+                                    data-title="Υποδοχείς Νευροδιαβιβαστών"
+                                    data-description="Ιονοτροπικοί υποδοχείς (AMPA, NMDA, GABA-A) και μεταβοτροπικοί υποδοχείς (mGluR, GABA-B) που ανταποκρίνονται στη σύνδεση νευροδιαβιβαστή.">
+                                    <!-- AMPA receptors (fast) -->
+                                    <rect x="470" y="220" width="18" height="15" fill="#f97316" stroke="#ea580c"
+                                        stroke-width="2" rx="4" class="receptor ampa" />
+                                    <rect x="470" y="265" width="18" height="15" fill="#f97316" stroke="#ea580c"
+                                        stroke-width="2" rx="4" class="receptor ampa" />
+                                    <text x="479" y="232" text-anchor="middle" font-size="9" fill="white"
+                                        font-weight="bold">AMPA</text>
+                                    <text x="479" y="277" text-anchor="middle" font-size="9" fill="white"
+                                        font-weight="bold">AMPA</text>
+
+                                    <!-- NMDA receptor (slow) -->
+                                    <rect x="495" y="242" width="18" height="15" fill="#dc2626" stroke="#b91c1c"
+                                        stroke-width="2" rx="4" class="receptor nmda" />
+                                    <text x="504" y="254" text-anchor="middle" font-size="9" fill="white"
+                                        font-weight="bold">NMDA</text>
+                                </g>
+
+                                <!-- Ion Channels -->
+                                <g id="ion-channels" class="synapse-part" data-part="ion-channels"
+                                    data-title="Ιοντικοί Δίαυλοι Ελεγχόμενοι από Συνδέτη"
+                                    data-description="Δίαυλοι που ανοίγουν όταν συνδεθούν νευροδιαβιβαστές, επιτρέποντας τη ροή ιόντων Na⁺, K⁺, Ca²⁺ ή Cl⁻ και αλλάζοντας το δυναμικό μεμβράνης.">
+                                    <!-- Sodium channels -->
+                                    <rect x="520" y="220" width="10" height="25" fill="#06b6d4" stroke="#0891b2"
+                                        stroke-width="2" rx="2" class="ion-channel closed" />
+                                    <rect x="535" y="220" width="10" height="25" fill="#06b6d4" stroke="#0891b2"
+                                        stroke-width="2" rx="2" class="ion-channel closed" />
+                                    <text x="525" y="205" font-size="8" fill="#0e7490" font-weight="bold">Na⁺</text>
+
+                                    <!-- Potassium channels -->
+                                    <rect x="520" y="255" width="10" height="25" fill="#8b5cf6" stroke="#7c3aed"
+                                        stroke-width="2" rx="2" class="ion-channel closed" />
+                                    <rect x="535" y="255" width="10" height="25" fill="#8b5cf6" stroke="#7c3aed"
+                                        stroke-width="2" rx="2" class="ion-channel closed" />
+                                    <text x="525" y="305" font-size="8" fill="#5b21b6" font-weight="bold">K⁺</text>
+                                </g>
+
+                                <!-- Mitochondria -->
+                                <g id="mitochondria" class="synapse-part" data-part="mitochondria"
+                                    data-title="Μιτοχόνδρια"
+                                    data-description="Παρέχουν ATP για ανακύκλωση κυστιδίων, σύνθεση νευροδιαβιβαστών, ιοντικές αντλίες και διατήρηση της συναπτικής λειτουργίας.">
+                                    <ellipse cx="220" cy="220" rx="30" ry="18" fill="#ef4444" stroke="#dc2626"
+                                        stroke-width="2" />
+                                    <ellipse cx="580" cy="280" rx="30" ry="18" fill="#ef4444" stroke="#dc2626"
+                                        stroke-width="2" />
+                                    <!-- Cristae -->
+                                    <path d="M 195 220 Q 220 210 245 220" stroke="#b91c1c" stroke-width="2"
+                                        fill="none" />
+                                    <path d="M 555 280 Q 580 270 605 280" stroke="#b91c1c" stroke-width="2"
+                                        fill="none" />
+                                    <text x="220" y="225" text-anchor="middle" font-size="10" fill="white"
+                                        font-weight="bold">ATP</text>
+                                    <text x="580" y="285" text-anchor="middle" font-size="10" fill="white"
+                                        font-weight="bold">ATP</text>
+                                </g>
+
+                                <!-- Action Potential Wave -->
+                                <g id="action-potential" opacity="0">
+                                    <path d="M 50 250 Q 150 250 250 250" stroke="#fbbf24" stroke-width="6" fill="none"
+                                        stroke-linecap="round" />
+                                    <circle cx="50" cy="250" r="8" fill="#fbbf24">
+                                        <animate attributeName="cx" values="50;280" dur="1s" fill="freeze" />
+                                    </circle>
+                                    <text x="145" y="400" text-anchor="middle" font-size="12" fill="#f59e0b"
+                                        font-weight="bold">Δυναμικό Ενέργειας</text>
+                                </g>
+
+                                <!-- Calcium Ions (animated during simulation) -->
+                                <g id="calcium-ions" opacity="0">
+                                    <circle cx="375" cy="240" r="3" fill="#ff6b6b" class="calcium-ion" />
+                                    <circle cx="375" cy="260" r="3" fill="#ff6b6b" class="calcium-ion" />
+                                    <circle cx="375" cy="280" r="3" fill="#ff6b6b" class="calcium-ion" />
+                                </g>
+
+                                <!-- Signal Flow Arrow -->
+                                <path d="M 130 200 L 770 200" stroke="white" stroke-width="3" fill="none"
+                                    marker-end="url(#arrowhead)" opacity="0.7" />
+                                <text x="450" y="145" text-anchor="middle" font-size="12" font-weight="bold"
+                                    fill="white">Κατεύθυνση Σήματος</text>
+                            </svg>
+
+                            <!-- Info Overlay -->
+                            <div id="synapse-info"
+                                class="absolute top-2 left-2 right-2 bg-white dark:bg-gray-800 bg-opacity-95 dark:bg-opacity-95 p-4 rounded-lg shadow-lg border border-blue-200 dark:border-blue-700 hidden">
+                                <div class="flex items-start justify-between">
+                                    <div class="flex-1">
+                                        <h3 id="synapse-part-title"
+                                            class="font-bold text-blue-700 dark:text-blue-300 mb-2 text-lg">Όνομα Τμήματος
+                                        </h3>
+                                        <p id="synapse-part-description"
+                                            class="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">Η περιγραφή
+                                            εμφανίζεται εδώ</p>
+                                    </div>
+                                    <button id="close-synapse-info"
+                                        class="ml-3 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M6 18L18 6M6 6l12 12"></path>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="text-sm text-center mt-3 text-gray-600 dark:text-gray-400">
+                            <span class="font-medium">💡 Διαδραστικό:</span> Κάνε κλικ σε οποιοδήποτε μέρος της σύναψης για να μάθεις
+                            περισσότερα για τη λειτουργία του
+                        </p>
+                    </div>
+
+                    <div class="lg:w-1/2">
+                        <h3 class="text-xl font-semibold mb-3">Βασικά Συναπτικά Στοιχεία</h3>
+                        <p class="mb-4">Οι συνάψεις είναι εξαιρετικά εξειδικευμένες δομές που επιτρέπουν την ακριβή χημική
+                            επικοινωνία μεταξύ των νευρώνων:</p>
+
+                        <div class="space-y-4">
+                            <div class="p-3 border-l-4 border-blue-500 bg-blue-50 dark:bg-blue-900/20 rounded">
+                                <h4 class="font-semibold text-blue-800 dark:text-blue-200">Προσυναπτικό τελικό άκρο</h4>
+                                <p class="text-sm text-gray-700 dark:text-gray-300">Περιέχει συναπτικά κυστίδια, διαύλους Ca²⁺ και μηχανισμό απελευθέρωσης.
+                                    Τα δυναμικά ενέργειας ενεργοποιούν εδώ την απελευθέρωση νευροδιαβιβαστών.</p>
+                            </div>
+
+                            <div class="p-3 border-l-4 border-yellow-500 bg-yellow-50 dark:bg-yellow-900/20 rounded">
+                                <h4 class="font-semibold text-yellow-800 dark:text-yellow-200">Συναπτικά κυστίδια</h4>
+                                <p class="text-sm text-gray-700 dark:text-gray-300">Μεμβρανικά οργανίδια που αποθηκεύουν ~5.000-10.000 μόρια νευροδιαβιβαστή
+                                    το καθένα. Ο άμεσα διαθέσιμος πληθυσμός περιέχει ~10-20 κυστίδια.</p>
+                            </div>
+
+                            <div class="p-3 border-l-4 border-gray-500 bg-gray-50 dark:bg-gray-700 rounded">
+                                <h4 class="font-semibold text-gray-800 dark:text-gray-200">Συναπτικό χάσμα</h4>
+                                <p class="text-sm text-gray-700 dark:text-gray-300">Κενό 20-50 νανόμετρα όπου διαχέονται οι νευροδιαβιβαστές. Περιέχει ένζυμα
+                                    (AChE) και μεταφορείς για τον τερματισμό του σήματος.</p>
+                            </div>
+
+                            <div class="p-3 border-l-4 border-purple-500 bg-purple-50 dark:bg-purple-900/20 rounded">
+                                <h4 class="font-semibold text-purple-800 dark:text-purple-200">Μετασυναπτική μεμβράνη</h4>
+                                <p class="text-sm text-gray-700 dark:text-gray-300">Περιέχει υποδοχείς νευροδιαβιβαστών και ιοντικούς διαύλους. Παράγει EPSPs
+                                    ή IPSPs ανάλογα με τον τύπο του υποδοχέα.</p>
+                            </div>
+
+                            <div class="p-3 border-l-4 border-orange-500 bg-orange-50 dark:bg-orange-900/20 rounded">
+                                <h4 class="font-semibold text-orange-800 dark:text-orange-200">Υποδοχείς και Δίαυλοι</h4>
+                                <p class="text-sm text-gray-700 dark:text-gray-300">Οι ιονοτροπικοί υποδοχείς (γρήγοροι, ~1ms) ελέγχουν άμεσα ιοντικούς διαύλους.
+                                    Οι μεταβοτροπικοί υποδοχείς (αργοί, ~100ms) χρησιμοποιούν δεύτερους αγγελιοφόρους.</p>
+                            </div>
+                        </div>
+
+                        <button id="simulate-transmission-btn"
+                            class="mt-6 bg-green-600 hover:bg-green-700 text-white font-medium py-3 px-6 rounded-lg transition-all duration-200 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50">
+                            <span class="flex items-center justify-center">
+                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M14.828 14.828a4 4 0 01-5.656 0M9 10h1m4 0h1m-6 4h1m4 0h1m-6 4h1m4 0h1M4 6h16M4 10h16M4 14h16M4 18h16">
+                                    </path>
+                                </svg>
+                                Έναρξη Προσομοίωσης Συναπτικής Μετάδοσης
+                            </span>
+                        </button>
+
+                        <div
+                            class="mt-4 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-700">
+                            <p class="text-sm text-blue-700 dark:text-blue-300">
+                                <strong>📡 Παρατήρησε:</strong> Η προσομοίωση δείχνει ιατρικά ακριβή χρονισμό και μοριακές
+                                αλληλεπιδράσεις κατά τη συναπτική μετάδοση. Κάθε βήμα βασίζεται σε πραγματικά ευρήματα
+                                νευροεπιστήμης.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Διαδικασία μετάδοσης Tab -->
+        <section id="content-transmission" class="tab-content" role="tabpanel" aria-labelledby="tab-transmission">
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-8">
+                <h2 class="text-2xl font-bold mb-4 text-green-700">Συναπτική Μετάδοση: Βήμα-Βήμα</h2>
+
+                <div class="lg:flex gap-6">
+                    <div class="lg:w-1/2 mb-6 lg:mb-0">
+                        <h3 class="text-xl font-semibold mb-3">Διαδραστικό Χρονολόγιο Μετάδοσης</h3>
+                        <p class="mb-4">Ακολούθησε την ακριβή αλληλουχία γεγονότων κατά τη συναπτική μετάδοση. Κάθε βήμα
+                            πραγματοποιείται σε κλάσματα του χιλιοστού του δευτερολέπτου:</p>
+
+                        <div class="mb-4">
+                            <label for="transmission-speed"
+                                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Ταχύτητα κινούμενης εικόνας:</label>
+                            <input type="range" id="transmission-speed" min="1" max="5" value="3" class="slider w-full">
+                            <div class="flex justify-between text-xs text-gray-500 dark:text-gray-400">
+                                <span>Αργά</span>
+                                <span>Κανονικά</span>
+                                <span>Γρήγορα</span>
+                            </div>
+                        </div>
+
+                        <div class="chart-container" style="height: 300px;">
+                            <canvas id="transmission-timeline-chart"></canvas>
+                        </div>
+
+                        <button id="start-transmission"
+                            class="mt-4 bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded transition">
+                            Έναρξη Μετάδοσης
+                        </button>
+                    </div>
+
+                    <div class="lg:w-1/2">
+                        <h3 class="text-xl font-semibold mb-3">Βήματα Μετάδοσης</h3>
+
+                        <div class="space-y-4">
+                            <div id="step-1"
+                                class="transmission-step p-3 border-l-4 border-blue-500 bg-blue-50 rounded opacity-50 dark:bg-blue-900/20 dark:border-blue-400">
+                                <h4 class="font-semibold">1. Άφιξη Δυναμικού Ενέργειας (t=0ms)</h4>
+                                <p class="text-sm">Το δυναμικό ενέργειας εκπολώνει το προσυναπτικό άκρο στα +30mV, ανοίγοντας
+                                    τασεοεξαρτώμενους διαύλους Ca²⁺.</p>
+                                <ul class="list-disc pl-5 text-xs mt-1">
+                                    <li>Η εκπόλωση της μεμβράνης ενεργοποιεί διαύλους Ca²⁺</li>
+                                    <li>Η εισροή Ca²⁺ αυξάνεται από 0,1μM σε 10-100μM</li>
+                                </ul>
+                            </div>
+
+                            <div id="step-2"
+                                class="transmission-step p-3 border-l-4 border-red-500 bg-red-50 rounded opacity-50 dark:bg-red-900/20 dark:border-red-400">
+                                <h4 class="font-semibold">2. Εισροή Ασβεστίου (t=0.1-0.3ms)</h4>
+                                <p class="text-sm">Το Ca²⁺ εισέρχεται μέσω διαύλων τύπου N και P/Q, συνδεόμενο με
+                                    αισθητήρες συναπτοταγμίνης.</p>
+                                <ul class="list-disc pl-5 text-xs mt-1">
+                                    <li>Η συναπτοταγμίνη δρα ως αισθητήρας Ca²⁺</li>
+                                    <li>Οι πρωτεΐνες SNARE προετοιμάζονται για σύντηξη κυστιδίων</li>
+                                </ul>
+                            </div>
+
+                            <div id="step-3"
+                                class="transmission-step p-3 border-l-4 border-yellow-500 bg-yellow-50 rounded opacity-50 dark:bg-yellow-900/20 dark:border-yellow-400">
+                                <h4 class="font-semibold">3. Σύντηξη Κυστιδίων (t=0.2-0.5ms)</h4>
+                                <p class="text-sm">Εξωκυττάρωση μέσω Ca²⁺: τα κυστίδια συντήκονται με την προσυναπτική μεμβράνη
+                                    μέσω του συμπλόκου SNARE.</p>
+                                <ul class="list-disc pl-5 text-xs mt-1">
+                                    <li>Άνοιγμα πόρου σύντηξης (~1-2nm διάμετρος)</li>
+                                    <li>Απελευθέρωση ~5.000-10.000 μορίων νευροδιαβιβαστή</li>
+                                </ul>
+                            </div>
+
+                            <div id="step-4"
+                                class="transmission-step p-3 border-l-4 border-green-500 bg-green-50 rounded opacity-50 dark:bg-green-900/20 dark:border-green-400">
+                                <h4 class="font-semibold">4. Διάχυση Νευροδιαβιβαστών (t=0.1-1ms)</h4>
+                                <p class="text-sm">Οι νευροδιαβιβαστές διαχέονται στο συναπτικό χάσμα των 20-50nm,
+                                    φτάνοντας σε μέγιστη συγκέντρωση σε ~100μs.</p>
+                                <ul class="list-disc pl-5 text-xs mt-1">
+                                    <li>Ο χρόνος διάχυσης εξαρτάται από το πλάτος του χάσματος</li>
+                                    <li>Η συγκέντρωση κορυφώνεται στο ~1mM εντός του χάσματος</li>
+                                </ul>
+                            </div>
+
+                            <div id="step-5"
+                                class="transmission-step p-3 border-l-4 border-purple-500 bg-purple-50 rounded opacity-50 dark:bg-purple-900/20 dark:border-purple-400">
+                                <h4 class="font-semibold">5. Σύνδεση με Υποδοχείς (t=0.1-2ms)</h4>
+                                <p class="text-sm">Οι νευροδιαβιβαστές συνδέονται με μετασυναπτικούς υποδοχείς,
+                                    προκαλώντας διαμορφωτικές αλλαγές.</p>
+                                <ul class="list-disc pl-5 text-xs mt-1">
+                                    <li>Ιονοτροπικοί: Άμεσο άνοιγμα διαύλων</li>
+                                    <li>Μεταβοτροπικοί: Ενεργοποίηση πρωτεΐνης G</li>
+                                </ul>
+                            </div>
+
+                            <div id="step-6"
+                                class="transmission-step p-3 border-l-4 border-indigo-500 bg-indigo-50 rounded opacity-50 dark:bg-indigo-900/20 dark:border-indigo-400">
+                                <h4 class="font-semibold">6. Μετασυναπτική Απόκριση (t=1-10ms)</h4>
+                                <p class="text-sm">Οι ιοντικοί δίαυλοι ανοίγουν παράγοντας EPSP ή IPSP. Η ολοκλήρωση του σήματος
+                                    καθορίζει αν θα παραχθεί δυναμικό ενέργειας.</p>
+                                <ul class="list-disc pl-5 text-xs mt-1">
+                                    <li>EPSP: Εισροή Na⁺/Ca²⁺, εκπόλωση</li>
+                                    <li>IPSP: Εκροή K⁺ ή εισροή Cl⁻, υπερπόλωση</li>
+                                </ul>
+                            </div>
+
+                            <div id="step-7"
+                                class="transmission-step p-3 border-l-4 border-gray-500 bg-gray-50 rounded opacity-50 dark:bg-gray-800 dark:border-gray-400">
+                                <h4 class="font-semibold">7. Τερματισμός Σήματος (t=1-100ms)</h4>
+                                <p class="text-sm">Απομάκρυνση νευροδιαβιβαστή μέσω επαναπρόσληψης, ενζυμικής αποδόμησης ή
+                                    διάχυσης.</p>
+                                <ul class="list-disc pl-5 text-xs mt-1">
+                                    <li>Μεταφορείς επαναπρόσληψης (DAT, SERT, NET)</li>
+                                    <li>Ένζυμα (AChE, MAO, COMT)</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Νευροδιαβιβαστές Tab -->
+        <section id="content-neurotransmitters" class="tab-content" role="tabpanel"
+            aria-labelledby="tab-neurotransmitters">
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-8">
+                <h2 class="text-2xl font-bold mb-4 text-green-700">Νευροδιαβιβαστές: Οι Χημικοί Αγγελιοφόροι του Εγκεφάλου
+                </h2>
+
+                <div class="mb-6">
+                    <p class="mb-4">Πάνω από 100 διαφορετικοί νευροδιαβιβαστές έχουν αναγνωριστεί, ο καθένας με συγκεκριμένες
+                        λειτουργίες και επιδράσεις. Μπορούν να ταξινομηθούν με βάση τη χημική δομή και τη λειτουργία:</p>
+
+                    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+                        <!-- Amino Acids -->
+                        <div class="p-4 border border-blue-200 dark:border-blue-700 rounded-lg bg-blue-50 dark:bg-blue-900/20">
+                            <h4 class="font-semibold text-blue-700 dark:text-blue-300 mb-2">Αμινοξέα</h4>
+                            <div class="space-y-2">
+                                <div class="p-2 bg-white dark:bg-gray-700 rounded border border-gray-200 dark:border-gray-600">
+                                    <h5 class="font-medium text-green-700 dark:text-green-300">Γλουταμικό</h5>
+                                    <p class="text-xs">Κύριος διεγερτικός νευροδιαβιβαστής (~80% των συνάψεων)</p>
+                                    <p class="text-xs"><strong>Λειτουργία:</strong> Μάθηση, μνήμη, συναπτική πλαστικότητα
+                                    </p>
+                                    <p class="text-xs"><strong>Υποδοχείς:</strong> AMPA, NMDA, καϊνικού τύπου, mGluR</p>
+                                </div>
+                                <div class="p-2 bg-white dark:bg-gray-700 rounded border border-gray-200 dark:border-gray-600">
+                                    <h5 class="font-medium text-red-700 dark:text-red-300">GABA</h5>
+                                    <p class="text-xs">Κύριος ανασταλτικός νευροδιαβιβαστής (~20% των συνάψεων)</p>
+                                    <p class="text-xs"><strong>Λειτουργία:</strong> Έλεγχος άγχους, ύπνος, πρόληψη
+                                        επιληπτικών κρίσεων</p>
+                                    <p class="text-xs"><strong>Υποδοχείς:</strong> GABA-A (ιονοτροπικοί), GABA-B
+                                        (μεταβοτροπικοί)</p>
+                                </div>
+                                <div class="p-2 bg-white dark:bg-gray-700 rounded border border-gray-200 dark:border-gray-600">
+                                    <h5 class="font-medium text-purple-700 dark:text-purple-300">Γλυκίνη</h5>
+                                    <p class="text-xs">Ανασταλτικός στον νωτιαίο μυελό και το εγκεφαλικό στέλεχος</p>
+                                    <p class="text-xs"><strong>Λειτουργία:</strong> Κινητικός έλεγχος, αντανακλαστικά</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Monoamines -->
+                        <div class="p-4 border border-purple-200 dark:border-purple-700 rounded-lg bg-purple-50 dark:bg-purple-900/20">
+                            <h4 class="font-semibold text-purple-700 dark:text-purple-300 mb-2">Μονοαμίνες</h4>
+                            <div class="space-y-2">
+                                <div class="p-2 bg-white dark:bg-gray-700 rounded border border-gray-200 dark:border-gray-600">
+                                    <h5 class="font-medium text-blue-700 dark:text-blue-300">Ντοπαμίνη</h5>
+                                    <p class="text-xs">Ανταμοιβή, κίνητρο, κινητικός έλεγχος</p>
+                                    <p class="text-xs"><strong>Οδοί:</strong> Μελαινοραβδωτή, μεσομεταιχμιακή,
+                                        μεσοφλοιϊκή</p>
+                                    <p class="text-xs"><strong>Διαταραχές:</strong> Νόσος Πάρκινσον, σχιζοφρένεια, εξάρτηση
+                                    </p>
+                                </div>
+                                <div class="p-2 bg-white dark:bg-gray-700 rounded border border-gray-200 dark:border-gray-600">
+                                    <h5 class="font-medium text-yellow-700 dark:text-yellow-300">Σεροτονίνη (5-HT)</h5>
+                                    <p class="text-xs">Διάθεση, ύπνος, όρεξη, πόνος</p>
+                                    <p class="text-xs"><strong>Υποδοχείς:</strong> 14 υπότυποι (5-HT1-7)</p>
+                                    <p class="text-xs"><strong>Διαταραχές:</strong> Κατάθλιψη, άγχος, ημικρανία</p>
+                                </div>
+                                <div class="p-2 bg-white dark:bg-gray-700 rounded border border-gray-200 dark:border-gray-600">
+                                    <h5 class="font-medium text-orange-700 dark:text-orange-300">Νορεπινεφρίνη</h5>
+                                    <p class="text-xs">Προσοχή, διέγερση, απόκριση στο στρες</p>
+                                    <p class="text-xs"><strong>Πηγή:</strong> Υπομέλας τόπος</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Cholinergic -->
+                        <div class="p-4 border border-green-200 dark:border-green-700 rounded-lg bg-green-50 dark:bg-green-900/20">
+                            <h4 class="font-semibold text-green-700 dark:text-green-300 mb-2">Χολινεργικοί</h4>
+                            <div class="space-y-2">
+                                <div class="p-2 bg-white dark:bg-gray-700 rounded border border-gray-200 dark:border-gray-600">
+                                    <h5 class="font-medium text-green-700 dark:text-green-300">Ακετυλοχολίνη (ACh)</h5>
+                                    <p class="text-xs">Πρώτος νευροδιαβιβαστής που ανακαλύφθηκε (1921)</p>
+                                    <p class="text-xs"><strong>ΚΝΣ:</strong> Προσοχή, μάθηση, μνήμη</p>
+                                    <p class="text-xs"><strong>ΠΝΣ:</strong> Νευρομυϊκή σύναψη, αυτόνομο σύστημα</p>
+                                    <p class="text-xs"><strong>Υποδοχείς:</strong> Νικοτινικοί (ιονοτροπικοί), μουσκαρινικοί
+                                        (μεταβοτροπικοί)</p>
+                                    <p class="text-xs"><strong>Αποδόμηση:</strong> Ακετυλοχολινεστεράση (AChE)</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Neuropeptides -->
+                        <div class="p-4 border border-red-200 dark:border-red-700 rounded-lg bg-red-50 dark:bg-red-900/20">
+                            <h4 class="font-semibold text-red-700 dark:text-red-300 mb-2">Νευροπεπτίδια</h4>
+                            <div class="space-y-2">
+                                <div class="p-2 bg-white dark:bg-gray-700 rounded border border-gray-200 dark:border-gray-600">
+                                    <h5 class="font-medium text-red-700 dark:text-red-300">Ενδορφίνες</h5>
+                                    <p class="text-xs">Φυσικά οπιοειδή, ανακούφιση πόνου, ευφορία</p>
+                                    <p class="text-xs"><strong>Λειτουργία:</strong> Απόκριση στο στρες, ανταμοιβή</p>
+                                </div>
+                                <div class="p-2 bg-white dark:bg-gray-700 rounded border border-gray-200 dark:border-gray-600">
+                                    <h5 class="font-medium text-pink-700 dark:text-pink-300">Ουσία P</h5>
+                                    <p class="text-xs">Μετάδοση πόνου, φλεγμονή</p>
+                                    <p class="text-xs"><strong>Λειτουργία:</strong> Αλγαισθησία, διάθεση</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Purines -->
+                        <div class="p-4 border border-orange-200 dark:border-orange-700 rounded-lg bg-orange-50 dark:bg-orange-900/20">
+                            <h4 class="font-semibold text-orange-700 dark:text-orange-300 mb-2">Πουρίνες</h4>
+                            <div class="space-y-2">
+                                <div class="p-2 bg-white dark:bg-gray-700 rounded border border-gray-200 dark:border-gray-600">
+                                    <h5 class="font-medium text-orange-700 dark:text-orange-300">ATP</h5>
+                                    <p class="text-xs">Συν-νευροδιαβιβαστής, ταχεία συναπτική μετάδοση</p>
+                                    <p class="text-xs"><strong>Λειτουργία:</strong> Πόνος, αυτόνομος έλεγχος</p>
+                                </div>
+                                <div class="p-2 bg-white dark:bg-gray-700 rounded border border-gray-200 dark:border-gray-600">
+                                    <h5 class="font-medium text-amber-700 dark:text-amber-300">Αδενοσίνη</h5>
+                                    <p class="text-xs">Ρύθμιση ύπνου, νευροπροστασία</p>
+                                    <p class="text-xs"><strong>Λειτουργία:</strong> Ανταγωνιστής της καφεΐνης</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Gases -->
+                        <div
+                            class="p-4 border border-cyan-300 rounded-lg bg-cyan-900 dark:bg-cyan-900 dark:border-cyan-600">
+                            <h4 class="font-semibold text-cyan-100 dark:text-cyan-100 mb-2">Αέριοι Αγγελιοφόροι</h4>
+                            <div class="space-y-2">
+                                <div
+                                    class="p-2 bg-cyan-800 dark:bg-cyan-800 rounded border border-cyan-600 dark:border-cyan-500">
+                                    <h5 class="font-medium text-cyan-100 dark:text-cyan-100">Μονοξείδιο του Αζώτου (NO)</h5>
+                                    <p class="text-xs text-cyan-200 dark:text-cyan-200">Ανάδρομος αγγελιοφόρος,
+                                        αγγειοδιαστολή</p>
+                                    <p class="text-xs text-cyan-200 dark:text-cyan-200"><strong
+                                             class="text-cyan-100 dark:text-cyan-100">Λειτουργία:</strong> LTP, αιματική ροή
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Υποδοχείς Tab -->
+        <section id="content-receptors" class="tab-content" role="tabpanel" aria-labelledby="tab-receptors">
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-8">
+                <h2 class="text-2xl font-bold mb-4 text-green-700">Υποδοχείς Νευροδιαβιβαστών: Ανίχνευση Σημάτων</h2>
+
+                <div class="mb-6">
+                    <p class="mb-4">Οι υποδοχείς νευροδιαβιβαστών είναι εξειδικευμένες πρωτεΐνες που ανιχνεύουν και ανταποκρίνονται σε
+                        χημικά σήματα. Διακρίνονται σε δύο κύριες κατηγορίες:</p>
+
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <!-- Ionotropic Υποδοχείς -->
+                        <div class="p-6 border border-blue-200 dark:border-blue-700 rounded-lg bg-blue-50 dark:bg-blue-900/20">
+                            <h3 class="text-xl font-semibold text-blue-700 dark:text-blue-300 mb-4">Ιονοτροπικοί Υποδοχείς</h3>
+                            <p class="text-sm mb-4">Ιοντικοί δίαυλοι που ενεργοποιούνται από συνδέτη και ανοίγουν άμεσα όταν ο νευροδιαβιβαστής
+                                συνδεθεί</p>
+
+                            <div class="space-y-3">
+                                <div class="p-3 bg-white dark:bg-gray-700 rounded border border-gray-200 dark:border-gray-600">
+                                    <h4 class="font-medium text-green-700 dark:text-green-300">AMPA Υποδοχείς</h4>
+                                    <p class="text-xs">Υποδοχείς γλουταμικού, ταχεία διεγερτική μετάδοση</p>
+                                    <p class="text-xs"><strong>Ιόντα:</strong> Na⁺, K⁺ | <strong>Ταχύτητα:</strong> ~1ms</p>
+                                </div>
+                                <div class="p-3 bg-white dark:bg-gray-700 rounded border border-gray-200 dark:border-gray-600">
+                                    <h4 class="font-medium text-purple-700 dark:text-purple-300">NMDA Υποδοχείς</h4>
+                                    <p class="text-xs">Γλουταμικό + γλυκίνη, εξαρτώμενο από τάση</p>
+                                    <p class="text-xs"><strong>Ιόντα:</strong> Na⁺, K⁺, Ca²⁺ | <strong>Λειτουργία:</strong>
+                                        LTP</p>
+                                </div>
+                                <div class="p-3 bg-white dark:bg-gray-700 rounded border border-gray-200 dark:border-gray-600">
+                                    <h4 class="font-medium text-red-700 dark:text-red-300">Υποδοχείς GABA-A</h4>
+                                    <p class="text-xs">Κύριοι ανασταλτικοί υποδοχείς</p>
+                                    <p class="text-xs"><strong>Ιόντα:</strong> Cl⁻ | <strong>Φάρμακα:</strong>
+                                        Βενζοδιαζεπίνες</p>
+                                </div>
+                                <div class="p-3 bg-white dark:bg-gray-700 rounded border border-gray-200 dark:border-gray-600">
+                                    <h4 class="font-medium text-blue-700 dark:text-blue-300">Νικοτινικοί Υποδοχείς</h4>
+                                    <p class="text-xs">Ακετυλοχολίνη, νευρομυϊκή σύναψη</p>
+                                    <p class="text-xs"><strong>Ιόντα:</strong> Na⁺, K⁺ | <strong>Θέση:</strong> Νευρομυϊκή σύναψη,
+                                        γάγγλια</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Metabotropic Υποδοχείς -->
+                        <div class="p-6 border border-purple-200 dark:border-purple-700 rounded-lg bg-purple-50 dark:bg-purple-900/20">
+                            <h3 class="text-xl font-semibold text-purple-700 dark:text-purple-300 mb-4">Μεταβοτροπικοί Υποδοχείς</h3>
+                            <p class="text-sm mb-4">Υποδοχείς συζευγμένοι με πρωτεΐνη G που χρησιμοποιούν δευτερογενή συστήματα αγγελιοφόρων</p>
+
+                            <div class="space-y-3">
+                                <div class="p-3 bg-white dark:bg-gray-700 rounded border border-gray-200 dark:border-gray-600">
+                                    <h4 class="font-medium text-yellow-700 dark:text-yellow-300">Μουσκαρινικοί Υποδοχείς</h4>
+                                    <p class="text-xs">Ακετυλοχολίνη, αυτόνομο νευρικό σύστημα</p>
+                                    <p class="text-xs"><strong>Τύποι:</strong> M1-M5 | <strong>Ταχύτητα:</strong> ~100ms
+                                    </p>
+                                </div>
+                                <div class="p-3 bg-white dark:bg-gray-700 rounded border border-gray-200 dark:border-gray-600">
+                                    <h4 class="font-medium text-blue-700 dark:text-blue-300">Υποδοχείς Ντοπαμίνης</h4>
+                                    <p class="text-xs">Τύπου D1 (D1, D5) και τύπου D2 (D2, D3, D4)</p>
+                                    <p class="text-xs"><strong>Λειτουργία:</strong> Κινητικός έλεγχος, ανταμοιβή</p>
+                                </div>
+                                <div class="p-3 bg-white dark:bg-gray-700 rounded border border-gray-200 dark:border-gray-600">
+                                    <h4 class="font-medium text-orange-700 dark:text-orange-300">Υποδοχείς Σεροτονίνης</h4>
+                                    <p class="text-xs">14 υποτύποι (5-HT1-7), ποικίλες λειτουργίες</p>
+                                    <p class="text-xs"><strong>Λειτουργία:</strong> Διάθεση, ύπνος, όρεξη</p>
+                                </div>
+                                <div class="p-3 bg-white dark:bg-gray-700 rounded border border-gray-200 dark:border-gray-600">
+                                    <h4 class="font-medium text-green-700 dark:text-green-300">mGluR</h4>
+                                    <p class="text-xs">Μεταβοτροπικοί υποδοχείς γλουταμικού</p>
+                                    <p class="text-xs"><strong>Τύποι:</strong> Ομάδες I, II, III |
+                                        <strong>Λειτουργία:</strong> Διαμόρφωση
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Συναπτική ολοκλήρωση Tab -->
+        <section id="content-integration" class="tab-content" role="tabpanel" aria-labelledby="tab-integration">
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-8">
+                <h2 class="text-2xl font-bold mb-4 text-green-700">Συναπτική Ολοκλήρωση: Υπολογισμός με Νευρώνες</h2>
+
+                <div class="lg:flex gap-6">
+                    <div class="lg:w-1/2 mb-6 lg:mb-0">
+                        <h3 class="text-xl font-semibold mb-3">Χωρική και Χρονική Άθροιση</h3>
+                        <p class="mb-4">Οι νευρώνες ολοκληρώνουν πολλαπλές συναπτικές εισόδους για να αποφασίσουν αν θα παραχθεί
+                            δυναμικό ενέργειας:</p>
+
+                        <div class="space-y-4">
+                            <div class="p-4 border border-green-200 dark:border-green-700 rounded-lg bg-green-50 dark:bg-green-900/20">
+                                <h4 class="font-semibold text-green-700 dark:text-green-300">Χωρική Άθροιση</h4>
+                                <p class="text-sm text-gray-700 dark:text-gray-300">Πολλαπλές συνάψεις ενεργές ταυτόχρονα</p>
+                                <ul class="list-disc pl-5 text-xs mt-2 text-gray-700 dark:text-gray-300">
+                                    <li>Διαφορετικές θέσεις στους δενδρίτες</li>
+                                    <li>Τα EPSPs και IPSPs προστίθενται αλγεβρικά</li>
+                                    <li>Εξαρτάται από την αντίσταση εισόδου</li>
+                                </ul>
+                            </div>
+
+                            <div class="p-4 border border-blue-200 dark:border-blue-700 rounded-lg bg-blue-50 dark:bg-blue-900/20">
+                                <h4 class="font-semibold text-blue-700 dark:text-blue-300">Χρονική Άθροιση</h4>
+                                <p class="text-sm text-gray-700 dark:text-gray-300">Η ίδια σύναψη ενεργοποιείται επανειλημμένα</p>
+                                <ul class="list-disc pl-5 text-xs mt-2 text-gray-700 dark:text-gray-300">
+                                    <li>Ταχεία διαδοχή εισόδων</li>
+                                    <li>Εξαρτάται από τη χρονική σταθερά της μεμβράνης</li>
+                                    <li>Διευκόλυνση vs. καταστολή</li>
+                                </ul>
+                            </div>
+
+                            <div class="p-4 border border-purple-200 dark:border-purple-700 rounded-lg bg-purple-50 dark:bg-purple-900/20">
+                                <h4 class="font-semibold text-purple-700 dark:text-purple-300">Συναπτική Πλαστικότητα</h4>
+                                <p class="text-sm text-gray-700 dark:text-gray-300">Μεταβολές της συναπτικής ισχύος που εξαρτώνται από τη δραστηριότητα</p>
+                                <ul class="list-disc pl-5 text-xs mt-2 text-gray-700 dark:text-gray-300">
+                                    <li><strong>LTP:</strong> Μακρόχρονη ενδυνάμωση</li>
+                                    <li><strong>LTD:</strong> Μακρόχρονη καταστολή</li>
+                                    <li><strong>Κανόνας Hebb:</strong> Οι νευρώνες που πυροδοτούνται μαζί, συνδέονται</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="lg:w-1/2">
+                        <h3 class="text-xl font-semibold mb-3">Κλινική Σημασία</h3>
+
+                        <div class="space-y-4">
+                            <div class="p-4 border border-red-200 dark:border-red-700 rounded-lg bg-red-50 dark:bg-red-900/20">
+                                <h4 class="font-semibold text-red-700 dark:text-red-300">Συναπτικές Διαταραχές</h4>
+                                <ul class="list-disc pl-5 text-sm text-gray-700 dark:text-gray-300">
+                                    <li><strong>Μυασθένεια Gravis:</strong> Αυτοάνοση επίθεση στους υποδοχείς ACh</li>
+                                    <li><strong>Σύνδρομο Lambert-Eaton:</strong> Μειωμένη λειτουργία διαύλων Ca²⁺</li>
+                                    <li><strong>Αλλαντίαση:</strong> Αποκλείει την απελευθέρωση ACh</li>
+                                </ul>
+                            </div>
+
+                            <div class="p-4 border border-yellow-200 dark:border-yellow-700 rounded-lg bg-yellow-50 dark:bg-yellow-900/20">
+                                <h4 class="font-semibold text-yellow-700 dark:text-yellow-300">Φαρμακευτικοί Στόχοι</h4>
+                                <ul class="list-disc pl-5 text-sm text-gray-700 dark:text-gray-300">
+                                    <li><strong>SSRIs:</strong> Αποκλείουν την επαναπρόσληψη σεροτονίνης</li>
+                                    <li><strong>Βενζοδιαζεπίνες:</strong> Ενισχύουν τη λειτουργία GABA-A</li>
+                                    <li><strong>Αντιψυχωσικά:</strong> Αποκλείουν υποδοχείς ντοπαμίνης</li>
+                                    <li><strong>Αναστολείς χολινεστεράσης:</strong> Ρυθμίζουν τη χολινεργική σηματοδότηση στη νόσο Alzheimer</li>
+                                </ul>
+                            </div>
+
+                            <div class="p-4 border border-blue-200 dark:border-blue-700 rounded-lg bg-blue-50 dark:bg-blue-900/20">
+                                <h4 class="font-semibold text-blue-700 dark:text-blue-300">Ερευνητικές Εφαρμογές</h4>
+                                <ul class="list-disc pl-5 text-sm text-gray-700 dark:text-gray-300">
+                                    <li><strong>Οπτογενετική:</strong> Απελευθέρωση νευροδιαβιβαστή ελεγχόμενη από φως</li>
+                                    <li><strong>Patch-clamp:</strong> Καταγραφές μεμονωμένων διαύλων</li>
+                                    <li><strong>Μικροσκοπία δύο φωτονίων:</strong> Ζωντανή απεικόνιση συνάψεων</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Πέρα από τον νευρώνα-προς-νευρώνα Tab -->
+        <section id="content-modern" class="tab-content" role="tabpanel" aria-labelledby="tab-modern">
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-8">
+                <h2 class="text-2xl font-bold mb-4 text-green-700 dark:text-green-300">🔬 Πέρα από τη Σύνδεση Νευρώνα με Νευρώνα: Η Σύγχρονη Σύναψη</h2>
+                <p class="mb-6 text-gray-700 dark:text-gray-300">Η κλασική άποψη των συνάψεων ως απλών συνδέσεων μεταξύ νευρώνων έχει αλλάξει. Η σύγχρονη νευροεπιστήμη δείχνει ότι οι συνάψεις είναι πιο σύνθετες, πιο δυναμικές και πιο συνεργατικές από όσο πιστεύαμε παλαιότερα. Δες τι έχει αλλάξει.</p>
+
+                <!-- Tripartite Synapse -->
+                <div class="mb-8 p-6 bg-gradient-to-r from-teal-50 to-cyan-50 dark:from-teal-900/20 dark:to-cyan-900/20 rounded-xl border border-teal-200 dark:border-teal-700">
+                    <div class="flex items-center mb-4">
+                        <div class="text-3xl mr-4">🤝</div>
+                        <div>
+                            <h3 class="text-xl font-bold text-teal-700 dark:text-teal-300">Η Τριμερής Σύναψη</h3>
+                            <p class="text-sm text-teal-600 dark:text-teal-400">Τα αστροκύτταρα είναι ενεργοί συνεργάτες, όχι παρατηρητές</p>
+                        </div>
+                    </div>
+                    <p class="text-sm text-gray-700 dark:text-gray-300 mb-4">Το μοντέλο της <strong>τριμερούς σύναψης</strong> (Araque et al., 1999) έδειξε ότι κάθε σύναψη περιλαμβάνει τρία στοιχεία: το προσυναπτικό τελικό άκρο, το μετασυναπτικό τελικό άκρο και μια <strong>αποφυάδα αστροκυττάρου</strong> που περιβάλλει το συναπτικό χάσμα. Δεν πρόκειται μόνο για δομική παρατήρηση, τα αστροκύτταρα ρυθμίζουν ενεργά τη σηματοδότηση.</p>
+                    <div class="grid md:grid-cols-2 gap-4 mb-4">
+                        <div class="bg-white dark:bg-gray-800 rounded-lg p-4 border-l-4 border-teal-500">
+                            <h4 class="font-semibold text-teal-700 dark:text-teal-300 mb-2">Τι κάνουν τα αστροκύτταρα στις συνάψεις</h4>
+                            <ul class="text-sm text-gray-700 dark:text-gray-300 list-disc pl-5 space-y-1">
+                                <li><strong>Απελευθέρωση γλοιοδιαβιβαστών:</strong> ATP, γλουταμικό και D-σερίνη από αστροκύτταρα ρυθμίζουν τη συναπτική ισχύ σε πραγματικό χρόνο</li>
+                                <li><strong>Απομάκρυνση γλουταμικού:</strong> Οι μεταφορείς EAAT1/EAAT2 απομακρύνουν την περίσσεια γλουταμικού, προλαμβάνοντας την διεγερτοτοξικότητα</li>
+                                <li><strong>Ρύθμιση καλίου:</strong> Τα αστροκύτταρα απομακρύνουν εξωκυττάριο K⁺, διατηρώντας το ιοντικό περιβάλλον που χρειάζονται οι νευρώνες για να πυροδοτήσουν</li>
+                                <li><strong>Μεταβολική σύζευξη:</strong> Τα αστροκύτταρα παρέχουν γαλακτικό στους νευρώνες ως καύσιμο κατά την έντονη δραστηριότητα</li>
+                            </ul>
+                        </div>
+                        <div class="bg-white dark:bg-gray-800 rounded-lg p-4 border-l-4 border-purple-500">
+                            <h4 class="font-semibold text-purple-700 dark:text-purple-300 mb-2">Ανακαλύψεις 2025-26</h4>
+                            <ul class="text-sm text-gray-700 dark:text-gray-300 list-disc pl-5 space-y-1">
+                                <li><strong>Έλεγχος συμπεριφοράς:</strong> Τα αστροκύτταρα μεσολαβούν στη σηματοδότηση νορεπινεφρίνης που ρυθμίζει την επιμονή και τις αντιδράσεις παραίτησης (Freeman et al., <em>Science</em>, 2025)</li>
+                                <li><strong>Μνήμη αμυγδαλής:</strong> Αστροκυτταρικά εγγράμματα βοηθούν στην παγίωση μνημών φόβου (Gomez-Castro et al., <em>Nature</em>, 2025)</li>
+                                <li><strong>Σταθεροποίηση συνάψεων CCN1:</strong> Η πρωτεΐνη CCN1 που εκκρίνεται από αστροκύτταρα σταθεροποιεί νευρωνικά κυκλώματα μετά από τραυματισμό (Shen et al., <em>Nature</em>, 2025)</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Μετάδοση Όγκου -->
+                <div class="mb-8 p-6 bg-gradient-to-r from-violet-50 to-fuchsia-50 dark:from-violet-900/20 dark:to-fuchsia-900/20 rounded-xl border border-violet-200 dark:border-violet-700">
+                    <div class="flex items-center mb-4">
+                        <div class="text-3xl mr-4">🌊</div>
+                        <div>
+                            <h3 class="text-xl font-bold text-violet-700 dark:text-violet-300">Μετάδοση Όγκου: Σηματοδότηση Χωρίς Συνάψεις</h3>
+                            <p class="text-sm text-violet-600 dark:text-violet-400">Δεν ταξιδεύει όλη η εγκεφαλική σηματοδότηση μέσω διακριτών συνάψεων</p>
+                        </div>
+                    </div>
+                    <p class="text-sm text-gray-700 dark:text-gray-300 mb-4">Η κλασική συναπτική μετάδοση, που γνώρισες στις προηγούμενες καρτέλες, είναι <strong>ενσύρματη μετάδοση</strong>: από σημείο σε σημείο, γρήγορη και ακριβής. Όμως ο εγκέφαλος χρησιμοποιεί και <strong>μετάδοση όγκου</strong>, όπου νευροδιαβιβαστές και νευροδιαμορφωτές διαχέονται μέσω του εξωκυττάριου υγρού και φτάνουν ταυτόχρονα σε πολλούς νευρώνες.</p>
+                    <div class="grid md:grid-cols-3 gap-4 mb-4">
+                        <div class="bg-white dark:bg-gray-800 rounded-lg p-4 border border-gray-200 dark:border-gray-600 text-center">
+                            <div class="text-2xl mb-2">⚡</div>
+                            <h5 class="font-semibold text-violet-700 dark:text-violet-300 text-sm mb-1">Ενσύρματη Μετάδοση</h5>
+                            <p class="text-xs text-gray-700 dark:text-gray-300">Γρήγορη, ακριβής, ένα-προς-ένα. Συναπτικά κυστίδια → χάσμα → μετασυναπτικοί υποδοχείς. Κλίμακα χιλιοστών του δευτερολέπτου.</p>
+                        </div>
+                        <div class="bg-white dark:bg-gray-800 rounded-lg p-4 border border-gray-200 dark:border-gray-600 text-center">
+                            <div class="text-2xl mb-2">🌊</div>
+                            <h5 class="font-semibold text-violet-700 dark:text-violet-300 text-sm mb-1">Μετάδοση Όγκου</h5>
+                            <p class="text-xs text-gray-700 dark:text-gray-300">Διάχυτη, πιο αργή, ένα-προς-πολλά. Οι νευροδιαμορφωτές διαχέονται μέσω του εξωκυττάριου χώρου, επηρεάζοντας πολλά κύτταρα.</p>
+                        </div>
+                        <div class="bg-white dark:bg-gray-800 rounded-lg p-4 border border-gray-200 dark:border-gray-600 text-center">
+                            <div class="text-2xl mb-2">🔄</div>
+                            <h5 class="font-semibold text-violet-700 dark:text-violet-300 text-sm mb-1">Λειτουργούν Μαζί</h5>
+                            <p class="text-xs text-gray-700 dark:text-gray-300">Η ντοπαμίνη, η σεροτονίνη, η νορεπινεφρίνη και η ακετυλοχολίνη χρησιμοποιούν τη μετάδοση όγκου για να ρυθμίσουν τον «τόνο» ολόκληρων εγκεφαλικών περιοχών, διαμορφώνοντας τον τρόπο λειτουργίας των ενσύρματων συνάψεων.</p>
+                        </div>
+                    </div>
+                    <div class="bg-white dark:bg-gray-800 rounded-lg p-4 border-l-4 border-violet-500">
+                        <h4 class="font-semibold text-violet-700 dark:text-violet-300 mb-2">Κύρια Συστήματα Νευροδιαμόρφωσης</h4>
+                        <div class="grid md:grid-cols-2 gap-3">
+                            <div class="text-sm text-gray-700 dark:text-gray-300"><strong>Ντοπαμίνη:</strong> Κίνητρο, πρόβλεψη ανταμοιβής, κίνηση. Απελευθερώνεται από την VTA και τη μέλαινα ουσία. Πρόσφατη εργασία δείχνει ότι η ντοπαμίνη και η σεροτονίνη <em>ρυθμίζουν αντίστροφα</em> τους ίδιους νευρώνες κατά τη μάθηση (Nature Communications, 2026).</div>
+                            <div class="text-sm text-gray-700 dark:text-gray-300"><strong>Σεροτονίνη:</strong> Διάθεση, κορεσμός, κύκλοι ύπνου και εγρήγορσης. Οι πυρήνες της ραφής προβάλλουν ευρέως. Τα αντικαταθλιπτικά SSRI στοχεύουν την επαναπρόσληψη σεροτονίνης στη μετάδοση όγκου.</div>
+                            <div class="text-sm text-gray-700 dark:text-gray-300"><strong>Νορεπινεφρίνη:</strong> Διέγερση, προσοχή, απόκριση στο στρες. Ο υπομέλας τόπος απελευθερώνει NE σε όλο τον φλοιό. Εργασία του 2025 δείχνει ότι τα σήματα NE δρουν <em>μέσω αστροκυττάρων</em> για να αλλάξουν την κατάσταση του δικτύου.</div>
+                            <div class="text-sm text-gray-700 dark:text-gray-300"><strong>Ακετυλοχολίνη:</strong> Προσοχή, μάθηση, ύπνος REM. Προβολές από τον βασικό πρόσθιο εγκέφαλο. Η αδενοσίνη από αστροκύτταρα ρυθμίζει τη χολινεργική σηματοδότηση (Nature, 2024).</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Updated Understanding -->
+                <div class="mb-6 p-4 bg-green-50 dark:bg-green-900/20 rounded-lg border border-green-200 dark:border-green-700">
+                    <h4 class="font-semibold text-green-700 dark:text-green-300 mb-2">📋 Επανεξετάζοντας όσα Έμαθες</h4>
+                    <p class="text-sm text-gray-700 dark:text-gray-300 mb-2">Οι συναπτικοί μηχανισμοί στις προηγούμενες καρτέλες, η απελευθέρωση κυστιδίων, η σύνδεση με υποδοχείς, τα EPSPs και τα IPSPs, παραμένουν <strong>σωστοί και θεμελιώδεις</strong>. Αυτό που άλλαξε είναι το πλαίσιο:</p>
+                    <ul class="text-sm text-gray-700 dark:text-gray-300 list-disc pl-5 space-y-1">
+                        <li>Οι συνάψεις δεν είναι μόνο συνδέσεις <strong>δύο μερών</strong>, τα αστροκύτταρα αποτελούν έναν απαραίτητο <strong>τρίτο συνεργάτη</strong></li>
+                        <li>Η σηματοδότηση δεν είναι μόνο <strong>από σημείο σε σημείο</strong>, η <strong>μετάδοση όγκου</strong> διαμορφώνει καταστάσεις σε επίπεδο εγκεφάλου</li>
+                        <li>Νευροδιαμορφωτές όπως η ντοπαμίνη και η σεροτονίνη λειτουργούν ταυτόχρονα μέσω <strong>ενσύρματης</strong> και μέσω μετάδοσης όγκου</li>
+                        <li>Τα γλοιακά κύτταρα είναι <strong>ενεργοί σηματοδότες</strong>, όχι παθητική υποστήριξη, απελευθερώνουν δικούς τους διαβιβαστές και ρυθμίζουν τη συναπτική ισχύ</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer will be loaded here by components.js -->
+    <div id="footer-placeholder"></div>
+
+    <script src="../js/firebase-init.js"></script>
+    <script src="../js/components.js"></script>
+    <script src="../js/02-synapses-neurotransmitters.js"></script>
+</body>
+
+</html>

@@ -5,6 +5,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Oligodendrosite Admin</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/xml/xml.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/htmlmixed/htmlmixed.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/javascript/javascript.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/css/css.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/edit/matchbrackets.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/edit/closebrackets.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/edit/matchtags.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/fold/xml-fold.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/hint/show-hint.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/hint/html-hint.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/theme/monokai.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/hint/show-hint.min.css">
   <link rel="stylesheet" href="css/admin.css">
 </head>
 <body class="bg-gray-950 text-gray-100 min-h-screen flex items-center justify-center">
@@ -59,21 +73,31 @@
         <button class="nav-btn" data-tab="settings">
           <span>⚙️</span> Settings
         </button>
-        <div class="mt-auto pt-4 border-t border-gray-800">
-          <a href="/" target="_blank" class="nav-btn text-gray-500 hover:text-gray-300">
-            <span>🌐</span> View Site
+        <div class="mt-auto pt-4 border-t border-gray-800 flex flex-col gap-1">
+          <a href="http://127.0.0.1:8080" target="_blank" class="nav-btn text-gray-500 hover:text-gray-300">
+            <span>🌐</span> Visit Site (Local)
+          </a>
+          <a href="https://oligodendrosite.com" target="_blank" class="nav-btn text-gray-500 hover:text-gray-300">
+            <span>🚀</span> Visit Site (Live)
           </a>
         </div>
       </aside>
 
       <main class="flex-1 overflow-auto p-6 bg-gray-950">
         <div id="tab-chapters" class="tab-content" style="display:block">
-          <h2 class="text-xl font-bold mb-6 text-gray-200">Chapter Management</h2>
-          <div id="chapter-list" class="grid gap-3">
+          <div class="flex items-center justify-between mb-6">
+            <h2 class="text-xl font-bold text-gray-200">Chapter Management</h2>
+            <div class="flex gap-2">
+              <button onclick="showCreateChapterModal()"
+                class="px-4 py-2 bg-green-600 hover:bg-green-700 text-sm rounded-lg transition">+ New Chapter</button>
+              <button onclick="showCreateLocaleModal()"
+                class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-sm rounded-lg transition">+ New Locale</button>
+            </div>
           </div>
+          <div id="chapter-list" class="grid gap-3"></div>
         </div>
 
-        <div id="tab-media" class="tab-content hidden">
+        <div id="tab-media" class="tab-content">
           <div class="flex items-center justify-between mb-6">
             <h2 class="text-xl font-bold text-gray-200">Media Library</h2>
             <label class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm rounded-lg cursor-pointer transition">
@@ -82,11 +106,10 @@
             </label>
           </div>
           <div id="upload-progress" class="hidden mb-4 p-3 bg-blue-900/30 border border-blue-800 rounded-lg text-sm text-blue-300"></div>
-          <div id="media-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-          </div>
+          <div id="media-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4"></div>
         </div>
 
-        <div id="tab-settings" class="tab-content hidden">
+        <div id="tab-settings" class="tab-content">
           <h2 class="text-xl font-bold mb-6 text-gray-200">Settings</h2>
           <div class="max-w-lg space-y-6">
             <div class="p-4 bg-gray-900 rounded-lg border border-gray-800">
@@ -99,10 +122,8 @@
             </div>
             <div class="p-4 bg-gray-900 rounded-lg border border-gray-800">
               <h3 class="font-semibold text-gray-300 mb-2">Deployment</h3>
-              <p class="text-sm text-gray-500 mb-3">Push to GitHub triggers automatic Firebase deployment via GitHub Actions.</p>
-              <button onclick="handlePush()" class="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-sm rounded-lg transition">
-                Push to GitHub
-              </button>
+              <p class="text-sm text-gray-500 mb-3">Push to GitHub triggers automatic Firebase deployment. To fix the failing workflow, add a Firebase service account key as <code class="text-purple-400">FIREBASE_SERVICE_ACCOUNT</code> in GitHub Settings → Secrets and Variables → Actions. Generate it from Firebase Console → Project Settings → Service Accounts.</p>
+              <button onclick="handlePush()" class="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-sm rounded-lg transition">Push to GitHub</button>
             </div>
           </div>
         </div>
@@ -110,29 +131,87 @@
     </div>
   </div>
 
-  <!-- Chapter Editor Modal -->
-  <div id="editor-modal" class="hidden fixed inset-0 bg-black bg-opacity-90 z-50 flex p-2">
-    <div class="bg-gray-900 rounded-2xl border border-gray-800 w-full max-w-none flex flex-col">
-      <div class="flex items-center justify-between p-4 border-b border-gray-800">
-        <div class="flex items-center gap-3">
-          <span class="text-2xl">📝</span>
-          <h3 id="editor-title" class="text-lg font-semibold text-gray-200">Edit Chapter</h3>
+  <div id="editor-modal" class="hidden fixed inset-0 bg-black bg-opacity-95 z-50 flex flex-col">
+    <div class="flex items-center justify-between p-3 bg-gray-900 border-b border-gray-800">
+      <div class="flex items-center gap-3">
+        <span class="text-2xl">📝</span>
+        <h3 id="editor-title" class="text-lg font-semibold text-gray-200">Edit Chapter</h3>
+        <span id="editor-mode" class="text-xs px-2 py-0.5 rounded bg-gray-700 text-gray-400">HTML</span>
+      </div>
+      <div class="flex items-center gap-2">
+        <button onclick="toggleWordWrap()" id="btn-wrap"
+          class="px-3 py-1.5 bg-gray-700 hover:bg-gray-600 text-xs rounded-lg transition">Wrap</button>
+        <button id="btn-save" onclick="handleSave()"
+          class="px-4 py-1.5 bg-purple-600 hover:bg-purple-700 text-sm rounded-lg transition">Save</button>
+        <button onclick="closeEditor()"
+          class="px-4 py-1.5 bg-gray-700 hover:bg-gray-600 text-sm rounded-lg transition">Close</button>
+      </div>
+    </div>
+    <div id="editor-container" class="flex-1 overflow-hidden"></div>
+    <div class="flex items-center justify-between px-3 py-2 border-t border-gray-800 bg-gray-900 text-xs text-gray-500">
+      <span id="editor-file-info"></span>
+      <span id="editor-save-status"></span>
+    </div>
+  </div>
+
+  <div id="create-chapter-modal" class="hidden fixed inset-0 bg-black bg-opacity-80 z-50 flex items-center justify-center p-4">
+    <div class="bg-gray-900 rounded-2xl border border-gray-800 w-full max-w-lg p-6">
+      <h3 class="text-lg font-semibold text-gray-200 mb-4">Create New Chapter</h3>
+      <div class="space-y-4">
+        <div>
+          <label class="block text-sm text-gray-400 mb-1">Chapter Number</label>
+          <input type="text" id="new-chapter-num" placeholder="07" class="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white text-sm">
         </div>
-        <div class="flex items-center gap-2">
-          <button id="btn-save" onclick="handleSave()"
-            class="px-4 py-1.5 bg-purple-600 hover:bg-purple-700 text-sm rounded-lg transition">Save</button>
-          <button onclick="closeEditor()"
-            class="px-4 py-1.5 bg-gray-700 hover:bg-gray-600 text-sm rounded-lg transition">Close</button>
+        <div>
+          <label class="block text-sm text-gray-400 mb-1">URL Slug (lowercase, hyphens)</label>
+          <input type="text" id="new-chapter-slug" placeholder="my-new-topic" class="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white text-sm">
+        </div>
+        <div>
+          <label class="block text-sm text-gray-400 mb-1">Chapter Title</label>
+          <input type="text" id="new-chapter-title" placeholder="Chapter 7: My New Topic" class="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white text-sm">
+        </div>
+        <div>
+          <label class="block text-sm text-gray-400 mb-1">Template</label>
+          <select id="new-chapter-template" class="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white text-sm">
+            <option value="full">Full interactive chapter (with tabs)</option>
+            <option value="simple">Simple page (no tabs)</option>
+          </select>
+        </div>
+        <div class="flex gap-2 justify-end pt-2">
+          <button onclick="closeCreateChapterModal()" class="px-4 py-2 bg-gray-700 hover:bg-gray-600 text-sm rounded-lg">Cancel</button>
+          <button onclick="createChapter()" class="px-4 py-2 bg-green-600 hover:bg-green-700 text-sm rounded-lg">Create</button>
         </div>
       </div>
-      <div class="flex-1 overflow-hidden">
-        <textarea id="editor-content"
-          class="w-full h-full p-6 bg-gray-950 text-gray-200 font-mono text-base leading-relaxed resize-none focus:outline-none border-0"
-          spellcheck="false"></textarea>
-      </div>
-      <div class="flex items-center justify-between p-3 border-t border-gray-800 bg-gray-900 text-xs text-gray-500">
-        <span id="editor-file-info"></span>
-        <span id="editor-save-status"></span>
+    </div>
+  </div>
+
+  <div id="create-locale-modal" class="hidden fixed inset-0 bg-black bg-opacity-80 z-50 flex items-center justify-center p-4">
+    <div class="bg-gray-900 rounded-2xl border border-gray-800 w-full max-w-lg p-6">
+      <h3 class="text-lg font-semibold text-gray-200 mb-4">Add New Locale</h3>
+      <div class="space-y-4">
+        <div>
+          <label class="block text-sm text-gray-400 mb-1">Language</label>
+          <select id="new-locale-lang" class="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white text-sm">
+            <option value="zh">Chinese (ZH)</option>
+            <option value="sp">Spanish (SP)</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-sm text-gray-400 mb-1">Locale Code (folder name)</label>
+          <input type="text" id="new-locale-code" placeholder="zh" class="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white text-sm">
+        </div>
+        <div>
+          <label class="block text-sm text-gray-400 mb-1">Copy from existing locale?</label>
+          <select id="new-locale-source" class="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white text-sm">
+            <option value="gr">Greek (GR) - most complete</option>
+            <option value="en">English (EN) - original</option>
+            <option value="none">Empty scaffold only</option>
+          </select>
+        </div>
+        <div class="flex gap-2 justify-end pt-2">
+          <button onclick="closeCreateLocaleModal()" class="px-4 py-2 bg-gray-700 hover:bg-gray-600 text-sm rounded-lg">Cancel</button>
+          <button onclick="createLocale()" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-sm rounded-lg">Create Locale</button>
+        </div>
       </div>
     </div>
   </div>

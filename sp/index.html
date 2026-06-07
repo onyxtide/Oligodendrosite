@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="sp">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Oligodendrosite - Διαδραστική Εκμάθηση Νευροεπιστήμης</title>
+    <meta name="description" content="Μάθε νευροεπιστήμη μέσα από διαδραστικές προσομοιώσεις, οπτικοποιήσεις και οργανωμένες μαθησιακές ενότητες για νευρώνες, συνάψεις, νευρωνικά δίκτυα και εγκεφαλικά συστήματα.">
+    <meta name="keywords" content="νευροεπιστήμη, εκπαίδευση, διαδραστική μάθηση, συνάψεις, νευροδιαβιβαστές, νευρωνικά δίκτυα, εγκέφαλος">
+    
+
+    <!-- Brain emoji favicon -->
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧠</text></svg>">
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Chart.js for progress visualizations -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../css/main.css">
+
+</head>
+
+<body class="bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-200 transition-colors duration-300">
+
+    <header class="bg-white shadow-md dark:bg-gray-800 transition-colors duration-300">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center py-4">
+                <!-- Logo and Site Title -->
+                <div class="flex items-center space-x-2">
+                    <a href="index.html" class="flex items-center space-x-2 hover:opacity-80 transition-opacity">
+                        <span class="text-3xl">🧠</span>
+                        <span class="text-2xl font-bold text-blue-700 dark:text-blue-400">Oligodendrosite</span>
+                    </a>
+                </div>
+
+                <div class="flex items-center gap-3">
+                    <div class="flex items-center rounded-full border border-gray-200 dark:border-gray-700 overflow-hidden text-sm font-semibold">
+                        <a data-lang-link="en" href="/index.html" class="px-3 py-1.5 transition-colors duration-200">EN</a>
+                        <a data-lang-link="gr" href="/gr/index.html" class="px-3 py-1.5 transition-colors duration-200">GR</a>
+                    </div>
+                    <button id="theme-toggle" class="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition"
+                        aria-label="Εναλλαγή σκοτεινής λειτουργίας">
+                        <!-- Sun icon for dark mode (shown when in dark mode) -->
+                        <svg id="light-icon" class="w-6 h-6 text-yellow-500 hidden" fill="currentColor" viewBox="0 0 20 20"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd"
+                                d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"
+                                clip-rule="evenodd"></path>
+                        </svg>
+                        <!-- Moon icon for light mode (shown when in light mode) -->
+                        <svg id="dark-icon" class="w-6 h-6 text-gray-700" fill="currentColor" viewBox="0 0 20 20"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero-gradient text-white py-20 relative overflow-hidden">
+        <div class="absolute inset-0 bg-black opacity-10"></div>
+        <div class="container mx-auto px-4 relative z-10">
+            <div class="text-center max-w-4xl mx-auto">
+                <div class="floating-animation mb-8">
+                    <div class="text-8xl mb-4">🧠</div>
+                </div>
+                <h1 class="text-5xl md:text-7xl font-bold mb-6 leading-tight">
+                    <span class="block">Oligodendrosite</span>
+                    <span class="block text-3xl md:text-4xl font-light opacity-90 mt-2">Διαδραστική Εκμάθηση Νευροεπιστήμης</span>
+                </h1>
+                <p class="text-xl md:text-2xl mb-8 opacity-90 leading-relaxed">
+                    Κατανόησε την πολυπλοκότητα του νευρικού συστήματος μέσα από σύγχρονες διαδραστικές προσομοιώσεις,
+                    οπτικοποιήσεις και οργανωμένες μαθησιακές ενότητες για τη νέα γενιά νευροεπιστημόνων.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <a href="01-neurons-action-potentials.html"
+                        class="bg-white text-purple-600 px-8 py-4 rounded-full font-semibold text-lg shadow-lg hover:shadow-xl transition-all transform hover:scale-105">
+                        🚀 Ξεκίνα τη μάθηση
+                    </a>
+                    <a href="#features"
+                        class="border-2 border-white text-white px-8 py-4 rounded-full font-semibold text-lg hover:bg-white hover:text-purple-600 transition-all">
+                        📖 Δες τις δυνατότητες
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Animated background elements -->
+        <div class="absolute top-10 left-10 w-20 h-20 bg-white opacity-10 rounded-full pulse-animation"></div>
+        <div class="absolute top-40 right-20 w-16 h-16 bg-white opacity-10 rounded-full pulse-animation"
+            style="animation-delay: 1s;"></div>
+        <div class="absolute bottom-20 left-1/4 w-12 h-12 bg-white opacity-10 rounded-full pulse-animation"
+            style="animation-delay: 2s;"></div>
+        <div class="absolute bottom-40 right-1/3 w-24 h-24 bg-white opacity-10 rounded-full pulse-animation"
+            style="animation-delay: 0.5s;"></div>
+    </section>
+
+    <!-- Learning Modules Section -->
+    <section class="py-20 bg-gray-800 dark:bg-gray-800 text-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-bold mb-6 text-white">Ενότητες Μάθησης</h2>
+                <p id="learning-modules-intro" class="text-xl text-white max-w-3xl mx-auto opacity-95">
+                    Ένα ολοκληρωμένο πρόγραμμα νευροεπιστήμης σχεδιασμένο ώστε να χτίζει κατανόηση, από τις βασικές έννοιες έως τα σύνθετα εγκεφαλικά συστήματα, μέσα από διαδραστική μάθηση.
+                </p>
+            </div>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
+                <!-- Chapter 1 -->
+                <div class="chapter-card rounded-2xl p-8 text-center group flex flex-col h-full">
+                    <div class="text-6xl mb-6 group-hover:scale-110 transition-transform">⚡</div>
+                    <h3 class="text-2xl font-bold mb-4 text-white">Κεφάλαιο 1</h3>
+                    <h4 class="text-lg font-semibold mb-4 text-blue-700 dark:text-blue-300">Νευρώνες & Δυναμικά Ενέργειας</h4>
+                    <p class="text-white mb-6 leading-relaxed flex-grow">
+                        Εξερεύνησε τη δομή των νευρώνων, τα ιοντικά κανάλια, τη μυελίνη και τα δυναμικά ενέργειας, τα θεμέλια της νευρικής επικοινωνίας.
+                    </p>
+                    <div class="mb-6">
+                        <div class="flex justify-center items-center space-x-2 text-sm text-gray-300">
+                            <span>🎯 Δομή νευρώνα</span>
+                        </div>
+                        <div class="flex justify-center items-center space-x-2 text-sm text-gray-300">
+                            <span>📊 Δυναμικά ενέργειας</span>
+                        </div>
+                    </div>
+                    <a href="01-neurons-action-potentials.html"
+                        class="inline-block bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold transition-all transform hover:scale-105 shadow-lg mt-auto">
+                        Άνοιγμα Κεφαλαίου 1
+                    </a>
+                </div>
+
+                <!-- Chapter 2 -->
+                <div class="chapter-card rounded-2xl p-8 text-center group flex flex-col h-full">
+                    <div class="text-6xl mb-6 group-hover:scale-110 transition-transform">🔗</div>
+                    <h3 class="text-2xl font-bold mb-4 text-white">Κεφάλαιο 2</h3>
+                    <h4 class="text-lg font-semibold mb-4 text-green-700 dark:text-green-300">Συνάψεις & Νευροδιαβιβαστές</h4>
+                    <p class="text-white mb-6 leading-relaxed flex-grow">
+                        Ανακάλυψε πώς επικοινωνούν οι νευρώνες μέσω χημικών και ηλεκτρικών συνάψεων. Η ελληνική έκδοση αυτού του κεφαλαίου διατηρεί τις ίδιες προσομοιώσεις και την ίδια λειτουργικότητα με την αγγλική.
+                    </p>
+                    <div class="mb-6">
+                        <div class="flex justify-center items-center space-x-2 text-sm text-gray-300">
+                            <span>🧪 Μοριακές αλληλεπιδράσεις</span>
+                        </div>
+                        <div class="flex justify-center items-center space-x-2 text-sm text-gray-300">
+                            <span>⚗️ Χημικές προσομοιώσεις</span>
+                        </div>
+                    </div>
+                    <a href="02-synapses-neurotransmitters.html"
+                        class="inline-block bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-lg font-semibold transition-all transform hover:scale-105 shadow-lg mt-auto">
+                        Άνοιγμα Κεφαλαίου 2
+                    </a>
+                </div>
+
+                <!-- Chapter 3 -->
+                <div class="chapter-card rounded-2xl p-8 text-center group flex flex-col h-full">
+                    <div class="text-6xl mb-6 group-hover:scale-110 transition-transform">🕸️</div>
+                    <h3 class="text-2xl font-bold mb-4 text-white">Κεφάλαιο 3</h3>
+                    <h4 class="text-lg font-semibold mb-4 text-purple-700 dark:text-purple-300">Νευρωνικά Δίκτυα & Πλαστικότητα</h4>
+                    <p class="text-white mb-6 leading-relaxed flex-grow">
+                        Δες πώς οι νευρώνες σχηματίζουν σύνθετα δίκτυα και προσαρμόζονται μέσα από την εμπειρία. Η ελληνική έκδοση διατηρεί άθικτες τις προσομοιώσεις δικτύων και πλαστικότητας.
+                    </p>
+                    <div class="mb-6">
+                        <div class="flex justify-center items-center space-x-2 text-sm text-gray-300">
+                            <span>🌐 Δυναμική δικτύων</span>
+                        </div>
+                        <div class="flex justify-center items-center space-x-2 text-sm text-gray-300">
+                            <span>🧠 Μηχανισμοί μάθησης</span>
+                        </div>
+                    </div>
+                    <a href="03-neural-networks-plasticity.html"
+                        class="inline-block bg-purple-500 hover:bg-purple-600 text-white px-6 py-3 rounded-lg font-semibold transition-all transform hover:scale-105 shadow-lg mt-auto">
+                        Άνοιγμα Κεφαλαίου 3
+                    </a>
+                </div>
+
+                <!-- Chapter 4 -->
+                <div class="chapter-card rounded-2xl p-8 text-center group flex flex-col h-full">
+                    <div class="text-6xl mb-6 group-hover:scale-110 transition-transform">🧠</div>
+                    <h3 class="text-2xl font-bold mb-4 text-white">Κεφάλαιο 4</h3>
+                    <h4 class="text-lg font-semibold mb-4 text-red-700 dark:text-red-300">Εγκεφαλικά Συστήματα & Νευρωνικές Οδοί</h4>
+                    <p class="text-white mb-6 leading-relaxed flex-grow">
+                        Κατανόησε τις κύριες εγκεφαλικές περιοχές, τις νευρωνικές οδούς, την αιμάτωση και τα στάδια ανάπτυξης του εγκεφάλου.
+                    </p>
+                    <div class="mb-6">
+                        <div class="flex justify-center items-center space-x-2 text-sm text-gray-300">
+                            <span>🔬 Νευροανατομία</span>
+                        </div>
+                        <div class="flex justify-center items-center space-x-2 text-sm text-gray-300">
+                            <span>🧠 Εγκεφαλικά συστήματα</span>
+                        </div>
+                    </div>
+                    <a href="04-brain-systems-pathways.html"
+                        class="inline-block bg-red-500 hover:bg-red-600 text-white px-6 py-3 rounded-lg font-semibold transition-all transform hover:scale-105 shadow-lg mt-auto">
+                        Άνοιγμα Κεφαλαίου 4
+                    </a>
+                </div>
+
+                <!-- Chapter 5 -->
+                <div class="chapter-card rounded-2xl p-8 text-center group flex flex-col h-full">
+                    <div class="text-6xl mb-6 group-hover:scale-110 transition-transform">🧩</div>
+                    <h3 class="text-2xl font-bold mb-4 text-white">Κεφάλαιο 5</h3>
+                    <h4 class="text-lg font-semibold mb-4 text-teal-700 dark:text-teal-300">Γλοία, Μυελίνη & Υποστήριξη Εγκεφάλου</h4>
+                    <p class="text-white mb-6 leading-relaxed flex-grow">
+                        Η ελληνική μετάφραση του Κεφαλαίου 5 θα προστεθεί σύντομα. Προς το παρόν διατίθεται στα Αγγλικά.
+                    </p>
+                    <div class="mb-6">
+                        <div class="flex justify-center items-center space-x-2 text-sm text-gray-300">
+                            <span>🔬 Έρευνα 2025</span>
+                        </div>
+                        <div class="flex justify-center items-center space-x-2 text-sm text-gray-300">
+                            <span>📋 Με πηγές</span>
+                        </div>
+                    </div>
+                    <a href="05-glia-myelin-brain-support.html"
+                        class="inline-block bg-teal-600 hover:bg-teal-700 text-white px-6 py-3 rounded-lg font-semibold transition-all transform hover:scale-105 shadow-lg mt-auto">
+                        Άνοιγμα Κεφαλαίου 5
+                    </a>
+                </div>
+
+                <!-- Chapter 6 -->
+                <div class="chapter-card rounded-2xl p-8 text-center group flex flex-col h-full">
+                    <div class="text-6xl mb-6 group-hover:scale-110 transition-transform">💧</div>
+                    <h3 class="text-2xl font-bold mb-4 text-white">Κεφάλαιο 6</h3>
+                    <h4 class="text-lg font-semibold mb-4 text-cyan-700 dark:text-cyan-300">Ύπνος, Γλυμφικό Σύστημα & Συντήρηση Εγκεφάλου</h4>
+                    <p class="text-white mb-6 leading-relaxed flex-grow">
+                        Η ελληνική μετάφραση του Κεφαλαίου 6 θα προστεθεί σύντομα. Προς το παρόν διατίθεται στα Αγγλικά.
+                    </p>
+                    <div class="mb-6">
+                        <div class="flex justify-center items-center space-x-2 text-sm text-gray-300">
+                            <span>💤 Ύπνος & υγεία εγκεφάλου</span>
+                        </div>
+                        <div class="flex justify-center items-center space-x-2 text-sm text-gray-300">
+                            <span>🧠 Σύγχρονες ανακαλύψεις</span>
+                        </div>
+                    </div>
+                    <a href="06-sleep-glymphatics-brain-maintenance.html"
+                        class="inline-block bg-cyan-700 hover:bg-cyan-800 text-white px-6 py-3 rounded-lg font-semibold transition-all transform hover:scale-105 shadow-lg mt-auto">
+                        Άνοιγμα Κεφαλαίου 6
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-20 bg-white dark:bg-gray-800">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-bold mb-6 text-gray-800 dark:text-gray-200">Γιατί να επιλέξεις το Oligodendrosite;</h2>
+                <p class="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
+                    Μια σύγχρονη εκπαιδευτική πλατφόρμα που συνδυάζει τεχνολογία αιχμής με αποτελεσματικές μεθόδους διδασκαλίας για μια μοναδική εμπειρία μάθησης στη νευροεπιστήμη.
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-12 max-w-6xl mx-auto">
+                <!-- Interactive Simulations -->
+                <div class="text-center group">
+                    <div class="feature-icon text-6xl mb-6 group-hover:scale-110 transition-transform inline-block">
+                        🎮</div>
+                    <h3 class="text-2xl font-bold mb-4 text-gray-800 dark:text-gray-200">Διαδραστικές Προσομοιώσεις</h3>
+                    <p class="text-gray-600 dark:text-gray-400 leading-relaxed">
+                        Χειρίσου παραμέτρους σε πραγματικό χρόνο και παρατήρησε πώς οι αλλαγές επηρεάζουν τη
+                        νευρωνική συμπεριφορά μέσα από προηγμένες διαδραστικές προσομοιώσεις.
+                    </p>
+                </div>
+
+                <!-- Visual Learning -->
+                <div class="text-center group">
+                    <div class="feature-icon text-6xl mb-6 group-hover:scale-110 transition-transform inline-block">
+                        📊</div>
+                    <h3 class="text-2xl font-bold mb-4 text-gray-800 dark:text-gray-200">Οπτική Μάθηση</h3>
+                    <p class="text-gray-600 dark:text-gray-400 leading-relaxed">
+                        Πολύπλοκες έννοιες γίνονται κατανοητές μέσα από εντυπωσιακές οπτικοποιήσεις, γραφήματα και
+                        διαδραστικά διαγράμματα που ενισχύουν την κατανόηση.
+                    </p>
+                </div>
+
+                <!-- Comprehensive Content -->
+                <div class="text-center group">
+                    <div class="feature-icon text-6xl mb-6 group-hover:scale-110 transition-transform inline-block">
+                        📚</div>
+                    <h3 class="text-2xl font-bold mb-4 text-gray-800 dark:text-gray-200">Πλούσιο Περιεχόμενο</h3>
+                    <p class="text-gray-600 dark:text-gray-400 leading-relaxed">
+                        Από τη βασική δομή του νευρώνα έως τα σύνθετα εγκεφαλικά συστήματα, καλύπτονται όλα τα
+                        θεμελιώδη θέματα της σύγχρονης εκπαίδευσης στη νευροεπιστήμη.
+                    </p>
+                </div>
+
+                <!-- Self-Paced Learning -->
+                <div class="text-center group">
+                    <div class="feature-icon text-6xl mb-6 group-hover:scale-110 transition-transform inline-block">
+                        ⏰</div>
+                    <h3 class="text-2xl font-bold mb-4 text-gray-800 dark:text-gray-200">Μάθηση με τον δικό σου ρυθμό</h3>
+                    <p class="text-gray-600 dark:text-gray-400 leading-relaxed">
+                        Μάθε με τον δικό σου ρυθμό, με αρθρωτό περιεχόμενο που προσαρμόζεται στο πρόγραμμά σου και
+                        στον τρόπο που προτιμάς να μαθαίνεις.
+                    </p>
+                </div>
+
+                <!-- Assessment Tools -->
+                <div class="text-center group">
+                    <div class="feature-icon text-6xl mb-6 group-hover:scale-110 transition-transform inline-block">
+                        📝</div>
+                    <h3 class="text-2xl font-bold mb-4 text-gray-800 dark:text-gray-200">Μαθησιακό Υλικό</h3>
+                    <p class="text-gray-600 dark:text-gray-400 leading-relaxed">
+                        Ολοκληρωμένο εκπαιδευτικό περιεχόμενο με αναλυτικές εξηγήσεις, κλινικές συσχετίσεις και πρακτικές εφαρμογές για βαθύτερη κατανόηση της νευροεπιστήμης.
+                    </p>
+                </div>
+
+                <!-- Mobile Responsive -->
+                <div class="text-center group">
+                    <div class="feature-icon text-6xl mb-6 group-hover:scale-110 transition-transform inline-block">
+                        📱</div>
+                    <h3 class="text-2xl font-bold mb-4 text-gray-800 dark:text-gray-200">Φιλικό για Κινητά</h3>
+                    <p class="text-gray-600 dark:text-gray-400 leading-relaxed">
+                        Πρόσβαση στο μαθησιακό υλικό από οπουδήποτε, οποιαδήποτε στιγμή, με πλήρως προσαρμοστικό
+                        σχεδιασμό βελτιστοποιημένο για όλες τις συσκευές.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action Section -->
+    <section class="py-20 hero-gradient text-white">
+        <div class="container mx-auto px-4 text-center">
+            <h2 class="text-4xl md:text-5xl font-bold mb-6">Έτοιμος να εμβαθύνεις στη νευροεπιστήμη;</h2>
+            <p class="text-xl mb-8 opacity-90 max-w-2xl mx-auto">
+                Ξεκίνησε να μαθαίνεις μέσα από μια πλατφόρμα που συνδυάζει θεωρία, οπτικοποίηση και διαδραστικότητα.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="01-neurons-action-potentials.html"
+                    class="bg-white text-purple-700 px-8 py-4 rounded-full font-semibold text-lg shadow-lg hover:shadow-xl transition-all transform hover:scale-105 dark:bg-gray-100 dark:text-purple-800">
+                    🚀 Ξεκίνα τώρα
+                </a>
+                <a href="04-brain-systems-pathways.html"
+                    class="border-2 border-white text-white px-8 py-4 rounded-full font-semibold text-lg hover:bg-white hover:text-purple-700 transition-all">
+                    🧠 Εξερεύνηση εγκεφαλικών συστημάτων
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-gray-100 dark:bg-gray-800 py-8 transition-colors duration-300">
+        <div class="container mx-auto px-4">
+            <!-- Main Footer Content -->
+            <div class="flex flex-col md:flex-row justify-between mb-8">
+                <!-- Logo and Description -->
+                <div class="mb-6 md:mb-0 md:w-1/3">
+                    <div class="flex items-center space-x-2 mb-4">
+                        <span class="text-2xl">🧠</span>
+                        <span class="text-xl font-bold text-blue-700 dark:text-blue-400">Oligodendrosite</span>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-300">
+                        Διαδραστική πλατφόρμα εκμάθησης νευροεπιστήμης με σύγχρονες προσομοιώσεις και εκπαιδευτικό
+                        περιεχόμενο για φοιτητές, επαγγελματίες και λάτρεις της επιστήμης.
+                    </p>
+                </div>
+
+                <!-- Learning Modules -->
+                <div class="mb-6 md:mb-0 md:w-1/4">
+                    <h3 class="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-200">Ενότητες Μάθησης</h3>
+                    <ul class="space-y-2">
+                        <li><a href="index.html"
+                                class="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400 transition">Αρχική</a>
+                        </li>
+                        <li><a href="01-neurons-action-potentials.html"
+                                class="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400 transition">Νευρώνες & Δυναμικά Ενέργειας</a>
+                        </li>
+                        <li><a href="02-synapses-neurotransmitters.html"
+                                class="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400 transition">Συνάψεις & Νευροδιαβιβαστές</a></li>
+                        <li><a href="03-neural-networks-plasticity.html"
+                                class="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400 transition">Νευρωνικά Δίκτυα & Πλαστικότητα</a></li>
+                        <li><a href="04-brain-systems-pathways.html"
+                                class="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400 transition">Εγκεφαλικά Συστήματα & Οδοί</a></li>
+                        <li><a href="05-glia-myelin-brain-support.html"
+                                class="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400 transition">Γλοία, Μυελίνη & Υποστήριξη</a></li>
+                        <li><a href="06-sleep-glymphatics-brain-maintenance.html"
+                                class="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400 transition">Ύπνος & Γλυμφικό Σύστημα</a></li>
+                    </ul>
+                </div>
+
+                <!-- Features -->
+                <div class="mb-6 md:mb-0 md:w-1/4">
+                    <h3 class="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-200">Δυνατότητες</h3>
+                    <ul class="space-y-2">
+                        <li><span class="text-gray-600 dark:text-gray-300">🎮 Διαδραστικές προσομοιώσεις</span></li>
+                        <li><span class="text-gray-600 dark:text-gray-300">📊 Οπτικοποιήσεις σε πραγματικό χρόνο</span></li>
+                        <li><span class="text-gray-600 dark:text-gray-300">📝 Κλινικές εφαρμογές</span></li>
+                        <li><span class="text-gray-600 dark:text-gray-300">📱 Φιλικό για κινητά</span></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Divider -->
+            <div class="border-t border-gray-200 dark:border-gray-700 py-4 mb-4"></div>
+
+            <!-- Bottom Footer -->
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="text-center md:text-left mb-4 md:mb-0">
+                    <p class="text-gray-600 dark:text-gray-400 text-sm">
+                        &copy; 2025 Oligodendrosite. Διαδραστική πλατφόρμα νευροεπιστήμης. Με επιφύλαξη παντός δικαιώματος.
+                    </p>
+                    <p class="text-gray-600 dark:text-gray-400 text-sm mt-1">
+                        Δημιουργία: Mario Athanasiou • <a href="https://www.linkedin.com/in/mario-athanasiou/"
+                            class="text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 transition-colors duration-200 font-medium">LinkedIn</a>
+                    </p>
+                </div>
+
+                <!-- Scroll to Top Button -->
+                <button id="scroll-to-top"
+                    class="bg-blue-600 hover:bg-blue-700 text-white p-2 rounded-full shadow-md opacity-0 transition-opacity duration-300 focus:outline-none"
+                    aria-label="Επιστροφή στην κορυφή">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18">
+                        </path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="../js/firebase-init.js"></script>
+    <script src="../js/components.js"></script>
+    <script src="../js/main.js"></script> <!-- External JavaScript -->
+    <script src="../js/index-home.js"></script>
+</body>
+
+</html>

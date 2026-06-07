@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="sp">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Κεφάλαιο 6: Ύπνος, Γλυμφικό Σύστημα και Συντήρηση Εγκεφάλου - Oligodendrosite</title>
+    <meta name="description" content="Εξερεύνησε τη νευροεπιστήμη του ύπνου, τη γλυμφική κάθαρση, τους κιρκάδιους ρυθμούς και την υγεία του εγκεφάλου." />
+    <meta name="keywords" content="ύπνος, γλυμφικό σύστημα, κιρκάδιοι ρυθμοί, συντήρηση εγκεφάλου, υγεία εγκεφάλου, νευροεπιστήμη">
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧠</text></svg>">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+    <link rel="stylesheet" href="../css/main.css">
+</head>
+
+<body class="bg-gray-100 font-sans dark:bg-gray-900 text-gray-800 dark:text-gray-200 transition-colors duration-300">
+    <div id="header-placeholder"></div>
+
+    <header class="bg-cyan-800 text-white p-6 shadow-md mb-8">
+        <div class="container mx-auto">
+            <h1 class="text-3xl md:text-4xl font-bold mb-2">Κεφάλαιο 6: Ύπνος, Γλυμφικό Σύστημα και Συντήρηση Εγκεφάλου</h1>
+            <p class="text-lg opacity-90">Πώς ο εγκέφαλος καθαρίζει, επισκευάζει και επαναφορτίζει τον εαυτό του κάθε νύχτα</p>
+        </div>
+    </header>
+
+    <main class="container mx-auto p-4 md:p-6">
+        <section class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-8">
+            <h2 class="text-2xl font-bold mb-4 text-cyan-700 dark:text-cyan-300">Γιατί ο ύπνος έχει σημασία για τον εγκέφαλο</h2>
+            <p class="mb-4">Ο ύπνος δεν είναι παθητικός χρόνος αδράνειας. Είναι μια ενεργή νευροβιολογική κατάσταση που υποστηρίζει την παγίωση της μνήμης, την απομάκρυνση αποβλήτων, την κιρκάδια ευθυγράμμιση και τη μακροπρόθεσμη ανθεκτικότητα του εγκεφάλου. Αυτό το κεφάλαιο συνδέει τη σύγχρονη επιστήμη του ύπνου με τη μεγαλύτερη ιστορία της νευρωνικής συντήρησης.</p>
+            <p class="mb-2 font-semibold">Σε αυτή την εξερεύνηση θα ανακαλύψεις:</p>
+            <ul class="list-disc pl-6 mb-4">
+                <li>Πώς τα στάδια του ύπνου υποστηρίζουν τη μνήμη και τη νόηση</li>
+                <li>Πώς το γλυμφικό σύστημα βοηθά στην απομάκρυνση εγκεφαλικών αποβλήτων</li>
+                <li>Πώς οι κιρκάδιοι ρυθμοί συντονίζουν τον χρονισμό εγκεφάλου και σώματος</li>
+                <li>Πώς η ποιότητα του ύπνου επηρεάζει τη μακροπρόθεσμη υγεία του εγκεφάλου</li>
+            </ul>
+            <p class="text-cyan-700 dark:text-cyan-300 font-semibold">Ξεκίνα επιλέγοντας μια καρτέλα παρακάτω.</p>
+        </section>
+
+        <nav class="mb-6 tab-navigation" role="tablist" aria-label="Ενότητες κεφαλαίου"
+            style="--tab-active-color:#0e7490; --tab-active-color-dark:#67e8f9; --tab-hover-color:#0e7490; --tab-hover-color-dark:#67e8f9; --tab-active-bg:#cffafe; --tab-active-bg-dark:rgba(6,182,212,0.18); --tab-hover-bg:#ecfeff; --tab-hover-bg-dark:rgba(6,182,212,0.12);">
+            <button id="tab-sleep" role="tab" aria-selected="true" aria-controls="content-sleep"
+                class="tab-button relative px-4 py-2 text-cyan-700 font-medium rounded-lg transition-all duration-300">
+                <span class="hidden sm:inline">Νευροεπιστήμη Ύπνου</span>
+                <span class="sm:hidden">Ύπνος</span>
+            </button>
+            <button id="tab-glymphatic" role="tab" aria-selected="false" aria-controls="content-glymphatic"
+                class="tab-button relative px-4 py-2 text-gray-500 font-medium rounded-lg transition-all duration-300 hover:text-cyan-600 hover:bg-cyan-50 dark:hover:bg-cyan-900/20">
+                <span class="hidden sm:inline">Γλυμφικό Σύστημα</span>
+                <span class="sm:hidden">Γλυμφικό</span>
+            </button>
+            <button id="tab-circadian" role="tab" aria-selected="false" aria-controls="content-circadian"
+                class="tab-button relative px-4 py-2 text-gray-500 font-medium rounded-lg transition-all duration-300 hover:text-cyan-600 hover:bg-cyan-50 dark:hover:bg-cyan-900/20">
+                <span class="hidden sm:inline">Κιρκάδιοι Ρυθμοί</span>
+                <span class="sm:hidden">Ρυθμοί</span>
+            </button>
+            <button id="tab-brain-health" role="tab" aria-selected="false" aria-controls="content-brain-health"
+                class="tab-button relative px-4 py-2 text-gray-500 font-medium rounded-lg transition-all duration-300 hover:text-cyan-600 hover:bg-cyan-50 dark:hover:bg-cyan-900/20">
+                <span class="hidden sm:inline">Υγεία Εγκεφάλου</span>
+                <span class="sm:hidden">Υγεία</span>
+            </button>
+        </nav>
+
+        <section id="content-sleep" class="tab-content active" role="tabpanel" aria-labelledby="tab-sleep">
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-8">
+                <h2 class="text-2xl font-bold mb-4 text-cyan-700 dark:text-cyan-300">Νευροεπιστήμη του Ύπνου</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <article class="bg-gradient-to-br from-cyan-700 to-cyan-900 rounded-xl p-6 text-white shadow-md">
+                        <h3 class="text-lg font-semibold mb-2">Γιατί Κοιμόμαστε</h3>
+                        <p class="text-sm">Ο ύπνος εναλλάσσεται ανάμεσα σε στάδια NREM και REM, με κάθε στάδιο να υποστηρίζει διαφορετικές πλευρές αποκατάστασης και επεξεργασίας μνήμης. Ο ύπνος REM συμβάλλει στη συναισθηματική μάθηση και την ολοκλήρωση μνήμης, ενώ ο ύπνος βραδέων κυμάτων υποστηρίζει επανάληψη σε μεγάλη κλίμακα και συστημική ανάκαμψη.</p>
+                    </article>
+                    <article class="bg-gradient-to-br from-cyan-800 to-slate-900 rounded-xl p-6 text-white shadow-md">
+                        <h3 class="text-lg font-semibold mb-2">Ύπνος και Μνήμη</h3>
+                        <p class="text-sm">Η υπόθεση της συναπτικής ομοιόστασης προτείνει ότι ο ύπνος βοηθά στην επανισορρόπηση της συνολικής συναπτικής ισχύος μετά τις εμπειρίες της εγρήγορσης. Ταυτόχρονα, η επανάληψη ιπποκαμπικών μοτίβων κατά τον ύπνο βραδέων κυμάτων βοηθά στη σταθεροποίηση πρόσφατων πληροφοριών σε μακροπρόθεσμα δίκτυα μνήμης.</p>
+                    </article>
+                    <article class="bg-gradient-to-br from-sky-700 to-slate-900 rounded-xl p-6 text-white shadow-md">
+                        <h3 class="text-lg font-semibold mb-2">Επιδράσεις Έλλειψης Ύπνου</h3>
+                        <p class="text-sm">Ο ανεπαρκής ύπνος μειώνει την προσοχή, την εργαζόμενη μνήμη, τη ρύθμιση συναισθήματος και τη λήψη αποφάσεων. Η σοβαρή στέρηση μπορεί να αυξήσει αντιληπτικές διαταραχές και κίνδυνο ψευδαισθήσεων, ενώ η χρόνια απώλεια ύπνου σχετίζεται με προβλήματα διάθεσης, μεταβολισμού και νόησης.</p>
+                    </article>
+                </div>
+                <div class="mt-6 p-4 bg-gray-50 dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600">
+                    <h4 class="font-semibold text-cyan-700 dark:text-cyan-300 mb-2">Κλινική σημείωση</h4>
+                    <p class="text-sm text-gray-700 dark:text-gray-300">Η αϋπνία, η υπνική άπνοια και η ναρκοληψία είναι συχνές διαταραχές ύπνου. Αυτό το κεφάλαιο είναι εκπαιδευτικό και δεν αντικαθιστά διάγνωση ή θεραπεία. Αν έχεις επίμονα προβλήματα ύπνου, συμβουλέψου επαγγελματία υγείας.</p>
+                </div>
+                <p class="mt-3 text-xs text-gray-600 dark:text-gray-400">Πηγές: Tononi &amp; Cirelli, 2008; περιλήψεις έρευνας NIH για τον ύπνο; ανασκοπήσεις National Sleep Foundation.</p>
+            </div>
+        </section>
+
+        <section id="content-glymphatic" class="tab-content" role="tabpanel" aria-labelledby="tab-glymphatic">
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-8">
+                <h2 class="text-2xl font-bold mb-4 text-cyan-700 dark:text-cyan-300">Γλυμφικό Σύστημα</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
+                    <article class="bg-gradient-to-br from-sky-700 to-slate-900 rounded-xl p-6 text-white shadow-md">
+                        <h3 class="text-lg font-semibold mb-2">Πώς Λειτουργεί</h3>
+                        <p class="text-sm">Το εγκεφαλονωτιαίο υγρό κινείται κατά μήκος αρτηριακών περιαγγειακών χώρων, ανταλλάσσεται με το διάμεσο υγρό και βοηθά στη μεταφορά μεταβολικών αποβλήτων προς φλεβικές και μηνιγγικές λεμφικές οδούς. Η θεμελιώδης εργασία των Iliff και συνεργατών καθιέρωσε το πλαίσιο, ενώ πρόσφατες ανθρώπινες μελέτες ενίσχυσαν την κλινική του σημασία.</p>
+                    </article>
+                    <article class="bg-gradient-to-br from-indigo-700 to-slate-900 rounded-xl p-6 text-white shadow-md">
+                        <h3 class="text-lg font-semibold mb-2">AQP4: Η Βαλβίδα των Υγρών</h3>
+                        <p class="text-sm">Οι δίαυλοι ακουαπορίνης-4 στα τελικά πόδια των αστροκυττάρων είναι κεντρικοί για την ανταλλαγή ΕΝΥ και διάμεσου υγρού. Όταν η πολικότητα ή η λειτουργία του AQP4 διαταράσσεται, η γλυμφική αποδοτικότητα μειώνεται, συνδέοντας άμεσα τη βιολογία των αστροκυττάρων με την εξαρτώμενη από τον ύπνο κάθαρση.</p>
+                    </article>
+                    <article class="bg-gradient-to-br from-indigo-700 to-slate-900 rounded-xl p-6 text-white shadow-md">
+                        <h3 class="text-lg font-semibold mb-2">Μηνιγγικά Λεμφαγγεία</h3>
+                        <p class="text-sm">Τα μηνιγγικά λεμφαγγεία, που επιβεβαιώθηκαν το 2015, παρέχουν οδό αποχέτευσης από τον εγκέφαλο προς την περιφερική λεμφική κυκλοφορία. Η ανακάλυψή τους άλλαξε τον τρόπο με τον οποίο η νευροεπιστήμη αντιλαμβάνεται την ανοσολογική επιτήρηση και την απομάκρυνση αποβλήτων.</p>
+                    </article>
+                    <article class="bg-gradient-to-br from-cyan-800 to-slate-900 rounded-xl p-6 text-white shadow-md">
+                        <h3 class="text-lg font-semibold mb-2">Ο Ύπνος Καθαρίζει Απόβλητα</h3>
+                        <p class="text-sm">Ο ύπνος ενισχύει τη γλυμφική ροή, αυξάνοντας την κίνηση υγρού μέσα στον εγκεφαλικό ιστό και βελτιώνοντας την απομάκρυνση πρωτεϊνών όπως το αμυλοειδές-βήτα. Γι' αυτό η χρόνια διαταραχή ύπνου θεωρείται ζήτημα υγείας του εγκεφάλου, όχι απλώς πρόβλημα κόπωσης.</p>
+                    </article>
+                </div>
+                <p class="mt-3 text-xs text-gray-600 dark:text-gray-400">Πηγές: Iliff et al., 2012; Louveau et al., 2015; Nature Communications, 2026 ανθρώπινα δεδομένα για το γλυμφικό σύστημα.</p>
+            </div>
+        </section>
+
+        <section id="content-circadian" class="tab-content" role="tabpanel" aria-labelledby="tab-circadian">
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-8">
+                <h2 class="text-2xl font-bold mb-4 text-cyan-700 dark:text-cyan-300">Κιρκάδιοι Ρυθμοί</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <article class="bg-gradient-to-br from-indigo-700 to-slate-900 rounded-xl p-6 text-white shadow-md">
+                        <h3 class="text-lg font-semibold mb-2">Ο Υπερχιασματικός Πυρήνας</h3>
+                        <p class="text-sm">Ο υπερχιασματικός πυρήνας είναι το κύριο ρολόι του εγκεφάλου. Δέχεται πληροφορίες φωτός από τον αμφιβληστροειδή και βοηθά στον συγχρονισμό του ύπνου, της έκκρισης ορμονών, της ρύθμισης θερμοκρασίας και της καθημερινής συμπεριφοράς.</p>
+                    </article>
+                    <article class="bg-gradient-to-br from-violet-700 to-slate-900 rounded-xl p-6 text-white shadow-md">
+                        <h3 class="text-lg font-semibold mb-2">Γονίδια Ρολογιού</h3>
+                        <p class="text-sm">Οι πρωτεΐνες PER, CRY, BMAL1 και CLOCK σχηματίζουν μοριακούς βρόχους ανάδρασης που δημιουργούν 24ωρους ρυθμούς μέσα στα κύτταρα. Ο κιρκάδιος χρονισμός είναι επομένως ιδιότητα τόσο εγκεφαλικού συστήματος όσο και γονιδιακά ρυθμιζόμενης κυτταρικής διεργασίας.</p>
+                    </article>
+                    <article class="bg-gradient-to-br from-sky-700 to-slate-900 rounded-xl p-6 text-white shadow-md">
+                        <h3 class="text-lg font-semibold mb-2">Φως και Βιολογικό Ρολόι</h3>
+                        <p class="text-sm">Το φως πλούσιο σε μπλε μήκη κύματος καταστέλλει τη μελατονίνη και μπορεί να μετατοπίσει τον κιρκάδιο χρονισμό προς αργότερες ώρες. Αυτό εξηγεί γιατί η βραδινή έκθεση σε οθόνες συχνά δυσκολεύει την έναρξη του ύπνου στη σύγχρονη ζωή.</p>
+                    </article>
+                </div>
+                <div class="mt-6 p-4 bg-gray-50 dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600">
+                    <h4 class="font-semibold text-cyan-700 dark:text-cyan-300 mb-2">Χρονοτύποι και υγεία</h4>
+                    <p class="text-sm text-gray-700 dark:text-gray-300">Οι πρωινοί και βραδινοί χρονοτύποι είναι φυσιολογικές παραλλαγές, αλλά η κιρκάδια απορρύθμιση μπορεί να έχει πραγματικές συνέπειες στην υγεία, ειδικά για εργαζόμενους σε βάρδιες των οποίων το πρόγραμμα επανειλημμένα αντιτίθεται στο εσωτερικό τους ρολόι.</p>
+                </div>
+                <p class="mt-3 text-xs text-gray-600 dark:text-gray-400">Πηγές: μοντέλα Moore &amp; Eichler για κιρκάδια ρύθμιση; Hastings et al., 2014; ανασκοπήσεις χρονοβιολογίας για φως και εργασία σε βάρδιες.</p>
+            </div>
+        </section>
+
+        <section id="content-brain-health" class="tab-content" role="tabpanel" aria-labelledby="tab-brain-health">
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-8">
+                <h2 class="text-2xl font-bold mb-4 text-cyan-700 dark:text-cyan-300">Υγεία Εγκεφάλου</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <article class="bg-gradient-to-br from-emerald-700 to-slate-900 rounded-xl p-6 text-white shadow-md">
+                        <h3 class="text-lg font-semibold mb-2">Ύπνος και Alzheimer</h3>
+                        <p class="text-sm">Η ποιότητα του ύπνου και ο νευροεκφυλισμός πιθανότατα επηρεάζουν ο ένας τον άλλο αμφίδρομα. Ο κακός ύπνος μπορεί να μειώσει την αποτελεσματική απομάκρυνση αποβλήτων, ενώ η νευροεκφυλιστική αλλαγή μπορεί επίσης να διαταράξει την αρχιτεκτονική του ύπνου.</p>
+                    </article>
+                    <article class="bg-gradient-to-br from-emerald-800 to-slate-900 rounded-xl p-6 text-white shadow-md">
+                        <h3 class="text-lg font-semibold mb-2">Άσκηση και Νευρογένεση</h3>
+                        <p class="text-sm">Η σωματική δραστηριότητα, τα εμπλουτισμένα περιβάλλοντα και η συνεχής μάθηση σχετίζονται με υγιέστερη ιπποκαμπική πλαστικότητα και μπορεί να υποστηρίζουν την ενήλικη νευρογένεση και τη γενικότερη γνωστική ανθεκτικότητα.</p>
+                    </article>
+                    <article class="bg-gradient-to-br from-lime-700 to-slate-900 rounded-xl p-6 text-white shadow-md">
+                        <h3 class="text-lg font-semibold mb-2">SuperAgers</h3>
+                        <p class="text-sm">Ορισμένοι ενήλικες διατηρούν εξαιρετική μνήμη σε προχωρημένη ηλικία. Πρόσφατη έρευνα δείχνει ότι οι SuperAgers διατηρούν ισχυρότερη ιπποκαμπική δομή, αποδοτικότητα δικτύων και πιθανώς υγιέστερες αναγεννητικές μικροπεριοχές από την τυπική γήρανση.</p>
+                    </article>
+                </div>
+                <div class="mt-6 p-4 bg-gray-50 dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600">
+                    <h4 class="font-semibold text-cyan-700 dark:text-cyan-300 mb-2">Πρακτική φροντίδα εγκεφάλου</h4>
+                    <p class="text-sm text-gray-700 dark:text-gray-300">Συνήθειες με επιστημονική υποστήριξη περιλαμβάνουν τακτική άσκηση, υγιεινή ύπνου, γνωστική δραστηριότητα και κοινωνική σύνδεση. Είναι υποστηρικτικές συνήθειες, όχι εξατομικευμένα θεραπευτικά πλάνα, γι' αυτό συμβουλέψου επαγγελματία υγείας για προσωπικές ανησυχίες.</p>
+                </div>
+                <p class="mt-3 text-xs text-gray-600 dark:text-gray-400">Πηγές: Iliff et al., 2012; Nature Communications, 2026; βιβλιογραφία ενήλικης νευρογένεσης; ανασκοπήσεις Molecular Psychiatry για γήρανση και ανθεκτικότητα.</p>
+            </div>
+        </section>
+
+        <section class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-12" aria-labelledby="sleep-summary-title">
+            <h3 id="sleep-summary-title" class="text-xl font-bold text-cyan-700 dark:text-cyan-300 mb-2">📋 Πώς Συνδέεται με τα Προηγούμενα Κεφάλαια</h3>
+            <p class="text-sm text-gray-700 dark:text-gray-300">Το Κεφάλαιο 1 εισήγαγε τη μυελίνη και τη βασική νευρική φυσιολογία. Το Κεφάλαιο 2 εξήγησε τη σηματοδότηση. Το Κεφάλαιο 3 εξερεύνησε την πλαστικότητα και το Κεφάλαιο 4 επέκτεινε την εικόνα σε μεγάλης κλίμακας εγκεφαλικά συστήματα. Αυτό το κεφάλαιο προσθέτει το επίπεδο συντήρησης: πώς ο ύπνος, ο κιρκάδιος χρονισμός και η κάθαρση υγρών βοηθούν στη διατήρηση αυτών των συστημάτων με την πάροδο του χρόνου.</p>
+        </section>
+    </main>
+
+    <div id="footer-placeholder"></div>
+
+    <script src="../js/firebase-init.js"></script>
+    <script src="../js/components.js"></script>
+    <script src="../js/main.js"></script>
+    <script src="../js/06-sleep-glymphatics-brain-maintenance.js"></script>
+</body>
+
+</html>

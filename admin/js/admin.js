@@ -1,7 +1,7 @@
 const API = 'http://127.0.0.1:8181/api';
 let sessionToken = localStorage.getItem('admin_token');
 let currentFile = null;
-let currentContent = null;
+let cmEditor = null;
 
 function api(endpoint, options = {}) {
   const headers = { ...options.headers };
@@ -87,17 +87,26 @@ async function loadChapters() {
     <div class="chapter-card bg-gray-900 border border-gray-800 rounded-xl p-5 hover:border-purple-700 transition cursor-pointer flex items-center justify-between group"
       onclick="openEditor('${c.name}')">
       <div class="flex items-center gap-4">
-        <span class="text-3xl">${c.label.includes('[GR]') ? '🇬🇷' : '📄'}</span>
+        <span class="text-3xl">${c.locale === 'gr' ? '🇬🇷' : c.locale === 'zh' ? '🇨🇳' : c.locale === 'sp' ? '🇪🇸' : '📄'}</span>
         <div>
-          <h3 class="font-semibold text-gray-200 capitalize group-hover:text-purple-400 transition">
-            ${c.label}
-          </h3>
+          <h3 class="font-semibold text-gray-200 capitalize group-hover:text-purple-400 transition">${c.label}</h3>
           <p class="text-xs text-gray-500 mt-1">${c.name} · ${(c.size / 1024).toFixed(1)} KB · ${new Date(c.modified).toLocaleDateString()}</p>
         </div>
       </div>
-      <span class="text-gray-600 group-hover:text-purple-400 transition text-xl">→</span>
+      <div class="flex items-center gap-2">
+        <button onclick="event.stopPropagation(); deleteChapter('${c.name}')" title="Delete"
+          class="text-red-500 hover:text-red-400 opacity-0 group-hover:opacity-100 transition text-lg">🗑️</button>
+        <span class="text-gray-600 group-hover:text-purple-400 transition text-xl">→</span>
+      </div>
     </div>
   `).join('');
+}
+
+function guessMode(fileName) {
+  if (fileName.endsWith('.html')) return 'htmlmixed';
+  if (fileName.endsWith('.js')) return 'javascript';
+  if (fileName.endsWith('.css')) return 'css';
+  return 'xml';
 }
 
 async function openEditor(fileName) {
@@ -105,22 +114,44 @@ async function openEditor(fileName) {
   if (!data) return alert('Failed to load file');
   currentFile = fileName;
   currentContent = data.content;
+  const mode = guessMode(fileName);
   document.getElementById('editor-title').textContent = `Editing: ${fileName}`;
-  document.getElementById('editor-content').value = data.content;
+  document.getElementById('editor-mode').textContent = mode.toUpperCase();
   document.getElementById('editor-file-info').textContent = `${fileName} · ${(data.size / 1024).toFixed(1)} KB`;
   document.getElementById('editor-save-status').textContent = '';
   document.getElementById('editor-modal').classList.remove('hidden');
-  document.getElementById('editor-content').focus();
+
+  const container = document.getElementById('editor-container');
+  container.innerHTML = '';
+  cmEditor = CodeMirror(container, {
+    value: data.content,
+    mode: mode,
+    theme: 'monokai',
+    lineNumbers: true,
+    matchBrackets: true,
+    autoCloseBrackets: true,
+    matchTags: { bothTags: true },
+    indentUnit: 2,
+    tabSize: 2,
+    indentWithTabs: false,
+    lineWrapping: false,
+    extraKeys: { 'Ctrl-Space': 'autocomplete' },
+    viewportMargin: Infinity,
+  });
+  cmEditor.setSize('100%', '100%');
+  cmEditor.focus();
 }
 
 function closeEditor() {
   document.getElementById('editor-modal').classList.add('hidden');
+  if (cmEditor) { cmEditor.toTextArea(); cmEditor = null; }
   currentFile = null;
   currentContent = null;
 }
 
 async function handleSave() {
-  const content = document.getElementById('editor-content').value;
+  if (!cmEditor) return;
+  const content = cmEditor.getValue();
   const status = document.getElementById('editor-save-status');
   status.textContent = 'Saving...';
   status.className = 'text-yellow-400';
@@ -135,6 +166,13 @@ async function handleSave() {
     status.textContent = '✗ Save failed: ' + (result.error || 'Unknown error');
     status.className = 'text-red-400';
   }
+}
+
+function toggleWordWrap() {
+  if (!cmEditor) return;
+  const wrap = !cmEditor.getOption('lineWrapping');
+  cmEditor.setOption('lineWrapping', wrap);
+  document.getElementById('btn-wrap').textContent = wrap ? 'Unwrap' : 'Wrap';
 }
 
 document.addEventListener('keydown', (e) => {
@@ -172,13 +210,11 @@ async function loadMedia() {
 }
 
 function copyMediaUrl(url) {
-  navigator.clipboard.writeText(url).then(() => {
-    alert('URL copied: ' + url);
-  });
+  navigator.clipboard.writeText(url).then(() => alert('URL copied: ' + url));
 }
 
 async function deleteMedia(name) {
-  if (!confirm(`Delete "${name}"? This cannot be undone.`)) return;
+  if (!confirm(`Delete "${name}"?`)) return;
   await api(`/media?file=${encodeURIComponent(name)}`, { method: 'DELETE' });
   loadMedia();
   refreshGitStatus();
@@ -192,18 +228,16 @@ async function uploadMedia(file) {
   progress.textContent = `Uploading ${file.name}...`;
   try {
     const response = await fetch(`${API}/media/upload`, {
-      method: 'POST',
-      body: formData,
+      method: 'POST', body: formData,
       headers: { 'X-Session-Token': sessionToken },
     });
     const result = await response.json().catch(() => null);
     if (result && result.name) {
       progress.textContent = `✓ Uploaded ${result.name}`;
       progress.className = 'mb-4 p-3 bg-green-900/30 border border-green-800 rounded-lg text-sm text-green-300';
-      loadMedia();
-      refreshGitStatus();
+      loadMedia(); refreshGitStatus();
     } else {
-      progress.textContent = `✗ Upload failed`;
+      progress.textContent = '✗ Upload failed';
       progress.className = 'mb-4 p-3 bg-red-900/30 border border-red-800 rounded-lg text-sm text-red-300';
     }
   } catch {
@@ -211,6 +245,71 @@ async function uploadMedia(file) {
     progress.className = 'mb-4 p-3 bg-red-900/30 border border-red-800 rounded-lg text-sm text-red-300';
   }
   setTimeout(() => progress.classList.add('hidden'), 4000);
+}
+
+async function deleteChapter(name) {
+  if (!confirm(`Delete "${name}"? This cannot be undone.`)) return;
+  const result = await api('/content/delete', { method: 'POST', json: { file: name } });
+  if (result.success) { loadChapters(); refreshGitStatus(); } else { alert('Delete failed: ' + (result.error || 'unknown')); }
+}
+
+function showCreateChapterModal() {
+  document.getElementById('create-chapter-modal').classList.remove('hidden');
+}
+
+function closeCreateChapterModal() {
+  document.getElementById('create-chapter-modal').classList.add('hidden');
+}
+
+async function createChapter() {
+  const num = document.getElementById('new-chapter-num').value.trim();
+  const slug = document.getElementById('new-chapter-slug').value.trim();
+  const title = document.getElementById('new-chapter-title').value.trim();
+  const template = document.getElementById('new-chapter-template').value;
+  if (!num || !slug || !title) return alert('All fields required');
+  const result = await api('/content/create', { method: 'POST', json: { number: num, slug, title, template } });
+  if (result.success) {
+    closeCreateChapterModal();
+    loadChapters();
+    refreshGitStatus();
+    openEditor(result.file);
+  } else {
+    alert('Failed: ' + (result.error || 'unknown'));
+  }
+}
+
+function showCreateLocaleModal() {
+  document.getElementById('create-locale-modal').classList.remove('hidden');
+}
+
+function closeCreateLocaleModal() {
+  document.getElementById('create-locale-modal').classList.add('hidden');
+}
+
+async function createLocale() {
+  const lang = document.getElementById('new-locale-lang').value;
+  const code = document.getElementById('new-locale-code').value.trim();
+  const source = document.getElementById('new-locale-source').value;
+  if (!code) return alert('Locale code required');
+  const result = await api('/locale/create', { method: 'POST', json: { lang, code, source } });
+  if (result.success) {
+    closeCreateLocaleModal();
+    loadChapters();
+    refreshGitStatus();
+  } else {
+    alert('Failed: ' + (result.error || 'unknown'));
+  }
+}
+
+function switchTab(tabName) {
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.querySelector(`.nav-btn[data-tab="${tabName}"]`)?.classList.add('active');
+  document.querySelectorAll('.tab-content').forEach(t => { t.style.display = 'none'; });
+  const tabEl = document.getElementById(`tab-${tabName}`);
+  if (tabEl) tabEl.style.display = 'block';
+  if (tabName === 'media') loadMedia();
+  if (tabName === 'settings') refreshGitStatus();
+  if (tabName === 'chapters') loadChapters();
 }
 
 document.getElementById('login-form').addEventListener('submit', (e) => {
@@ -223,16 +322,6 @@ document.getElementById('media-upload').addEventListener('change', (e) => {
   e.target.value = '';
 });
 
-function switchTab(tabName) {
-  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-  document.querySelector(`.nav-btn[data-tab="${tabName}"]`)?.classList.add('active');
-  document.querySelectorAll('.tab-content').forEach(t => { t.style.display = 'none'; });
-  const tabEl = document.getElementById(`tab-${tabName}`);
-  if (tabEl) tabEl.style.display = 'block';
-  if (tabName === 'media') loadMedia();
-  if (tabName === 'settings') refreshGitStatus();
-  if (tabName === 'chapters') loadChapters();
-}
 document.querySelectorAll('.nav-btn').forEach(btn => {
   btn.addEventListener('click', () => switchTab(btn.dataset.tab));
 });

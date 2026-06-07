@@ -100,7 +100,8 @@ function authCheck(req) {
   return true;
 }
 
-// -------- File Operations --------
+const KNOWN_LOCALES = ['gr', 'zh', 'sp'];
+
 function listChapters() {
   const chapters = [];
   const dir = SITE_ROOT;
@@ -109,25 +110,22 @@ function listChapters() {
       const filePath = path.join(dir, f);
       const stat = fs.statSync(filePath);
       chapters.push({
-        name: f,
-        size: stat.size,
-        modified: stat.mtime.toISOString(),
+        name: f, size: stat.size, modified: stat.mtime.toISOString(), locale: 'en',
         label: f.replace('.html', '').replace(/^\d{2}-/, '').replace(/-/g, ' '),
       });
     }
   }
-  // Also include gr/ versions
-  const grDir = path.join(SITE_ROOT, 'gr');
-  if (fs.existsSync(grDir)) {
-    for (const f of fs.readdirSync(grDir)) {
+  for (const loc of KNOWN_LOCALES) {
+    const locDir = path.join(SITE_ROOT, loc);
+    if (!fs.existsSync(locDir)) continue;
+    for (const f of fs.readdirSync(locDir)) {
       if (f.match(/^\d{2}-.*\.html$/) || f === 'index.html') {
-        const filePath = path.join(grDir, f);
-        const stat = fs.statSync(filePath);
+        const fp = path.join(locDir, f);
+        const stat = fs.statSync(fp);
+        const flag = { gr: '🇬🇷', zh: '🇨🇳', sp: '🇪🇸' }[loc] || '';
         chapters.push({
-          name: `gr/${f}`,
-          size: stat.size,
-          modified: stat.mtime.toISOString(),
-          label: `[GR] ${f.replace('.html', '').replace(/^\d{2}-/, '').replace(/-/g, ' ')}`,
+          name: `${loc}/${f}`, size: stat.size, modified: stat.mtime.toISOString(), locale: loc,
+          label: `${flag} ${f.replace('.html', '').replace(/^\d{2}-/, '').replace(/-/g, ' ')}`,
         });
       }
     }
@@ -135,35 +133,206 @@ function listChapters() {
   return chapters;
 }
 
+function validFileName(fileName) {
+  const pattern = new RegExp(`^(\d{2}-.*\.html|index\.html|${KNOWN_LOCALES.map(l => l + '/\d{2}-.*\.html|' + l + '/index\.html').join('|')})$`);
+  return pattern.test(fileName);
+}
+
 function readChapter(fileName) {
-  // Security: only allow html files in root or gr/
-  if (!fileName.match(/^(\d{2}-.*\.html|index\.html|gr\/\d{2}-.*\.html|gr\/index\.html)$/)) {
-    return null;
-  }
+  if (!validFileName(fileName)) return null;
   const filePath = path.join(SITE_ROOT, fileName);
   if (!fs.existsSync(filePath)) return null;
-  return {
-    name: fileName,
-    content: fs.readFileSync(filePath, 'utf-8'),
-    size: fs.statSync(filePath).size,
-  };
+  return { name: fileName, content: fs.readFileSync(filePath, 'utf-8'), size: fs.statSync(filePath).size };
 }
 
 function writeChapter(fileName, content) {
-  if (!fileName.match(/^(\d{2}-.*\.html|index\.html|gr\/\d{2}-.*\.html|gr\/index\.html)$/)) {
-    return false;
-  }
+  if (!validFileName(fileName)) return false;
   const filePath = path.join(SITE_ROOT, fileName);
-  // Backup
   const backupDir = path.join(SITE_ROOT, '.admin-backups');
   if (!fs.existsSync(backupDir)) fs.mkdirSync(backupDir, { recursive: true });
   const backupPath = path.join(backupDir, `${fileName.replace(/\//g, '_')}.${Date.now()}.bak`);
-  if (fs.existsSync(filePath)) {
-    fs.copyFileSync(filePath, backupPath);
-  }
+  if (fs.existsSync(filePath)) fs.copyFileSync(filePath, backupPath);
   fs.writeFileSync(filePath, content, 'utf-8');
   return true;
 }
+
+function createChapter(number, slug, title, template) {
+  const fileName = `${number.padStart(2, '0')}-${slug}.html`;
+  const filePath = path.join(SITE_ROOT, fileName);
+  if (fs.existsSync(filePath)) return { error: 'File already exists' };
+
+  const fullTemplate = template === 'full' ? `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>${title} - Oligodendrosite</title>
+  <meta name="description" content="${title}">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧠</text></svg>">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+  <link rel="stylesheet" href="css/main.css">
+</head>
+<body class="bg-gray-100 font-sans dark:bg-gray-900 text-gray-800 dark:text-gray-200 transition-colors duration-300">
+  <div id="header-placeholder"></div>
+  <header class="bg-indigo-700 text-white p-6 shadow-md mb-8">
+    <div class="container mx-auto">
+      <h1 class="text-3xl md:text-4xl font-bold mb-2">${title}</h1>
+      <p class="text-lg opacity-90">New chapter description</p>
+    </div>
+  </header>
+  <main class="container mx-auto p-4 md:p-6">
+    <section class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-8">
+      <h2 class="text-2xl font-bold mb-4 text-indigo-700 dark:text-indigo-300">Introduction</h2>
+      <p class="mb-4">Your content goes here.</p>
+    </section>
+    <nav class="mb-6 tab-navigation" role="tablist" aria-label="Chapter sections"
+      style="--tab-active-color:#4338ca; --tab-active-color-dark:#a5b4fc; --tab-hover-color:#4338ca; --tab-hover-color-dark:#a5b4fc; --tab-active-bg:#e0e7ff; --tab-active-bg-dark:rgba(99,102,241,0.18); --tab-hover-bg:#eef2ff; --tab-hover-bg-dark:rgba(99,102,241,0.12);">
+      <button id="tab-topic1" role="tab" aria-selected="true" aria-controls="content-topic1"
+        class="tab-button relative px-4 py-2 text-indigo-700 font-medium rounded-lg transition-all duration-300">
+        <span class="hidden sm:inline">Topic 1</span><span class="sm:hidden">T1</span>
+      </button>
+      <button id="tab-topic2" role="tab" aria-selected="false" aria-controls="content-topic2"
+        class="tab-button relative px-4 py-2 text-gray-500 font-medium rounded-lg transition-all duration-300 hover:text-indigo-600 hover:bg-indigo-50 dark:hover:bg-indigo-900/20">
+        <span class="hidden sm:inline">Topic 2</span><span class="sm:hidden">T2</span>
+      </button>
+    </nav>
+    <section id="content-topic1" class="tab-content active" role="tabpanel" aria-labelledby="tab-topic1">
+      <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-8">
+        <h2 class="text-2xl font-bold mb-4 text-indigo-700 dark:text-indigo-300">Topic 1</h2>
+        <p>Add your content here.</p>
+      </div>
+    </section>
+    <section id="content-topic2" class="tab-content" role="tabpanel" aria-labelledby="tab-topic2">
+      <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-8">
+        <h2 class="text-2xl font-bold mb-4 text-indigo-700 dark:text-indigo-300">Topic 2</h2>
+        <p>Add your content here.</p>
+      </div>
+    </section>
+  </main>
+  <div id="footer-placeholder"></div>
+  <script src="js/firebase-init.js"></script>
+  <script src="js/components.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>` : `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>${title} - Oligodendrosite</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧠</text></svg>">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="css/main.css">
+</head>
+<body class="bg-gray-100 font-sans dark:bg-gray-900 text-gray-800 dark:text-gray-200 transition-colors duration-300">
+  <div id="header-placeholder"></div>
+  <header class="bg-indigo-700 text-white p-6 shadow-md mb-8">
+    <div class="container mx-auto">
+      <h1 class="text-3xl md:text-4xl font-bold mb-2">${title}</h1>
+      <p class="text-lg opacity-90">New chapter description</p>
+    </div>
+  </header>
+  <main class="container mx-auto p-4 md:p-6">
+    <section class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-8">
+      <h2 class="text-2xl font-bold mb-4 text-indigo-700 dark:text-indigo-300">Introduction</h2>
+      <p>Your content goes here.</p>
+    </section>
+  </main>
+  <div id="footer-placeholder"></div>
+  <script src="js/firebase-init.js"></script>
+  <script src="js/components.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>`;
+
+  fs.writeFileSync(filePath, fullTemplate, 'utf-8');
+  return { success: true, file: fileName };
+}
+
+function deleteChapterFile(fileName) {
+  if (!validFileName(fileName)) return false;
+  const filePath = path.join(SITE_ROOT, fileName);
+  if (!fs.existsSync(filePath)) return false;
+  const backupDir = path.join(SITE_ROOT, '.admin-backups');
+  if (!fs.existsSync(backupDir)) fs.mkdirSync(backupDir, { recursive: true });
+  fs.copyFileSync(filePath, path.join(backupDir, `${fileName.replace(/\//g, '_')}.deleted.${Date.now()}.bak`));
+  fs.unlinkSync(filePath);
+  return true;
+}
+
+function createLocale(code, sourceLocale) {
+  const langNames = { zh: 'Chinese', sp: 'Spanish' };
+  const locDir = path.join(SITE_ROOT, code);
+  const componentsDir = path.join(locDir, 'components');
+  if (fs.existsSync(locDir)) return { error: `Locale '${code}' already exists` };
+
+  fs.mkdirSync(locDir, { recursive: true });
+  fs.mkdirSync(componentsDir, { recursive: true });
+
+  if (sourceLocale === 'gr' || sourceLocale === 'en') {
+    const sourceDir = sourceLocale === 'en' ? SITE_ROOT : path.join(SITE_ROOT, sourceLocale);
+    for (const f of fs.readdirSync(sourceDir)) {
+      if (f.match(/^\d{2}-.*\.html$/) || f === 'index.html') {
+        const srcPath = path.join(sourceDir, f);
+        let content = fs.readFileSync(srcPath, 'utf-8');
+        content = content.replace(/lang="[^"]*"/, `lang="${code}"`);
+        content = content.replace(/href="\.\.?\/(css|js|assets|components|gr)\//g, `href="../$1/`);
+        content = content.replace(/src="\.\.?\/(css|js|assets|components|gr)\//g, `src="../$1/`);
+        content = content.replace(/href="(\.\.\/)?gr\//g, `href="../${code}/`);
+        fs.writeFileSync(path.join(locDir, f), content, 'utf-8');
+      }
+    }
+    const sourceCompDir = path.join(sourceDir, 'components');
+    if (fs.existsSync(sourceCompDir)) {
+      for (const f of fs.readdirSync(sourceCompDir)) {
+        fs.copyFileSync(path.join(sourceCompDir, f), path.join(componentsDir, f));
+      }
+    }
+  } else {
+    const indexContent = `<!DOCTYPE html>
+<html lang="${code}">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Oligodendrosite - ${langNames[code] || code.toUpperCase()}</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧠</text></svg>">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="../css/main.css">
+</head>
+<body class="bg-gray-100 font-sans dark:bg-gray-900 text-gray-800 dark:text-gray-200 transition-colors duration-300">
+  <div id="header-placeholder"></div>
+  <header class="bg-indigo-700 text-white p-6 shadow-md mb-8">
+    <div class="container mx-auto">
+      <h1 class="text-3xl md:text-4xl font-bold mb-2">Oligodendrosite - ${langNames[code] || code.toUpperCase()}</h1>
+      <p class="text-lg opacity-90">${langNames[code] || code.toUpperCase()} homepage</p>
+    </div>
+  </header>
+  <main class="container mx-auto p-4 md:p-6">
+    <section class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-8">
+      <h2 class="text-2xl font-bold mb-4">${langNames[code] || code.toUpperCase()} Translation</h2>
+      <p>This locale needs translation. Edit this page in the admin panel.</p>
+    </section>
+  </main>
+  <div id="footer-placeholder"></div>
+  <script src="../js/firebase-init.js"></script>
+  <script src="../js/components.js"></script>
+  <script src="../js/main.js"></script>
+</body>
+</html>`;
+    fs.writeFileSync(path.join(locDir, 'index.html'), indexContent, 'utf-8');
+    const headerContent = fs.readFileSync(path.join(SITE_ROOT, 'gr', 'components', 'header.html'), 'utf-8')
+      .replace(/\/gr\//g, `/${code}/`);
+    fs.writeFileSync(path.join(componentsDir, 'header.html'), headerContent, 'utf-8');
+    const footerContent = fs.readFileSync(path.join(SITE_ROOT, 'gr', 'components', 'footer.html'), 'utf-8')
+      .replace(/\/gr\//g, `/${code}/`);
+    fs.writeFileSync(path.join(componentsDir, 'footer.html'), footerContent, 'utf-8');
+  }
+  return { success: true, locale: code };
+}
+
+function readChapter(fileName) { return null; }
+function writeChapter(fileName, content) { return false; }
 
 function listMedia() {
   const mediaDir = path.join(SITE_ROOT, 'assets');
@@ -345,6 +514,31 @@ async function handleRequest(req, res) {
       return sendError(res, 'Invalid file path', 400);
     }
     return sendJSON(res, { success: true, message: 'File saved' });
+  }
+
+  if (pathname === '/api/content/create' && req.method === 'POST') {
+    const { json } = await parseBody(req);
+    if (!json || !json.number || !json.slug || !json.title) {
+      return sendError(res, 'Missing number, slug, or title');
+    }
+    const result = createChapter(json.number, json.slug, json.title, json.template || 'full');
+    if (result.error) return sendError(res, result.error, 409);
+    return sendJSON(res, result);
+  }
+
+  if (pathname === '/api/content/delete' && req.method === 'POST') {
+    const { json } = await parseBody(req);
+    if (!json || !json.file) return sendError(res, 'Missing file');
+    if (!deleteChapterFile(json.file)) return sendError(res, 'File not found or invalid', 404);
+    return sendJSON(res, { success: true, message: `Deleted ${json.file}` });
+  }
+
+  if (pathname === '/api/locale/create' && req.method === 'POST') {
+    const { json } = await parseBody(req);
+    if (!json || !json.code) return sendError(res, 'Missing locale code');
+    const result = createLocale(json.code, json.source || 'none');
+    if (result.error) return sendError(res, result.error, 409);
+    return sendJSON(res, result);
   }
 
   // Media
