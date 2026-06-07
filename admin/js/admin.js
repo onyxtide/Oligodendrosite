@@ -129,13 +129,10 @@ async function openEditor(fileName) {
     theme: 'monokai',
     lineNumbers: true,
     matchBrackets: true,
-    autoCloseBrackets: true,
-    matchTags: { bothTags: true },
     indentUnit: 2,
     tabSize: 2,
     indentWithTabs: false,
     lineWrapping: false,
-    extraKeys: { 'Ctrl-Space': 'autocomplete' },
     viewportMargin: Infinity,
   });
   cmEditor.setSize('100%', '100%');
